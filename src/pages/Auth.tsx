@@ -290,11 +290,11 @@ const Auth = () => {
                         <span className="bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(250,204,21,0.3)]">
                           Welcome
                         </span>
-                        <span className="text-white font-light tracking-tight italic">Back</span>
+                        <span className="text-white font-light tracking-tight">Back</span>
                       </>
                     ) : (
                       <>
-                        <span className="bg-gradient-to-r from-green-400 via-emerald-300 to-green-500 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(34,197,94,0.3)]">
+                        <span className="text-white font-light tracking-tight">
                           Welcome to
                         </span>
                         <span className="text-white font-light tracking-tight">
