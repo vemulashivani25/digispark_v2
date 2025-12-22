@@ -81,6 +81,9 @@ const HeroSection = () => {
   useEffect(() => {
     if (!containerRef.current) return;
 
+    // Store container reference for cleanup
+    const container = containerRef.current;
+
     const checkMobile = () => {
       isMobile.current = window.innerWidth < 768;
       updateRendererSize();
@@ -91,7 +94,7 @@ const HeroSection = () => {
     rendererRef.current = new THREE.WebGLRenderer({ alpha: true });
     
     checkMobile();
-    containerRef.current.appendChild(rendererRef.current.domElement);
+    container.appendChild(rendererRef.current.domElement);
 
     const geometry = new THREE.BoxGeometry(2, 2, 2);
     const material = new THREE.MeshBasicMaterial({
@@ -102,8 +105,9 @@ const HeroSection = () => {
     sceneRef.current.add(cubeRef.current);
     cameraRef.current.position.z = 5;
 
+    let animationFrameId: number;
     const animate = () => {
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
       if (cubeRef.current) {
         cubeRef.current.rotation.x += 0.01;
         cubeRef.current.rotation.y += 0.01;
@@ -115,10 +119,10 @@ const HeroSection = () => {
     animate();
 
     function updateRendererSize() {
-      if (!containerRef.current || !rendererRef.current || !cameraRef.current) return;
+      if (!container || !rendererRef.current || !cameraRef.current) return;
       
-      const containerWidth = containerRef.current.clientWidth;
-      const containerHeight = containerRef.current.clientHeight;
+      const containerWidth = container.clientWidth;
+      const containerHeight = container.clientHeight;
       
       const scale = isMobile.current ? 0.6 : 1;
       
@@ -137,8 +141,21 @@ const HeroSection = () => {
 
     return () => {
       window.removeEventListener('resize', checkMobile);
-      if (containerRef.current && rendererRef.current) {
-        containerRef.current.removeChild(rendererRef.current.domElement);
+      cancelAnimationFrame(animationFrameId);
+      
+      // Safely remove renderer domElement
+      if (rendererRef.current) {
+        const domElement = rendererRef.current.domElement;
+        if (domElement && domElement.parentNode === container) {
+          container.removeChild(domElement);
+        }
+        rendererRef.current.dispose();
+      }
+      
+      // Dispose of Three.js resources
+      if (cubeRef.current) {
+        cubeRef.current.geometry.dispose();
+        (cubeRef.current.material as THREE.Material).dispose();
       }
     };
   }, []);
