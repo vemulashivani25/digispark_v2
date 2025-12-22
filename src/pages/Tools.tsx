@@ -177,7 +177,7 @@ const Tools = () => {
               <Button
                 variant="outline"
                 size="lg"
-                className="border-gray-600 text-gray-300 hover:bg-gray-800"
+                className="border-gray-600 text-black-300 hover:bg-white-800"
                 onClick={() => navigate("/")}
               >
                 Back to Home
