@@ -358,13 +358,19 @@ const SuccessStories = () => {
               ))}
             </motion.div>
 
-            <div id="industry-filter">
+            {/* 
+              NOTE: Industry Filter section is commented out for now.
+              To re-enable, uncomment the section below.
+              This filter allows users to browse success stories by industry.
+              See docs/COMPONENTS.md for more details.
+            */}
+            {/* <div id="industry-filter">
               <IndustryFilter
                 industries={industries}
                 activeIndustry={activeIndustry}
                 onIndustryChange={setActiveIndustry}
               />
-            </div>
+            </div> */}
 
             <ServiceFilter services={services} activeFilter={filter} onFilterChange={setFilter} />
 

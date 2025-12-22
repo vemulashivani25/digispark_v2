@@ -766,7 +766,19 @@ Detailed case study modal with gallery.
 
 **File:** `src/components/success-stories/IndustryFilter.tsx`
 
-Industry category filter.
+Industry category filter for browsing success stories by industry.
+
+> ⚠️ **NOTE:** This component is currently **commented out** in the Success Stories page (`src/pages/SuccessStories.tsx`). 
+> To re-enable the "Browse by Industry" feature, uncomment the `<IndustryFilter>` section in the page file.
+
+```tsx
+// Currently commented out in SuccessStories.tsx:
+<IndustryFilter
+  industries={industries}
+  activeIndustry={activeIndustry}
+  onIndustryChange={setActiveIndustry}
+/>
+```
 
 ---
 
