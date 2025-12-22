@@ -12,9 +12,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 import { UserProfile, ContactSubmission, NewsletterSubscription } from "@/types/supabase";
 import { Tables } from "@/integrations/supabase/types";
-import { Plus, Trash, Edit, Eye, RefreshCcw, Check, X, Calendar, ShieldAlert, FileText } from "lucide-react";
+import { Plus, Trash, Edit, Eye, RefreshCcw, Check, X, Calendar, ShieldAlert, FileText, FolderKanban } from "lucide-react";
 import BlogPostEditor from "@/components/admin/BlogPostEditor";
 import ResourceManager from "@/components/admin/ResourceManager";
+import ProjectsTab from "@/components/admin/ProjectsTab";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -329,12 +330,20 @@ const Admin = () => {
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={activeTab} onValueChange={handleTabChange}>
-                <TabsList className="grid grid-cols-4 mb-6">
+                <TabsList className="grid grid-cols-5 mb-6">
+                  <TabsTrigger value="projects">
+                    <FolderKanban size={14} className="mr-1" /> Projects
+                  </TabsTrigger>
                   <TabsTrigger value="contacts">Contacts</TabsTrigger>
                   <TabsTrigger value="subscribers">Subscribers</TabsTrigger>
                   <TabsTrigger value="blog">Blog Posts</TabsTrigger>
                   <TabsTrigger value="resources">Resources</TabsTrigger>
                 </TabsList>
+                
+                {/* Projects Tab */}
+                <TabsContent value="projects">
+                  <ProjectsTab loading={dataLoading} />
+                </TabsContent>
                 
                 {/* Contacts Tab */}
                 <TabsContent value="contacts">
