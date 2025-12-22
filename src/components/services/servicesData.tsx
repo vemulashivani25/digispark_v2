@@ -13,7 +13,11 @@ import {
   Video,
   Zap,
   Settings,
-  Bot
+  Bot,
+  Headphones,
+  Monitor,
+  Mic,
+  Users2
 } from "lucide-react";
 
 /** Service type definition for type safety across the application */
@@ -161,6 +165,61 @@ export const services: Service[] = [
     caseStudy: "65% Faster Load Times",
     slug: "performance-optimization",
     category: "Development"
+  },
+  {
+    title: "Zoom Meeting Support",
+    description: "Professional virtual meeting management for webinars, conferences, and team collaborations.",
+    features: ["Webinar Hosting", "Meeting Scheduling", "Technical Support", "Recording & Transcription", "Breakout Room Management", "Attendee Management"],
+    image: "https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    icon: Monitor,
+    highlight: "cyan",
+    caseStudy: "500+ Successful Webinars",
+    slug: "zoom-meeting-support",
+    category: "Support"
+  },
+  {
+    title: "Podcast Editing",
+    description: "Professional podcast production from raw audio to polished episodes ready for distribution.",
+    features: ["Audio Cleanup", "Noise Reduction", "Intro/Outro Creation", "Sound Mixing", "Show Notes", "Distribution Support"],
+    image: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    icon: Mic,
+    highlight: "rose",
+    caseStudy: "200+ Episodes Produced",
+    slug: "podcast-editing",
+    category: "Creative"
+  },
+  {
+    title: "Discord Community Management",
+    description: "Build and manage thriving Discord communities with expert moderation and engagement strategies.",
+    features: ["Server Setup", "Bot Configuration", "Moderation", "Community Engagement", "Event Hosting", "Growth Strategy"],
+    image: "https://images.unsplash.com/photo-1614680376593-902f74cf0d41?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    icon: Users2,
+    highlight: "indigo",
+    caseStudy: "50K+ Community Members Managed",
+    slug: "discord-community-management",
+    category: "Community"
+  },
+  {
+    title: "Zoho CRM Solutions",
+    description: "Complete Zoho CRM implementation and customization to streamline your sales and customer management.",
+    features: ["CRM Setup", "Custom Modules", "Workflow Automation", "Analytics Dashboard", "Third-party Integration", "Training & Support"],
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    icon: Database,
+    highlight: "yellow",
+    caseStudy: "35% Sales Efficiency Increase",
+    slug: "zoho-crm-solutions",
+    category: "Automation & CRM"
+  },
+  {
+    title: "Digital Marketing Specialist",
+    description: "Comprehensive digital marketing strategies tailored for business growth and online visibility.",
+    features: ["Marketing Strategy", "Campaign Management", "Analytics & Reporting", "Conversion Optimization", "Brand Development", "Market Research"],
+    image: "https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    icon: LineChart,
+    highlight: "emerald",
+    caseStudy: "250% ROI for Clients",
+    slug: "digital-marketing-specialist",
+    category: "Marketing"
   }
 ];
 
