@@ -72,14 +72,11 @@ const Typewriter = () => {
 
 const HeroSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const neonContainerRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const cubeRef = useRef<THREE.Mesh | null>(null);
   const isMobile = useRef<boolean>(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -304,205 +301,91 @@ const HeroSection = () => {
               </Button>
             </div>
           </div>
-          <div 
-            ref={neonContainerRef}
-            className="relative mt-4 lg:mt-0 hidden sm:block cursor-pointer"
-            onMouseMove={(e) => {
-              if (neonContainerRef.current) {
-                const rect = neonContainerRef.current.getBoundingClientRect();
-                const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-                const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-                setMousePosition({ x, y });
-              }
-            }}
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => {
-              setIsHovering(false);
-              setMousePosition({ x: 0, y: 0 });
-            }}
-          >
-            {/* Black background base */}
-            <div className="absolute -inset-16 sm:-inset-20 bg-black rounded-full" />
-            
-            {/* Neon half-circle arc - outer */}
+          <div className="relative mt-4 lg:mt-0 hidden sm:block">
+            {/* Outer pulsing semi-circle glow */}
             <motion.div 
-              className="absolute -inset-14 sm:-inset-18"
+              className="absolute -inset-8 sm:-inset-12 bg-gradient-to-t from-yellow-400/0 via-yellow-400/15 to-yellow-400/25 rounded-t-full blur-2xl"
               animate={{ 
-                rotateZ: isHovering ? mousePosition.x * 15 : 0,
-                rotateX: isHovering ? mousePosition.y * 10 : 0
+                opacity: [0.4, 0.8, 0.4],
+                scale: [0.95, 1.05, 0.95]
               }}
-              transition={{ type: "spring", stiffness: 150, damping: 20 }}
-              style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
-            >
-              <svg viewBox="0 0 200 200" className="w-full h-full" style={{ filter: "drop-shadow(0 0 20px rgba(234, 179, 8, 0.8)) drop-shadow(0 0 40px rgba(234, 179, 8, 0.5))" }}>
-                <defs>
-                  <linearGradient id="neonGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.2" />
-                    <stop offset="50%" stopColor="#eab308" stopOpacity="1" />
-                    <stop offset="100%" stopColor="#fbbf24" stopOpacity="0.2" />
-                  </linearGradient>
-                </defs>
-                <motion.path
-                  d="M 20 100 A 80 80 0 0 1 180 100"
-                  fill="none"
-                  stroke="url(#neonGradient)"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  animate={{ 
-                    opacity: [0.7, 1, 0.7],
-                    strokeWidth: isHovering ? [3, 5, 3] : [3, 4, 3]
-                  }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                />
-              </svg>
-            </motion.div>
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            />
             
-            {/* Neon half-circle arc - middle */}
+            {/* Inner intense glow ring */}
             <motion.div 
-              className="absolute -inset-10 sm:-inset-14"
+              className="absolute -inset-4 sm:-inset-6 bg-gradient-to-t from-transparent via-yellow-500/20 to-yellow-400/30 rounded-t-full blur-xl"
               animate={{ 
-                rotateZ: isHovering ? mousePosition.x * 20 : 0,
-                rotateX: isHovering ? mousePosition.y * 15 : 0
+                opacity: [0.5, 1, 0.5],
+                scale: [1, 1.08, 1]
               }}
-              transition={{ type: "spring", stiffness: 120, damping: 15 }}
-              style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
-            >
-              <svg viewBox="0 0 200 200" className="w-full h-full" style={{ filter: "drop-shadow(0 0 15px rgba(234, 179, 8, 0.9)) drop-shadow(0 0 30px rgba(234, 179, 8, 0.6))" }}>
-                <motion.path
-                  d="M 30 100 A 70 70 0 0 1 170 100"
-                  fill="none"
-                  stroke="#eab308"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  animate={{ 
-                    opacity: [0.8, 1, 0.8],
-                    pathLength: isHovering ? [0.7, 1, 0.7] : [0.9, 1, 0.9]
-                  }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
-                />
-              </svg>
-            </motion.div>
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+            />
             
-            {/* Neon half-circle arc - inner bright */}
+            {/* Radial glow burst effect */}
+            <motion.div 
+              className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(234,179,8,0.25)_0%,transparent_70%)]"
+              animate={{ 
+                opacity: [0.3, 0.7, 0.3],
+                scale: [1, 1.15, 1]
+              }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+            />
+            
+            {/* Rotating arc glow */}
             <motion.div 
               className="absolute -inset-6 sm:-inset-10"
-              animate={{ 
-                rotateZ: isHovering ? mousePosition.x * 25 : 0,
-                rotateX: isHovering ? mousePosition.y * 20 : 0
-              }}
-              transition={{ type: "spring", stiffness: 100, damping: 12 }}
-              style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
             >
-              <svg viewBox="0 0 200 200" className="w-full h-full" style={{ filter: "drop-shadow(0 0 10px rgba(251, 191, 36, 1)) drop-shadow(0 0 25px rgba(251, 191, 36, 0.8)) drop-shadow(0 0 50px rgba(234, 179, 8, 0.5))" }}>
-                <motion.path
-                  d="M 40 100 A 60 60 0 0 1 160 100"
-                  fill="none"
-                  stroke="#fbbf24"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  animate={{ 
-                    opacity: [0.9, 1, 0.9]
-                  }}
-                  transition={{ duration: 1, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
-                />
-              </svg>
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-[50%] bg-gradient-to-b from-yellow-400/30 via-yellow-400/10 to-transparent rounded-t-full blur-lg" />
             </motion.div>
             
-            {/* Animated neon dots along the arc */}
-            {[...Array(7)].map((_, i) => {
-              const angle = (Math.PI / 6) * (i + 1);
-              const radius = 90;
-              const x = 100 + Math.cos(Math.PI - angle) * radius;
-              const y = 100 - Math.sin(angle) * radius;
-              return (
-                <motion.div
-                  key={i}
-                  className="absolute w-2 h-2 rounded-full bg-yellow-400"
-                  style={{ 
-                    left: `calc(${x / 2}% - 4px)`, 
-                    top: `calc(${y / 2}% - 4px)`,
-                    boxShadow: "0 0 10px #eab308, 0 0 20px #eab308, 0 0 30px #fbbf24"
-                  }}
-                  animate={{ 
-                    scale: [1, 1.5, 1],
-                    opacity: [0.6, 1, 0.6],
-                    boxShadow: isHovering 
-                      ? ["0 0 10px #eab308, 0 0 20px #eab308", "0 0 20px #fbbf24, 0 0 40px #fbbf24, 0 0 60px #eab308", "0 0 10px #eab308, 0 0 20px #eab308"]
-                      : ["0 0 10px #eab308, 0 0 20px #eab308", "0 0 15px #fbbf24, 0 0 30px #fbbf24", "0 0 10px #eab308, 0 0 20px #eab308"]
-                  }}
-                  transition={{ 
-                    duration: 1.5 + i * 0.2, 
-                    repeat: Infinity, 
-                    ease: "easeInOut",
-                    delay: i * 0.15
-                  }}
-                />
-              );
-            })}
-            
-            {/* Center glow effect */}
+            {/* Secondary rotating arc */}
             <motion.div 
-              className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(234,179,8,0.3)_0%,transparent_60%)]"
+              className="absolute -inset-4 sm:-inset-8"
+              animate={{ rotate: [360, 0] }}
+              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            >
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[40%] h-[30%] bg-gradient-to-t from-amber-400/25 via-amber-400/10 to-transparent rounded-b-full blur-md" />
+            </motion.div>
+            
+            {/* Sparkle particles around the 3D element */}
+            <motion.div
+              className="absolute -top-2 left-1/4 w-1.5 h-1.5 rounded-full bg-yellow-300"
               animate={{ 
-                opacity: isHovering ? [0.5, 0.9, 0.5] : [0.3, 0.5, 0.3],
-                scale: isHovering ? [1, 1.1, 1] : [1, 1.05, 1]
+                opacity: [0, 1, 0],
+                scale: [0.5, 1.2, 0.5],
+                y: [0, -15, 0]
               }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             />
-            
-            {/* Flickering neon effect */}
-            <motion.div 
-              className="absolute -inset-12 sm:-inset-16 rounded-t-full"
-              style={{ 
-                background: "linear-gradient(to top, transparent 40%, rgba(234, 179, 8, 0.1) 100%)",
-                clipPath: "polygon(0% 50%, 100% 50%, 100% 0%, 0% 0%)"
-              }}
+            <motion.div
+              className="absolute top-1/4 -right-2 w-1 h-1 rounded-full bg-yellow-400"
               animate={{ 
-                opacity: [0.3, 0.6, 0.2, 0.5, 0.3]
+                opacity: [0, 1, 0],
+                scale: [0.5, 1.5, 0.5],
+                x: [0, 10, 0]
               }}
-              transition={{ duration: 0.5, repeat: Infinity, ease: "linear" }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}
+            />
+            <motion.div
+              className="absolute bottom-1/4 -left-3 w-1.5 h-1.5 rounded-full bg-amber-300"
+              animate={{ 
+                opacity: [0, 1, 0],
+                scale: [0.5, 1.3, 0.5],
+                x: [0, -12, 0]
+              }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
             />
             
-            {/* Electric spark particles */}
-            {isHovering && (
-              <>
-                {[...Array(5)].map((_, i) => (
-                  <motion.div
-                    key={`spark-${i}`}
-                    className="absolute w-1 h-1 rounded-full bg-yellow-200"
-                    style={{
-                      left: `${30 + i * 10}%`,
-                      top: `${20 + (i % 3) * 15}%`,
-                      boxShadow: "0 0 8px #fef08a, 0 0 15px #fbbf24"
-                    }}
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ 
-                      opacity: [0, 1, 0],
-                      scale: [0.5, 1.5, 0.5],
-                      y: [0, -20, 0],
-                      x: [0, (i % 2 === 0 ? 10 : -10), 0]
-                    }}
-                    transition={{ 
-                      duration: 0.8, 
-                      repeat: Infinity, 
-                      delay: i * 0.2,
-                      ease: "easeOut"
-                    }}
-                  />
-                ))}
-              </>
-            )}
+            {/* Base glow behind container */}
+            <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-transparent rounded-full blur-3xl animate-pulse-slow"></div>
             
-            {/* 3D container */}
-            <motion.div 
+            {/* 3D container with enhanced border glow */}
+            <div 
               ref={containerRef} 
-              className="relative flex justify-center items-center p-4 sm:p-6 rounded-xl h-[150px] sm:h-[200px] md:h-[250px] bg-black/80 backdrop-blur-sm border border-yellow-400/30 shadow-[0_0_30px_rgba(234,179,8,0.2),inset_0_0_30px_rgba(234,179,8,0.1)]"
-              animate={{
-                rotateY: isHovering ? mousePosition.x * 5 : 0,
-                rotateX: isHovering ? -mousePosition.y * 5 : 0
-              }}
-              transition={{ type: "spring", stiffness: 200, damping: 25 }}
-              style={{ transformStyle: "preserve-3d" }}
+              className="relative flex justify-center items-center p-4 sm:p-6 rounded-xl h-[150px] sm:h-[200px] md:h-[250px] bg-black/40 backdrop-blur-md border border-yellow-400/20 shadow-[0_0_40px_rgba(234,179,8,0.15),inset_0_0_20px_rgba(234,179,8,0.05)]" 
             />
           </div>
         </div>
