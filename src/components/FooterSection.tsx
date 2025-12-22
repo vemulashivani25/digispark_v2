@@ -15,17 +15,20 @@
  * @version 1.0.0
  */
 
-import { Facebook, Instagram, Linkedin, Twitter, Mail, Phone, MapPin, ArrowRight, MessageCircle } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Twitter, Mail, Phone, MapPin, ArrowRight, MessageCircle, Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "./ui/use-toast";
 import { mediumTap, successFeedback } from "@/utils/hapticFeedback";
+import { triggerSuccessConfetti } from "@/utils/confetti";
+import { supabase } from "@/integrations/supabase/client";
 
 const FooterSection = () => {
   const [emailValue, setEmailValue] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!emailValue.trim()) {
@@ -38,15 +41,66 @@ const FooterSection = () => {
     }
     
     mediumTap();
+    setIsSubmitting(true);
     
-    // Handle newsletter subscription
-    console.log("Newsletter subscription:", emailValue);
-    toast({
-      title: "Success!",
-      description: "You've successfully subscribed to our newsletter!",
-    });
-    successFeedback();
-    setEmailValue("");
+    try {
+      // Check if email already exists
+      const { data: existingEmail } = await supabase
+        .from('newsletter_subscriptions')
+        .select('id, is_active')
+        .eq('email', emailValue.toLowerCase().trim())
+        .maybeSingle();
+      
+      if (existingEmail) {
+        if (existingEmail.is_active) {
+          toast({
+            title: "Already subscribed",
+            description: "This email is already subscribed to our newsletter!",
+          });
+        } else {
+          // Reactivate subscription
+          await supabase
+            .from('newsletter_subscriptions')
+            .update({ is_active: true })
+            .eq('id', existingEmail.id);
+          
+          toast({
+            title: "Welcome back!",
+            description: "Your subscription has been reactivated!",
+          });
+          triggerSuccessConfetti();
+          successFeedback();
+        }
+      } else {
+        // Insert new subscription
+        const { error } = await supabase
+          .from('newsletter_subscriptions')
+          .insert({ 
+            email: emailValue.toLowerCase().trim(),
+            is_active: true 
+          });
+        
+        if (error) throw error;
+        
+        toast({
+          title: "Success! 🎉",
+          description: "You've successfully subscribed to our newsletter!",
+        });
+        triggerSuccessConfetti();
+        successFeedback();
+      }
+      
+      setEmailValue("");
+    } catch (error: any) {
+      console.error("Newsletter subscription error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to subscribe. Please try again later.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const footerLinks = [
@@ -126,9 +180,17 @@ const FooterSection = () => {
                   />
                   <Button 
                     type="submit" 
-                    className="w-full sm:w-auto bg-yellow-400 hover:bg-yellow-300 text-black font-medium px-6 py-3 rounded-lg transition-colors min-h-[48px]"
+                    disabled={isSubmitting}
+                    className="w-full sm:w-auto bg-yellow-400 hover:bg-yellow-300 text-black font-medium px-6 py-3 rounded-lg transition-colors min-h-[48px] disabled:opacity-70"
                   >
-                    Subscribe
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Subscribing...
+                      </>
+                    ) : (
+                      "Subscribe"
+                    )}
                   </Button>
                 </form>
                 <p className="mt-3 text-gray-400 text-xs sm:text-sm text-center sm:text-left">
