@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createToolFallback } from "@/utils/avatarFallback";
 
 interface Tool {
   name: string;
@@ -39,7 +40,7 @@ const tools: Tool[] = [
   { name: "Adobe Premiere", logo: "https://cdn.worldvectorlogo.com/logos/premiere-cc.svg", category: "video" },
   { name: "After Effects", logo: "https://cdn.worldvectorlogo.com/logos/after-effects-cc.svg", category: "video" },
   { name: "DaVinci Resolve", logo: "https://cdn.worldvectorlogo.com/logos/davinci-resolve.svg", category: "video" },
-  { name: "Final Cut Pro", logo: "https://via.placeholder.com/80?text=FinalCut", category: "video" }
+  { name: "Final Cut Pro", logo: "https://cdn.worldvectorlogo.com/logos/final-cut-pro-x.svg", category: "video" }
 ];
 
 const categoryColors: Record<string, string> = {
@@ -126,7 +127,7 @@ const ToolsCarousel = () => {
                       alt={tool.name} 
                       className="max-h-8 max-w-8 object-contain"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = `https://via.placeholder.com/80?text=${tool.name}`;
+                        (e.target as HTMLImageElement).src = createToolFallback(tool.name);
                       }}
                     />
                   </div>
