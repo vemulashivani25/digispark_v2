@@ -252,12 +252,7 @@ const Auth = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
           >
-            {/* Animated Login Icon */}
-            {!showNewPassword && !showForgotPassword && (
-              <AnimatedAuthIcon isLogin={activeTab === 'login'} />
-            )}
-            
-            {/* Dynamic elegant heading */}
+            {/* Dynamic elegant heading with inline icon */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={showNewPassword ? 'new' : showForgotPassword ? 'forgot' : activeTab}
@@ -265,43 +260,49 @@ const Auth = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4 }}
+                className="flex flex-col items-center"
               >
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-                  {showNewPassword ? (
-                    <>
-                      <span className="bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 bg-clip-text text-transparent">
-                        Secure Your
-                      </span>
-                      <br />
-                      <span className="text-white font-light tracking-tight">Account</span>
-                    </>
-                  ) : showForgotPassword ? (
-                    <>
-                      <span className="bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 bg-clip-text text-transparent">
-                        Reset Your
-                      </span>
-                      <br />
-                      <span className="text-white font-light tracking-tight">Password</span>
-                    </>
-                  ) : activeTab === 'login' ? (
-                    <>
-                      <span className="bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(250,204,21,0.3)]">
-                        Welcome
-                      </span>
-                      <br />
-                      <span className="text-white font-light tracking-tight italic">Back</span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="bg-gradient-to-r from-green-400 via-emerald-300 to-green-500 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(34,197,94,0.3)]">
-                        Welcome to
-                      </span>
-                      <br />
-                      <span className="text-white font-light tracking-tight">
-                        Digi<span className="text-yellow-400">Spark</span>
-                      </span>
-                    </>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 flex items-center justify-center gap-4">
+                  {/* Inline animated icon */}
+                  {!showNewPassword && !showForgotPassword && (
+                    <span className="inline-block">
+                      <AnimatedAuthIcon isLogin={activeTab === 'login'} />
+                    </span>
                   )}
+                  
+                  <span className="flex flex-col md:flex-row md:items-center md:gap-3">
+                    {showNewPassword ? (
+                      <>
+                        <span className="bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 bg-clip-text text-transparent">
+                          Secure Your
+                        </span>
+                        <span className="text-white font-light tracking-tight">Account</span>
+                      </>
+                    ) : showForgotPassword ? (
+                      <>
+                        <span className="bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 bg-clip-text text-transparent">
+                          Reset Your
+                        </span>
+                        <span className="text-white font-light tracking-tight">Password</span>
+                      </>
+                    ) : activeTab === 'login' ? (
+                      <>
+                        <span className="bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(250,204,21,0.3)]">
+                          Welcome
+                        </span>
+                        <span className="text-white font-light tracking-tight italic">Back</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="bg-gradient-to-r from-green-400 via-emerald-300 to-green-500 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(34,197,94,0.3)]">
+                          Welcome to
+                        </span>
+                        <span className="text-white font-light tracking-tight">
+                          Digi<span className="text-yellow-400">Spark</span>
+                        </span>
+                      </>
+                    )}
+                  </span>
                 </h1>
               </motion.div>
             </AnimatePresence>
@@ -489,16 +490,16 @@ const Auth = () => {
               ) : (
                 // Login/Register Tabs
                 <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as 'login' | 'register')}>
-                  <TabsList className="grid w-full grid-cols-2 mb-8 bg-gray-800/70 p-1.5 rounded-xl border border-gray-700/50">
+                  <TabsList className="grid w-full grid-cols-2 mb-8 bg-gray-800/70 p-2 rounded-xl border border-gray-700/50 gap-2">
                     <TabsTrigger 
                       value="login" 
-                      className="data-[state=active]:bg-yellow-400 data-[state=active]:text-black data-[state=active]:shadow-lg data-[state=inactive]:bg-transparent data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 rounded-lg px-6 py-3 font-semibold transition-all duration-300"
+                      className="data-[state=active]:bg-yellow-400 data-[state=active]:text-black data-[state=active]:shadow-lg data-[state=inactive]:bg-transparent data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 rounded-lg px-8 py-4 text-base font-semibold transition-all duration-300 min-w-[140px]"
                     >
                       Sign In
                     </TabsTrigger>
                     <TabsTrigger 
                       value="register"
-                      className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-400 data-[state=active]:to-green-500 data-[state=active]:text-black data-[state=active]:shadow-lg data-[state=inactive]:bg-transparent data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 rounded-lg px-6 py-3 font-semibold transition-all duration-300"
+                      className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-400 data-[state=active]:to-green-500 data-[state=active]:text-black data-[state=active]:shadow-lg data-[state=inactive]:bg-transparent data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 rounded-lg px-8 py-4 text-base font-semibold transition-all duration-300 min-w-[140px]"
                     >
                       Create Account
                     </TabsTrigger>

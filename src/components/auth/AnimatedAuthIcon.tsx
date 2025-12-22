@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 
 const AnimatedAuthIcon: React.FC<{ isLogin: boolean }> = ({ isLogin }) => {
   return (
-    <div className="relative w-20 h-20 mx-auto mb-6">
+    <div className="relative w-14 h-14 md:w-16 md:h-16">
       {/* Outer rotating ring */}
       <motion.div
         className="absolute inset-0 rounded-2xl border-2 border-dashed border-yellow-400/30"
