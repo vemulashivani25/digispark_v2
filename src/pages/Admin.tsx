@@ -10,20 +10,40 @@ import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
-import { UserProfile, ContactSubmission, NewsletterSubscription, BlogPost } from "@/types/supabase";
-import { Plus, Trash, Edit, Eye, RefreshCcw, Check, X, Calendar, ShieldAlert } from "lucide-react";
+import { UserProfile, ContactSubmission, NewsletterSubscription } from "@/types/supabase";
+import { Tables } from "@/integrations/supabase/types";
+import { Plus, Trash, Edit, Eye, RefreshCcw, Check, X, Calendar, ShieldAlert, FileText } from "lucide-react";
+import BlogPostEditor from "@/components/admin/BlogPostEditor";
+import ResourceManager from "@/components/admin/ResourceManager";
+
+interface Resource {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  type: string;
+  file_url: string;
+  thumbnail_url: string | null;
+  download_count: number;
+  is_featured: boolean;
+  is_active: boolean;
+}
 
 const Admin = () => {
   const { user, loading, isAdmin, userRole } = useAuth();
   const [activeTab, setActiveTab] = useState("contacts");
   const [contacts, setContacts] = useState<ContactSubmission[]>([]);
   const [subscribers, setSubscribers] = useState<NewsletterSubscription[]>([]);
-  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [blogPosts, setBlogPosts] = useState<Tables<"blog_posts">[]>([]);
+  const [resources, setResources] = useState<Resource[]>([]);
   const [dataLoading, setDataLoading] = useState(true);
   const [authChecked, setAuthChecked] = useState(false);
+  const [showBlogEditor, setShowBlogEditor] = useState(false);
+  const [editingPost, setEditingPost] = useState<Tables<"blog_posts"> | null>(null);
+  const [showResourceManager, setShowResourceManager] = useState(false);
+  const [editingResource, setEditingResource] = useState<Resource | null>(null);
   const navigate = useNavigate();
 
-  // Check authentication and admin role
   useEffect(() => {
     if (loading) return;
     
@@ -39,9 +59,8 @@ const Admin = () => {
       return;
     }
 
-    // Wait for role to be fetched
     if (userRole === null && user) {
-      return; // Still loading role
+      return;
     }
 
     if (!isAdmin) {
@@ -83,8 +102,23 @@ const Admin = () => {
           break;
           
         case "blog":
-          // Blog posts table doesn't exist yet, skip
-          setBlogPosts([]);
+          const { data: blogData, error: blogError } = await supabase
+            .from('blog_posts')
+            .select('*')
+            .order('created_at', { ascending: false });
+          
+          if (blogError) throw blogError;
+          setBlogPosts((blogData || []) as Tables<"blog_posts">[]);
+          break;
+
+        case "resources":
+          const { data: resourcesData, error: resourcesError } = await supabase
+            .from('resources')
+            .select('*')
+            .order('created_at', { ascending: false });
+          
+          if (resourcesError) throw resourcesError;
+          setResources((resourcesData || []) as Resource[]);
           break;
       }
     } catch (error) {
@@ -167,6 +201,56 @@ const Admin = () => {
     }
   };
 
+  const deleteBlogPost = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('blog_posts')
+        .delete()
+        .eq('id', id);
+      
+      if (error) throw error;
+      
+      setBlogPosts(blogPosts.filter(post => post.id !== id));
+      
+      toast({
+        title: "Post deleted",
+        description: "Blog post has been removed"
+      });
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      toast({
+        title: "Error",
+        description: "Failed to delete blog post",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const deleteResource = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('resources')
+        .delete()
+        .eq('id', id);
+      
+      if (error) throw error;
+      
+      setResources(resources.filter(r => r.id !== id));
+      
+      toast({
+        title: "Resource deleted",
+        description: "Resource has been removed"
+      });
+    } catch (error) {
+      console.error("Error deleting resource:", error);
+      toast({
+        title: "Error",
+        description: "Failed to delete resource",
+        variant: "destructive"
+      });
+    }
+  };
+
   if (loading || !authChecked || (user && userRole === null)) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
@@ -230,12 +314,14 @@ const Admin = () => {
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={activeTab} onValueChange={handleTabChange}>
-                <TabsList className="grid grid-cols-3 mb-6">
-                  <TabsTrigger value="contacts">Contact Submissions</TabsTrigger>
-                  <TabsTrigger value="subscribers">Newsletter Subscribers</TabsTrigger>
+                <TabsList className="grid grid-cols-4 mb-6">
+                  <TabsTrigger value="contacts">Contacts</TabsTrigger>
+                  <TabsTrigger value="subscribers">Subscribers</TabsTrigger>
                   <TabsTrigger value="blog">Blog Posts</TabsTrigger>
+                  <TabsTrigger value="resources">Resources</TabsTrigger>
                 </TabsList>
                 
+                {/* Contacts Tab */}
                 <TabsContent value="contacts">
                   {dataLoading ? (
                     <div className="py-20 text-center">
@@ -283,6 +369,7 @@ const Admin = () => {
                   )}
                 </TabsContent>
                 
+                {/* Subscribers Tab */}
                 <TabsContent value="subscribers">
                   {dataLoading ? (
                     <div className="py-20 text-center">
@@ -340,66 +427,213 @@ const Admin = () => {
                   )}
                 </TabsContent>
                 
+                {/* Blog Posts Tab */}
                 <TabsContent value="blog">
-                  <div className="mb-6">
-                    <Button className="bg-yellow-400 hover:bg-yellow-300 text-black">
-                      <Plus size={16} className="mr-2" /> Create New Post
-                    </Button>
-                  </div>
-                  
-                  {dataLoading ? (
-                    <div className="py-20 text-center">
-                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400 mx-auto mb-4"></div>
-                      <p className="text-gray-400">Loading blog posts...</p>
-                    </div>
-                  ) : blogPosts.length === 0 ? (
-                    <div className="py-20 text-center bg-gray-800/20 rounded-lg border border-dashed border-gray-700">
-                      <Calendar size={48} className="mx-auto mb-4 text-gray-500" />
-                      <h3 className="text-xl font-medium text-white mb-2">No Blog Posts Yet</h3>
-                      <p className="text-gray-400 mb-6">Start creating content for your blog</p>
-                      <Button className="bg-yellow-400 hover:bg-yellow-300 text-black">
-                        <Plus size={16} className="mr-2" /> Create First Post
-                      </Button>
-                    </div>
+                  {showBlogEditor ? (
+                    <BlogPostEditor
+                      post={editingPost as any}
+                      onSave={() => {
+                        setShowBlogEditor(false);
+                        setEditingPost(null);
+                        fetchData("blog");
+                      }}
+                      onCancel={() => {
+                        setShowBlogEditor(false);
+                        setEditingPost(null);
+                      }}
+                    />
                   ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {blogPosts.map(post => (
-                        <Card key={post.id} className="bg-gray-800/30 border-gray-700/50">
-                          <CardHeader>
-                            <CardTitle className="text-white">{post.title}</CardTitle>
-                          </CardHeader>
-                          <CardContent>
-                            <p className="text-gray-300 text-sm mb-4">
-                              {post.excerpt || post.content.substring(0, 100) + "..."}
-                            </p>
-                            <div className="flex items-center justify-between">
-                              <div>
-                                {post.published ? (
-                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                    Published
-                                  </span>
-                                ) : (
-                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                    Draft
-                                  </span>
-                                )}
-                              </div>
-                              <div className="flex space-x-2">
-                                <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300 hover:bg-blue-900/20">
-                                  <Eye size={16} />
-                                </Button>
-                                <Button variant="ghost" size="sm" className="text-yellow-400 hover:text-yellow-300 hover:bg-yellow-900/20">
-                                  <Edit size={16} />
-                                </Button>
-                                <Button variant="ghost" size="sm" className="text-red-400 hover:text-red-300 hover:bg-red-900/20">
-                                  <Trash size={16} />
-                                </Button>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
+                    <>
+                      <div className="mb-6">
+                        <Button 
+                          className="bg-yellow-400 hover:bg-yellow-300 text-black"
+                          onClick={() => setShowBlogEditor(true)}
+                        >
+                          <Plus size={16} className="mr-2" /> Create New Post
+                        </Button>
+                      </div>
+                      
+                      {dataLoading ? (
+                        <div className="py-20 text-center">
+                          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400 mx-auto mb-4"></div>
+                          <p className="text-gray-400">Loading blog posts...</p>
+                        </div>
+                      ) : blogPosts.length === 0 ? (
+                        <div className="py-20 text-center bg-gray-800/20 rounded-lg border border-dashed border-gray-700">
+                          <Calendar size={48} className="mx-auto mb-4 text-gray-500" />
+                          <h3 className="text-xl font-medium text-white mb-2">No Blog Posts Yet</h3>
+                          <p className="text-gray-400 mb-6">Start creating content for your blog</p>
+                          <Button 
+                            className="bg-yellow-400 hover:bg-yellow-300 text-black"
+                            onClick={() => setShowBlogEditor(true)}
+                          >
+                            <Plus size={16} className="mr-2" /> Create First Post
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                          {blogPosts.map(post => (
+                            <Card key={post.id} className="bg-gray-800/30 border-gray-700/50">
+                              <CardHeader>
+                                <CardTitle className="text-white text-lg line-clamp-2">{post.title}</CardTitle>
+                              </CardHeader>
+                              <CardContent>
+                                <p className="text-gray-300 text-sm mb-4 line-clamp-2">
+                                  {post.excerpt}
+                                </p>
+                                <div className="flex items-center justify-between">
+                                  <div>
+                                    {post.is_published ? (
+                                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        Published
+                                      </span>
+                                    ) : (
+                                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                        Draft
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="flex space-x-2">
+                                    <Button 
+                                      variant="ghost" 
+                                      size="sm" 
+                                      className="text-blue-400 hover:text-blue-300 hover:bg-blue-900/20"
+                                      onClick={() => window.open(`/blog/${post.slug}`, '_blank')}
+                                    >
+                                      <Eye size={16} />
+                                    </Button>
+                                    <Button 
+                                      variant="ghost" 
+                                      size="sm" 
+                                      className="text-yellow-400 hover:text-yellow-300 hover:bg-yellow-900/20"
+                                      onClick={() => {
+                                        setEditingPost(post);
+                                        setShowBlogEditor(true);
+                                      }}
+                                    >
+                                      <Edit size={16} />
+                                    </Button>
+                                    <Button 
+                                      variant="ghost" 
+                                      size="sm" 
+                                      className="text-red-400 hover:text-red-300 hover:bg-red-900/20"
+                                      onClick={() => deleteBlogPost(post.id)}
+                                    >
+                                      <Trash size={16} />
+                                    </Button>
+                                  </div>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </TabsContent>
+
+                {/* Resources Tab */}
+                <TabsContent value="resources">
+                  {showResourceManager ? (
+                    <ResourceManager
+                      resource={editingResource}
+                      onSave={() => {
+                        setShowResourceManager(false);
+                        setEditingResource(null);
+                        fetchData("resources");
+                      }}
+                      onClose={() => {
+                        setShowResourceManager(false);
+                        setEditingResource(null);
+                      }}
+                    />
+                  ) : (
+                    <>
+                      <div className="mb-6">
+                        <Button 
+                          className="bg-yellow-400 hover:bg-yellow-300 text-black"
+                          onClick={() => setShowResourceManager(true)}
+                        >
+                          <Plus size={16} className="mr-2" /> Add New Resource
+                        </Button>
+                      </div>
+                      
+                      {dataLoading ? (
+                        <div className="py-20 text-center">
+                          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400 mx-auto mb-4"></div>
+                          <p className="text-gray-400">Loading resources...</p>
+                        </div>
+                      ) : resources.length === 0 ? (
+                        <div className="py-20 text-center bg-gray-800/20 rounded-lg border border-dashed border-gray-700">
+                          <FileText size={48} className="mx-auto mb-4 text-gray-500" />
+                          <h3 className="text-xl font-medium text-white mb-2">No Resources Yet</h3>
+                          <p className="text-gray-400 mb-6">Start adding eBooks, templates, and checklists</p>
+                          <Button 
+                            className="bg-yellow-400 hover:bg-yellow-300 text-black"
+                            onClick={() => setShowResourceManager(true)}
+                          >
+                            <Plus size={16} className="mr-2" /> Add First Resource
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="overflow-x-auto">
+                          <table className="w-full">
+                            <thead>
+                              <tr className="border-b border-gray-800">
+                                <th className="text-left py-3 px-4 text-gray-300">Title</th>
+                                <th className="text-left py-3 px-4 text-gray-300">Category</th>
+                                <th className="text-left py-3 px-4 text-gray-300">Type</th>
+                                <th className="text-left py-3 px-4 text-gray-300">Downloads</th>
+                                <th className="text-left py-3 px-4 text-gray-300">Status</th>
+                                <th className="text-right py-3 px-4 text-gray-300">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {resources.map(resource => (
+                                <tr key={resource.id} className="border-b border-gray-800/50 hover:bg-gray-800/20">
+                                  <td className="py-4 px-4 text-white">{resource.title}</td>
+                                  <td className="py-4 px-4 text-gray-300">{resource.category}</td>
+                                  <td className="py-4 px-4 text-gray-300 capitalize">{resource.type}</td>
+                                  <td className="py-4 px-4 text-gray-300">{resource.download_count}</td>
+                                  <td className="py-4 px-4">
+                                    {resource.is_active ? (
+                                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        Active
+                                      </span>
+                                    ) : (
+                                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                        Inactive
+                                      </span>
+                                    )}
+                                  </td>
+                                  <td className="py-4 px-4 text-right">
+                                    <Button 
+                                      variant="ghost" 
+                                      size="sm"
+                                      className="text-yellow-400 hover:text-yellow-300 hover:bg-yellow-900/20"
+                                      onClick={() => {
+                                        setEditingResource(resource);
+                                        setShowResourceManager(true);
+                                      }}
+                                    >
+                                      <Edit size={16} />
+                                    </Button>
+                                    <Button 
+                                      variant="ghost" 
+                                      size="sm"
+                                      className="text-red-400 hover:text-red-300 hover:bg-red-900/20"
+                                      onClick={() => deleteResource(resource.id)}
+                                    >
+                                      <Trash size={16} />
+                                    </Button>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+                    </>
                   )}
                 </TabsContent>
               </Tabs>

@@ -24,6 +24,36 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { mediumTap, successFeedback } from "@/utils/hapticFeedback";
 
+// Rate limiting
+const RATE_LIMIT_KEY = 'contact_section_submissions';
+const RATE_LIMIT_WINDOW = 60 * 1000;
+const RATE_LIMIT_MAX = 3;
+
+function isClientRateLimited(): boolean {
+  try {
+    const stored = localStorage.getItem(RATE_LIMIT_KEY);
+    if (!stored) return false;
+    const { timestamps } = JSON.parse(stored);
+    const now = Date.now();
+    const recentSubmissions = timestamps.filter((t: number) => now - t < RATE_LIMIT_WINDOW);
+    return recentSubmissions.length >= RATE_LIMIT_MAX;
+  } catch { return false; }
+}
+
+function recordSubmission(): void {
+  try {
+    const stored = localStorage.getItem(RATE_LIMIT_KEY);
+    const now = Date.now();
+    let timestamps: number[] = [];
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      timestamps = parsed.timestamps.filter((t: number) => now - t < RATE_LIMIT_WINDOW);
+    }
+    timestamps.push(now);
+    localStorage.setItem(RATE_LIMIT_KEY, JSON.stringify({ timestamps }));
+  } catch {}
+}
+
 const ContactSection = () => {
   const [formState, setFormState] = useState({
     name: "",
@@ -31,6 +61,8 @@ const ContactSection = () => {
     service: "",
     message: "",
   });
+  const [honeypot, setHoneypot] = useState("");
+  const [formLoadTime] = useState(Date.now());
   const [formProgress, setFormProgress] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -55,52 +87,61 @@ const ContactSection = () => {
       toast.error("Please fill in all fields");
       return;
     }
+
+    // Client-side rate limiting
+    if (isClientRateLimited()) {
+      toast.error("Too many requests. Please wait a moment.");
+      return;
+    }
     
     mediumTap();
     setIsLoading(true);
     
     try {
-      // Insert data into Supabase
-      const { error } = await supabase
-        .from('contact_submissions')
-        .insert([
-          { 
-            name: formState.name,
-            email: formState.email,
-            service: formState.service,
-            message: formState.message
-          }
-        ]);
-      
-      if (error) throw error;
-      
+      // Use edge function for secure submission
+      const response = await supabase.functions.invoke('submit-contact', {
+        body: {
+          name: formState.name.trim(),
+          email: formState.email.trim().toLowerCase(),
+          service: formState.service.trim(),
+          message: formState.message.trim(),
+          honeypot: honeypot,
+          timestamp: formLoadTime,
+        },
+      });
+
+      if (response.error) {
+        throw new Error(response.error.message || 'Submission failed');
+      }
+
+      if (response.data?.error) {
+        throw new Error(response.data.error);
+      }
+
+      recordSubmission();
       setIsLoading(false);
       setIsSubmitted(true);
       triggerSuccessConfetti();
       successFeedback();
 
-      // Show success toast
       toast.success("Message sent successfully!", {
         description: "Thanks for filling the form. We will reach out to you soon!!",
         duration: 5000
       });
       
-      // Reset the form after 5 seconds
       setTimeout(() => {
         setIsSubmitted(false);
-        setFormState({
-          name: "",
-          email: "",
-          service: "",
-          message: "",
-        });
+        setFormState({ name: "", email: "", service: "", message: "" });
         setFormProgress(0);
       }, 5000);
       
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error submitting form:", error);
       setIsLoading(false);
-      toast.error("Failed to send message. Please try again later.");
+      const errorMessage = error.message?.includes("Too many") 
+        ? "Too many requests. Please wait a moment."
+        : "Failed to send message. Please try again later.";
+      toast.error(errorMessage);
     }
   };
   
@@ -244,6 +285,20 @@ const ContactSection = () => {
                       className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg focus:ring focus:ring-yellow-500/20 focus:border-yellow-500 transition duration-200 text-white"
                       placeholder="Tell us about your project or inquiry..."
                     ></textarea>
+                  </div>
+
+                  {/* Honeypot - hidden from users */}
+                  <div className="absolute opacity-0 pointer-events-none" aria-hidden="true" tabIndex={-1}>
+                    <label htmlFor="contact_website">Website</label>
+                    <input
+                      type="text"
+                      id="contact_website"
+                      name="contact_website"
+                      value={honeypot}
+                      onChange={(e) => setHoneypot(e.target.value)}
+                      autoComplete="off"
+                      tabIndex={-1}
+                    />
                   </div>
                   
                   <div>

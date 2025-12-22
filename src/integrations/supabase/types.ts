@@ -14,6 +14,66 @@ export type Database = {
   }
   public: {
     Tables: {
+      blog_posts: {
+        Row: {
+          author: string
+          author_avatar: string | null
+          category: string
+          content: string
+          created_at: string
+          excerpt: string
+          featured: boolean | null
+          id: string
+          image: string
+          is_published: boolean | null
+          published_at: string | null
+          read_time: string | null
+          slug: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+          word_count: number | null
+        }
+        Insert: {
+          author: string
+          author_avatar?: string | null
+          category: string
+          content: string
+          created_at?: string
+          excerpt: string
+          featured?: boolean | null
+          id?: string
+          image: string
+          is_published?: boolean | null
+          published_at?: string | null
+          read_time?: string | null
+          slug: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          word_count?: number | null
+        }
+        Update: {
+          author?: string
+          author_avatar?: string | null
+          category?: string
+          content?: string
+          created_at?: string
+          excerpt?: string
+          featured?: boolean | null
+          id?: string
+          image?: string
+          is_published?: boolean | null
+          published_at?: string | null
+          read_time?: string | null
+          slug?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          word_count?: number | null
+        }
+        Relationships: []
+      }
       blog_suggestions: {
         Row: {
           created_at: string
@@ -200,6 +260,51 @@ export type Database = {
           selected_features?: string[] | null
           status?: string | null
           timeline?: string | null
+        }
+        Relationships: []
+      }
+      resources: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          download_count: number | null
+          file_url: string
+          id: string
+          is_active: boolean | null
+          is_featured: boolean | null
+          thumbnail_url: string | null
+          title: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description: string
+          download_count?: number | null
+          file_url: string
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          thumbnail_url?: string | null
+          title: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          download_count?: number | null
+          file_url?: string
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          thumbnail_url?: string | null
+          title?: string
+          type?: string
+          updated_at?: string
         }
         Relationships: []
       }

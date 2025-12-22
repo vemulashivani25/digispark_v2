@@ -74,6 +74,7 @@ import Navbar from "@/components/Navbar";
 import FooterSection from "@/components/FooterSection";
 import ScrollToTop from "@/components/ScrollToTop";
 import NewsletterSection from "@/components/newsletter/NewsletterSection";
+import ResourceLibrary from "@/components/resources/ResourceLibrary";
 import { toast } from "@/hooks/use-toast";
 
 interface Resource {
@@ -690,6 +691,11 @@ const Resources = () => {
           )}
         </AnimatePresence>
       </main>
+
+      {/* Resource Library - Downloadable Content */}
+      <div className="bg-white">
+        <ResourceLibrary />
+      </div>
 
       {/* Newsletter Section */}
       <NewsletterSection />

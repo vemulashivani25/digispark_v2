@@ -4,45 +4,59 @@
  * =========================================================
  * 
  * Individual blog post page with full article content,
- * author information, related posts, and social sharing.
+ * breadcrumbs, reading info, TOC, related posts, and social sharing.
  * 
  * Features:
  * - Dynamic routing based on blog slug
  * - SEO optimization with dynamic meta tags
- * - Sanitized HTML content rendering
- * - Related posts suggestions
- * - Newsletter subscription CTA
+ * - Breadcrumb navigation
+ * - Reading time & word count
+ * - Table of contents for long posts
  * - Social sharing functionality
+ * - Related posts section
  * 
  * Route: /blog/:slug
  * 
  * =========================================================
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet";
 import { 
   ArrowLeft, 
   Calendar, 
-  Clock, 
-  Tag, 
   User, 
-  Share2, 
-  Facebook, 
-  Twitter, 
-  Linkedin,
-  Copy,
-  CheckCircle
+  Tag
 } from "lucide-react";
 import { blogPosts, BlogPost as BlogPostType } from "@/components/blog/BlogData";
 import Navbar from "@/components/Navbar";
 import FooterSection from "@/components/FooterSection";
-import { Button } from "@/components/ui/button";
 import PageTransition from "@/components/PageTransition";
 import ScrollToTop from "@/components/ScrollToTop";
 import DOMPurify from "dompurify";
-import { toast } from "@/hooks/use-toast";
+
+// Blog components
+import BlogBreadcrumb from "@/components/blog/BlogBreadcrumb";
+import BlogReadingInfo from "@/components/blog/BlogReadingInfo";
+import BlogTableOfContents from "@/components/blog/BlogTableOfContents";
+import SocialShareButtons from "@/components/blog/SocialShareButtons";
+import RelatedPosts from "@/components/blog/RelatedPosts";
+
+// =========================================================
+// HELPER FUNCTIONS
+// =========================================================
+
+// Add IDs to headings for TOC navigation
+const addHeadingIds = (content: string): string => {
+  let counter = 0;
+  return content.replace(/<h([23])>(.*?)<\/h[23]>/gi, (match, level, text) => {
+    const id = `heading-${counter}-${text.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`;
+    counter++;
+    return `<h${level} id="${id}">${text}</h${level}>`;
+  });
+};
 
 // =========================================================
 // MAIN COMPONENT
@@ -51,8 +65,6 @@ const BlogPost = () => {
   // ----- Routing and State -----
   const { slug } = useParams<{ slug: string }>();
   const [post, setPost] = useState<BlogPostType | null>(null);
-  const [relatedPosts, setRelatedPosts] = useState<BlogPostType[]>([]);
-  const [linkCopied, setLinkCopied] = useState(false);
   const navigate = useNavigate();
 
   // ----- Fetch Post Data Effect -----
@@ -62,15 +74,6 @@ const BlogPost = () => {
     
     if (foundPost) {
       setPost(foundPost);
-      
-      // Update page title for SEO
-      document.title = `${foundPost.title} | DigiSpark Blog`;
-      
-      // Find related posts from the same category
-      const related = blogPosts
-        .filter(p => p.category === foundPost.category && p.id !== foundPost.id)
-        .slice(0, 3);
-      setRelatedPosts(related);
     } else {
       // Redirect to blog listing if post not found
       navigate("/blog", { replace: true });
@@ -80,43 +83,26 @@ const BlogPost = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [slug, navigate]);
 
-  // ----- Copy Link Handler -----
-  const handleCopyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      setLinkCopied(true);
-      toast({
-        title: "Link Copied!",
-        description: "Article link copied to clipboard",
-      });
-      setTimeout(() => setLinkCopied(false), 2000);
-    } catch {
-      toast({
-        title: "Copy Failed",
-        description: "Could not copy link to clipboard",
-        variant: "destructive",
-      });
-    }
-  };
+  // ----- Related Posts -----
+  const relatedPosts = useMemo(() => {
+    if (!post) return [];
+    return blogPosts
+      .filter(p => p.category === post.category && p.id !== post.id)
+      .slice(0, 3);
+  }, [post]);
 
-  // ----- Social Share Handlers -----
-  const handleFacebookShare = () => {
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank');
-  };
-
-  const handleTwitterShare = () => {
-    const text = post ? `Check out: ${post.title}` : '';
-    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`, '_blank');
-  };
-
-  const handleLinkedInShare = () => {
-    window.open(`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(window.location.href)}`, '_blank');
-  };
+  // ----- Processed Content with Heading IDs -----
+  const processedContent = useMemo(() => {
+    if (!post) return "";
+    return addHeadingIds(post.content);
+  }, [post]);
 
   // Return null while redirecting
   if (!post) {
     return null;
   }
+
+  const pageUrl = `${window.location.origin}/blog/${post.slug}`;
 
   // =========================================================
   // RENDER
@@ -124,11 +110,63 @@ const BlogPost = () => {
   return (
     <PageTransition>
       <div className="min-h-screen bg-white">
+        {/* SEO Meta Tags */}
+        <Helmet>
+          <title>{post.title} | DigiSpark Blog</title>
+          <meta name="description" content={post.excerpt} />
+          <meta name="keywords" content={post.tags?.join(", ")} />
+          <link rel="canonical" href={pageUrl} />
+          
+          {/* Open Graph */}
+          <meta property="og:title" content={post.title} />
+          <meta property="og:description" content={post.excerpt} />
+          <meta property="og:image" content={post.image} />
+          <meta property="og:url" content={pageUrl} />
+          <meta property="og:type" content="article" />
+          
+          {/* Twitter Card */}
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content={post.title} />
+          <meta name="twitter:description" content={post.excerpt} />
+          <meta name="twitter:image" content={post.image} />
+          
+          {/* Article Schema */}
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BlogPosting",
+              "headline": post.title,
+              "description": post.excerpt,
+              "image": post.image,
+              "author": {
+                "@type": "Person",
+                "name": post.author
+              },
+              "datePublished": post.date,
+              "publisher": {
+                "@type": "Organization",
+                "name": "DigiSpark",
+                "logo": {
+                  "@type": "ImageObject",
+                  "url": `${window.location.origin}/logo.png`
+                }
+              },
+              "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": pageUrl
+              }
+            })}
+          </script>
+        </Helmet>
+
         {/* Navigation */}
         <Navbar />
         
         <div className="pt-32 pb-20">
           <div className="container mx-auto px-4">
+            {/* Breadcrumb Navigation */}
+            <BlogBreadcrumb category={post.category} postTitle={post.title} />
+            
             {/* Back Navigation Link */}
             <Link 
               to="/blog" 
@@ -141,7 +179,7 @@ const BlogPost = () => {
             {/* Article Content Container */}
             <div className="max-w-4xl mx-auto">
               {/* Hero Section */}
-              <motion.div
+              <motion.header
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
@@ -159,7 +197,7 @@ const BlogPost = () => {
                 </h1>
                 
                 {/* Article Meta Information */}
-                <div className="flex flex-wrap items-center gap-4 text-gray-600 mb-6">
+                <div className="flex flex-wrap items-center gap-4 text-gray-600 mb-4">
                   <div className="flex items-center">
                     <User className="h-4 w-4 mr-2" />
                     {post.author}
@@ -168,58 +206,16 @@ const BlogPost = () => {
                     <Calendar className="h-4 w-4 mr-2" />
                     {post.date}
                   </div>
-                  <div className="flex items-center">
-                    <Clock className="h-4 w-4 mr-2" />
-                    {post.readTime}
-                  </div>
+                </div>
+
+                {/* Reading Time & Word Count */}
+                <div className="mb-6">
+                  <BlogReadingInfo content={post.content} readTime={post.readTime} />
                 </div>
 
                 {/* Social Share Buttons */}
-                <div className="flex items-center gap-3 mb-8">
-                  <span className="text-sm text-gray-500 flex items-center gap-1">
-                    <Share2 className="w-4 h-4" />
-                    Share:
-                  </span>
-                  <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={handleFacebookShare}
-                    className="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
-                    aria-label="Share on Facebook"
-                  >
-                    <Facebook className="w-4 h-4" />
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={handleTwitterShare}
-                    className="p-2 bg-sky-500 text-white rounded-full hover:bg-sky-600 transition-colors"
-                    aria-label="Share on Twitter"
-                  >
-                    <Twitter className="w-4 h-4" />
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={handleLinkedInShare}
-                    className="p-2 bg-blue-700 text-white rounded-full hover:bg-blue-800 transition-colors"
-                    aria-label="Share on LinkedIn"
-                  >
-                    <Linkedin className="w-4 h-4" />
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={handleCopyLink}
-                    className="p-2 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 transition-colors"
-                    aria-label="Copy link"
-                  >
-                    {linkCopied ? (
-                      <CheckCircle className="w-4 h-4 text-green-600" />
-                    ) : (
-                      <Copy className="w-4 h-4" />
-                    )}
-                  </motion.button>
+                <div className="mb-8">
+                  <SocialShareButtons title={post.title} url={pageUrl} />
                 </div>
                 
                 {/* Featured Image */}
@@ -230,18 +226,21 @@ const BlogPost = () => {
                     className="w-full h-full object-cover"
                   />
                 </div>
-              </motion.div>
+              </motion.header>
+
+              {/* Table of Contents */}
+              <BlogTableOfContents content={post.content} />
               
               {/* Article Content - Sanitized HTML */}
-              <motion.div
+              <motion.article
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="prose prose-lg max-w-none prose-headings:font-bold prose-h2:text-2xl prose-h3:text-xl prose-a:text-yellow-600 prose-a:no-underline hover:prose-a:underline"
+                className="prose prose-lg max-w-none prose-headings:font-bold prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-a:text-yellow-600 prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg"
                 dangerouslySetInnerHTML={{ 
-                  __html: DOMPurify.sanitize(post.content, {
+                  __html: DOMPurify.sanitize(processedContent, {
                     ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'blockquote', 'code', 'pre', 'img', 'span', 'div'],
-                    ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'target', 'rel'],
+                    ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'target', 'rel', 'id'],
                     ALLOW_DATA_ATTR: false,
                   })
                 }}
@@ -258,16 +257,28 @@ const BlogPost = () => {
                   <div className="flex flex-wrap gap-2 items-center">
                     <Tag className="h-4 w-4 text-gray-600" />
                     {post.tags.map(tag => (
-                      <span
+                      <Link
                         key={tag}
-                        className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm hover:bg-yellow-100 hover:text-yellow-800 transition-colors cursor-pointer"
+                        to={`/blog?tag=${encodeURIComponent(tag)}`}
+                        className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm hover:bg-yellow-100 hover:text-yellow-800 transition-colors"
                       >
                         {tag}
-                      </span>
+                      </Link>
                     ))}
                   </div>
                 </motion.div>
               )}
+
+              {/* Share Section */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="mt-10 p-6 bg-gray-50 rounded-xl"
+              >
+                <h3 className="font-semibold text-gray-900 mb-4">Share this article</h3>
+                <SocialShareButtons title={post.title} url={pageUrl} />
+              </motion.div>
               
               {/* Author Bio Section */}
               {post.authorAvatar && (
@@ -295,43 +306,7 @@ const BlogPost = () => {
               )}
               
               {/* Related Posts Section */}
-              {relatedPosts.length > 0 && (
-                <motion.div 
-                  className="mt-16"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5 }}
-                >
-                  <h2 className="text-2xl font-bold mb-6">Related Articles</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {relatedPosts.map((relatedPost, index) => (
-                      <motion.div
-                        key={relatedPost.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.5 + index * 0.1 }}
-                      >
-                        <Link
-                          to={`/blog/${relatedPost.slug}`}
-                          className="group block"
-                        >
-                          <div className="h-48 rounded-lg overflow-hidden mb-3 shadow-md">
-                            <img
-                              src={relatedPost.image}
-                              alt={relatedPost.title}
-                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            />
-                          </div>
-                          <span className="text-xs text-yellow-600 font-medium">{relatedPost.category}</span>
-                          <h3 className="font-semibold group-hover:text-yellow-600 transition-colors line-clamp-2 mt-1">
-                            {relatedPost.title}
-                          </h3>
-                        </Link>
-                      </motion.div>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
+              <RelatedPosts posts={blogPosts} currentPostId={post.id} />
               
               {/* Newsletter CTA Section */}
               <motion.div 
@@ -349,17 +324,12 @@ const BlogPost = () => {
                   <p className="text-gray-300 mb-6">
                     Subscribe to our newsletter for the latest insights and articles delivered to your inbox.
                   </p>
-                  <Button 
-                    className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium"
-                    onClick={() => {
-                      toast({
-                        title: "Thank you!",
-                        description: "You have been subscribed to our newsletter.",
-                      });
-                    }}
+                  <Link 
+                    to="/resources"
+                    className="inline-flex items-center bg-yellow-500 hover:bg-yellow-600 text-black font-medium px-6 py-3 rounded-lg transition-colors"
                   >
                     Subscribe Now
-                  </Button>
+                  </Link>
                 </div>
               </motion.div>
             </div>

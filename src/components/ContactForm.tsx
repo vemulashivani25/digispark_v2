@@ -27,9 +27,49 @@ import { supabase } from "@/integrations/supabase/client";
 import { mediumTap, successFeedback } from "@/utils/hapticFeedback";
 import { contactFormSchema, ContactFormData, containsXss } from "@/lib/validation";
 
+// Rate limiting: max 3 submissions per minute
+const RATE_LIMIT_KEY = 'contact_form_submissions';
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+const RATE_LIMIT_MAX = 3;
+
+function isClientRateLimited(): boolean {
+  try {
+    const stored = localStorage.getItem(RATE_LIMIT_KEY);
+    if (!stored) return false;
+    
+    const { timestamps } = JSON.parse(stored);
+    const now = Date.now();
+    const recentSubmissions = timestamps.filter((t: number) => now - t < RATE_LIMIT_WINDOW);
+    
+    return recentSubmissions.length >= RATE_LIMIT_MAX;
+  } catch {
+    return false;
+  }
+}
+
+function recordSubmission(): void {
+  try {
+    const stored = localStorage.getItem(RATE_LIMIT_KEY);
+    const now = Date.now();
+    let timestamps: number[] = [];
+    
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      timestamps = parsed.timestamps.filter((t: number) => now - t < RATE_LIMIT_WINDOW);
+    }
+    
+    timestamps.push(now);
+    localStorage.setItem(RATE_LIMIT_KEY, JSON.stringify({ timestamps }));
+  } catch {
+    // Ignore storage errors
+  }
+}
+
 const ContactForm: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [formLoadTime] = useState(Date.now()); // Track when form loaded
+  const [honeypot, setHoneypot] = useState(""); // Honeypot field
   const { toast } = useToast();
   const [progress, setProgress] = useState(0);
   const progressRef = useRef<HTMLDivElement>(null);
@@ -81,6 +121,16 @@ const ContactForm: React.FC = () => {
       return;
     }
 
+    // Client-side rate limiting
+    if (isClientRateLimited()) {
+      toast({
+        title: "Too many requests",
+        description: "Please wait a moment before submitting again.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     mediumTap();
     setIsSubmitting(true);
     
@@ -90,18 +140,30 @@ const ContactForm: React.FC = () => {
         envelopeRef.current.style.opacity = '0';
       }
       
-      const { error } = await supabase
-        .from('contact_submissions' as any)
-        .insert({
+      // Use edge function for secure submission with server-side rate limiting
+      const response = await supabase.functions.invoke('submit-contact', {
+        body: {
           name: data.name.trim(),
           email: data.email.trim().toLowerCase(),
           phone: data.phone?.trim() || null,
           company: data.company?.trim() || null,
           service: data.service,
           message: data.message.trim(),
-        });
+          honeypot: honeypot, // Bot trap
+          timestamp: formLoadTime, // For timing check
+        },
+      });
 
-      if (error) throw error;
+      if (response.error) {
+        throw new Error(response.error.message || 'Submission failed');
+      }
+
+      if (response.data?.error) {
+        throw new Error(response.data.error);
+      }
+
+      // Record successful submission for client-side rate limiting
+      recordSubmission();
       
       setIsSuccess(true);
       
@@ -121,11 +183,16 @@ const ContactForm: React.FC = () => {
       setTimeout(() => {
         setIsSuccess(false);
       }, 8000);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error submitting form:", error);
+      
+      const errorMessage = error.message?.includes("Too many") 
+        ? "Too many requests. Please wait a moment."
+        : "Please try again later or contact us directly.";
+      
       toast({
         title: "Something went wrong",
-        description: "Please try again later or contact us directly.",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -348,6 +415,20 @@ const ContactForm: React.FC = () => {
                         </FormItem>
                       )}
                     />
+
+                    {/* Honeypot field - hidden from users, catches bots */}
+                    <div className="absolute opacity-0 pointer-events-none" aria-hidden="true" tabIndex={-1}>
+                      <label htmlFor="website_url">Website</label>
+                      <input
+                        type="text"
+                        id="website_url"
+                        name="website_url"
+                        value={honeypot}
+                        onChange={(e) => setHoneypot(e.target.value)}
+                        autoComplete="off"
+                        tabIndex={-1}
+                      />
+                    </div>
 
                     <div className="relative">
                       <div 
