@@ -106,18 +106,18 @@ const Navbar = () => {
             </span>
           </Link>
 
-          <nav className="hidden md:flex items-center space-x-4">
+          <nav className="hidden md:flex items-center space-x-6">
             <Link
               to="/"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className={`nav-link text-sm font-medium ${pathname === "/" ? "text-yellow-400" : "text-white hover:text-yellow-400"}`}
+              className={`nav-link text-base font-semibold tracking-wide ${pathname === "/" ? "text-yellow-400" : "text-white hover:text-yellow-400"}`}
             >
               Home
             </Link>
             <Link
               to="/services"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className={`nav-link text-sm font-medium ${pathname === "/services" ? "text-yellow-400" : "text-white hover:text-yellow-400"}`}
+              className={`nav-link text-base font-semibold tracking-wide ${pathname === "/services" ? "text-yellow-400" : "text-white hover:text-yellow-400"}`}
             >
               Services
             </Link>
@@ -134,7 +134,7 @@ const Navbar = () => {
             <Link
               to="/blog"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className={`nav-link text-sm font-medium ${pathname === "/blog" || pathname.startsWith("/blog/") ? "text-yellow-400" : "text-white hover:text-yellow-400"}`}
+              className={`nav-link text-base font-semibold tracking-wide ${pathname === "/blog" || pathname.startsWith("/blog/") ? "text-yellow-400" : "text-white hover:text-yellow-400"}`}
             >
               Blog
             </Link>
