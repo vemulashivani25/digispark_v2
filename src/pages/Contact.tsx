@@ -73,11 +73,12 @@ const Contact = () => {
   return (
     <div className="min-h-screen bg-black">
       <Helmet>
-        <title>Contact Us | DigiSpark</title>
-        <meta name="description" content="Get in touch with DigiSpark for expert web development, marketing, and creative solutions. Contact us today to discuss your next project." />
-        <meta name="keywords" content="contact digital agency, agency contact, digital marketing contact, web development contact, SEO services contact" />
-        <meta property="og:title" content="Contact Us | DigiSpark" />
-        <meta property="og:description" content="Reach out to our team of digital experts to transform your online presence." />
+        <title>Contact DigiSpark | HubSpot CRM & Digital Agency Experts</title>
+        <meta name="description" content="Contact DigiSpark for HubSpot CRM implementation, cold email marketing, Zoom support, video editing, and web development services. Get a free consultation and quote for your project." />
+        <meta name="keywords" content="contact DigiSpark, HubSpot CRM consultation, cold email marketing agency, digital agency contact, web development quote, video editing services contact, marketing automation help" />
+        
+        <meta property="og:title" content="Contact DigiSpark | Get Your Free Consultation" />
+        <meta property="og:description" content="Reach out to discuss HubSpot CRM, cold email campaigns, video editing, or web development for your business." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://yourdomain.com/contact" />
         <meta property="og:image" content="https://yourdomain.com/images/contact-og.jpg" />

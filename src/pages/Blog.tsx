@@ -77,7 +77,7 @@ const Blog = () => {
   // ----- SEO Meta Tags Effect -----
   // Sets up page title, meta descriptions, and structured data
   useEffect(() => {
-    document.title = "Tech & Digital Marketing Blog | DigiSpark";
+    document.title = "HubSpot CRM, Cold Email Marketing & Web Development Blog | DigiSpark";
     
     // Set meta description
     let metaDescription = document.querySelector('meta[name="description"]');
@@ -86,7 +86,7 @@ const Blog = () => {
       metaDescription.setAttribute('name', 'description');
       document.head.appendChild(metaDescription);
     }
-    metaDescription.setAttribute('content', 'Explore our blog for the latest insights on digital marketing, web development, AI, and technology trends. Expert advice to help your business grow online.');
+    metaDescription.setAttribute('content', 'Read expert insights on HubSpot CRM best practices, cold email marketing strategies, marketing automation tips, video editing tutorials, Zoom meeting optimization, and web development trends.');
     
     // Set meta keywords
     let metaKeywords = document.querySelector('meta[name="keywords"]');
@@ -95,7 +95,7 @@ const Blog = () => {
       metaKeywords.setAttribute('name', 'keywords');
       document.head.appendChild(metaKeywords);
     }
-    metaKeywords.setAttribute('content', 'digital marketing, web development, SEO, AI technology, business growth, content strategy, UX design, e-commerce, mobile apps, social media marketing');
+    metaKeywords.setAttribute('content', 'HubSpot CRM tips, cold email marketing guide, marketing automation best practices, video editing tutorials, audio editing tips, Zoom meeting management, web development trends, digital marketing strategies, lead generation, B2B marketing');
     
     // Add structured data for SEO
     let scriptTag = document.querySelector('#blog-schema');

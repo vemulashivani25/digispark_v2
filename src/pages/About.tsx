@@ -22,26 +22,26 @@ const About = () => {
     <div className="bg-black min-h-screen">
       {/* SEO Meta Tags */}
       <Helmet>
-        <title>About Us | DigiSpark - Digital Agency Story & Team</title>
+        <title>About DigiSpark | HubSpot CRM & Digital Marketing Experts</title>
         <meta 
           name="description" 
-          content="Learn about DigiSpark's journey, our passionate team of digital experts, and our commitment to transforming businesses through innovative digital solutions since 2015." 
+          content="Learn about DigiSpark's expert team specializing in HubSpot CRM implementation, marketing automation, cold email campaigns, Zoom support, video editing, and custom web development." 
         />
         <meta 
           name="keywords" 
-          content="about DigiSpark, digital agency team, web development company, digital marketing experts, creative agency story, our values, meet the team" 
+          content="about DigiSpark, HubSpot CRM experts, digital agency team, marketing automation specialists, cold email marketing experts, video editing team, web development company" 
         />
-        <meta property="og:title" content="About Us | DigiSpark - Digital Agency Story & Team" />
-        <meta property="og:description" content="Discover our story, values, and the talented team behind DigiSpark's success in digital transformation." />
+        <meta property="og:title" content="About DigiSpark | HubSpot CRM & Digital Agency Experts" />
+        <meta property="og:description" content="Meet our expert team specializing in HubSpot CRM, cold email marketing, Zoom support, video editing, and web development." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://yourdomain.com/about" />
-        <meta property="og:image" content="https://yourdomain.com/images/about-og.jpg" />
+        <meta property="og:url" content="https://digispark.agency/about" />
+        <meta property="og:image" content="https://digispark.agency/og-about.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="About Us | DigiSpark" />
-        <meta name="twitter:description" content="Meet the team behind DigiSpark's innovative digital solutions." />
+        <meta name="twitter:title" content="About DigiSpark | Digital Agency Experts" />
+        <meta name="twitter:description" content="Meet the team behind DigiSpark's HubSpot CRM and digital marketing solutions." />
         <meta name="robots" content="index, follow" />
-        <meta name="author" content="DigiSpark Team" />
-        <link rel="canonical" href="https://yourdomain.com/about" />
+        <meta name="author" content="DigiSpark Agency" />
+        <link rel="canonical" href="https://digispark.agency/about" />
       </Helmet>
       
       <Navbar />

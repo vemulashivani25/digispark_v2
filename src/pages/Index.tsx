@@ -167,33 +167,58 @@ const Index = () => {
     });
   }, []);
 
+  // JSON-LD structured data for homepage
+  const homeSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "DigiSpark - HubSpot CRM, Email Marketing & Web Development Agency",
+    "description": "Expert digital agency specializing in HubSpot CRM implementation, marketing automation, cold email campaigns, Zoom support, video/audio editing, and custom website development.",
+    "url": "https://digispark.agency/",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "DigiSpark",
+      "url": "https://digispark.agency"
+    }
+  };
+
   return (
     <div className="bg-black">
       {/* ========== SEO META TAGS ========== */}
       <Helmet>
-        <title>DigiSpark | Creative Solutions for Modern Businesses</title>
+        <title>DigiSpark | HubSpot CRM, Marketing Automation & Web Development Agency</title>
         <meta
           name="description"
-          content="DigiSpark - We're a full-service digital agency specializing in web development, digital marketing, SEO, and creative solutions for businesses of all sizes."
+          content="DigiSpark is a premier digital agency offering HubSpot CRM implementation, marketing automation, cold email marketing, Zoom virtual support, professional video/audio editing, and custom website development. Transform your business with our expert solutions."
         />
         <meta
           name="keywords"
-          content="digital agency, web development, digital marketing, SEO, creative agency, HubSpot CRM, user experience, UI/UX design"
+          content="HubSpot CRM, HubSpot implementation, HubSpot partner, marketing automation, sales automation, cold email marketing, cold outreach, email campaigns, Zoom support, virtual assistance, video editing services, audio editing, podcast editing, website development, web design, responsive websites, digital marketing agency, CRM integration, lead generation, B2B marketing"
         />
+        
         {/* Open Graph tags for social sharing */}
-        <meta property="og:title" content="DigiSpark | Creative Solutions for Modern Businesses" />
-        <meta property="og:description" content="Transform your brand with our innovative digital solutions." />
+        <meta property="og:title" content="DigiSpark | HubSpot CRM, Marketing Automation & Web Development" />
+        <meta property="og:description" content="Expert HubSpot CRM implementation, cold email marketing, Zoom support, video editing, and custom website development. Get started today." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://yourdomain.com/" />
-        <meta property="og:image" content="https://yourdomain.com/images/home-og.jpg" />
+        <meta property="og:url" content="https://digispark.agency/" />
+        <meta property="og:image" content="https://digispark.agency/og-home.jpg" />
+        <meta property="og:site_name" content="DigiSpark Agency" />
+        
         {/* Twitter Card tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="DigiSpark | Creative Solutions for Modern Businesses" />
-        <meta name="twitter:description" content="Transform your brand with our innovative digital solutions." />
+        <meta name="twitter:title" content="DigiSpark | HubSpot CRM & Digital Marketing Agency" />
+        <meta name="twitter:description" content="Expert HubSpot CRM, cold email marketing, Zoom support, video editing & web development." />
+        <meta name="twitter:image" content="https://digispark.agency/og-home.jpg" />
+        
         {/* SEO directives */}
-        <meta name="robots" content="index, follow" />
-        <meta name="author" content="DigiSpark Team" />
-        <link rel="canonical" href="https://yourdomain.com/" />
+        <meta name="robots" content="index, follow, max-image-preview:large" />
+        <meta name="author" content="DigiSpark Agency" />
+        <meta name="publisher" content="DigiSpark" />
+        <link rel="canonical" href="https://digispark.agency/" />
+        
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(homeSchema)}
+        </script>
       </Helmet>
 
       {/* ========== NAVIGATION ========== */}
