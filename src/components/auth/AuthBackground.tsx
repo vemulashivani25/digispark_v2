@@ -122,24 +122,24 @@ const AuthBackground: React.FC = () => {
         />
       </svg>
 
-      {/* Particle dots */}
-      {[...Array(20)].map((_, i) => (
+      {/* Particle dots - reduced and slower */}
+      {[...Array(8)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-1 h-1 rounded-full"
+          className="absolute w-0.5 h-0.5 rounded-full"
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
             backgroundColor: i % 2 === 0 ? '#facc15' : '#22c55e',
           }}
           animate={{
-            opacity: [0, 0.8, 0],
-            scale: [0, 1.5, 0],
+            opacity: [0, 0.4, 0],
+            scale: [0, 1, 0],
           }}
           transition={{
-            duration: 3 + Math.random() * 2,
+            duration: 6 + Math.random() * 4,
             repeat: Infinity,
-            delay: Math.random() * 3,
+            delay: Math.random() * 5,
             ease: 'easeInOut',
           }}
         />
