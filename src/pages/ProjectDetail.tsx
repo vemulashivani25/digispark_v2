@@ -889,411 +889,301 @@ const FunFactCard = ({ fact, index, color }: { fact: { icon: string; value: stri
   );
 };
 
-// Project card component with enhanced micro-animations
-const ProjectCard = ({ project, index, isExpanded, onToggle }: { 
+// Project card component with bento grid layout
+const ProjectCard = ({ project, index }: { 
   project: typeof projectsData[0]; 
   index: number;
-  isExpanded: boolean;
-  onToggle: () => void;
 }) => {
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 50 }}
+      initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="relative group"
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5, delay: index * 0.05 }}
+      className="relative"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Animated gradient border */}
-      <motion.div 
-        className={`absolute -inset-0.5 bg-gradient-to-r ${project.color} rounded-2xl blur-sm`}
-        animate={{ 
-          opacity: isHovered ? 0.6 : 0.3,
-          scale: isHovered ? 1.02 : 1
-        }}
-        transition={{ duration: 0.3 }}
-      />
-      
-      {/* Floating particles on hover */}
-      <AnimatePresence>
-        {isHovered && (
-          <>
-            {[...Array(6)].map((_, i) => (
-              <motion.div
-                key={i}
-                className={`absolute w-2 h-2 rounded-full bg-gradient-to-r ${project.color}`}
-                initial={{ 
-                  opacity: 0, 
-                  scale: 0,
-                  x: "50%",
-                  y: "50%"
-                }}
-                animate={{ 
-                  opacity: [0, 0.8, 0],
-                  scale: [0, 1, 0.5],
-                  x: `${Math.random() * 100}%`,
-                  y: `${Math.random() * 100}%`
-                }}
-                exit={{ opacity: 0, scale: 0 }}
-                transition={{ 
-                  duration: 2,
-                  delay: i * 0.1,
-                  repeat: Infinity,
-                  repeatDelay: 1
-                }}
-              />
-            ))}
-          </>
-        )}
-      </AnimatePresence>
-      
-      <motion.div 
-        className="relative bg-secondary/80 backdrop-blur-md border border-border/50 rounded-2xl overflow-hidden"
-        animate={{ 
-          borderColor: isHovered ? 'hsl(var(--primary) / 0.3)' : 'hsl(var(--border) / 0.5)'
-        }}
-        transition={{ duration: 0.3 }}
-      >
-        {/* Animated project number */}
+      {/* Bento Grid Container */}
+      <div className="grid grid-cols-12 gap-3 md:gap-4">
+        
+        {/* Hero Image - Large */}
         <motion.div 
-          className={`absolute top-4 left-4 z-10 w-10 h-10 rounded-full bg-gradient-to-br ${project.color} flex items-center justify-center text-white font-bold font-mono text-sm shadow-lg`}
-          animate={{ 
-            scale: isHovered ? 1.1 : 1,
-            rotate: isHovered ? 360 : 0
-          }}
-          transition={{ duration: 0.5 }}
+          className="col-span-12 lg:col-span-5 row-span-2 relative rounded-2xl overflow-hidden group h-[300px] lg:h-auto lg:min-h-[400px]"
+          whileHover={{ scale: 1.01 }}
         >
-          {String(index + 1).padStart(2, '0')}
-        </motion.div>
-
-        {/* Image container with enhanced hover effects */}
-        <div className="relative h-72 md:h-96 overflow-hidden">
-          <motion.img
-            key={activeImageIndex}
-            src={project.images[activeImageIndex].url}
-            alt={project.images[activeImageIndex].alt}
-            className="w-full h-full object-cover"
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ 
-              opacity: 1, 
-              scale: isHovered ? 1.08 : 1,
-              filter: isHovered ? 'brightness(1.1)' : 'brightness(1)'
-            }}
-            transition={{ duration: 0.5 }}
-          />
-          
-          {/* Animated overlay gradient */}
           <motion.div 
-            className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/20 to-transparent"
-            animate={{ opacity: isHovered ? 0.9 : 1 }}
-            transition={{ duration: 0.3 }}
+            className={`absolute -inset-0.5 bg-gradient-to-r ${project.color} rounded-2xl blur-sm opacity-40`}
+            animate={{ opacity: isHovered ? 0.6 : 0.3 }}
           />
-          
-          {/* Shimmer effect on hover */}
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-            initial={{ x: '-100%' }}
-            animate={{ x: isHovered ? '200%' : '-100%' }}
-            transition={{ duration: 1, ease: 'easeInOut' }}
-          />
+          <div className="relative h-full rounded-2xl overflow-hidden">
+            <motion.img
+              src={project.coverImage}
+              alt={project.images[0].alt}
+              className="w-full h-full object-cover"
+              animate={{ scale: isHovered ? 1.05 : 1 }}
+              transition={{ duration: 0.5 }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/30 to-transparent" />
+            
+            {/* Project number badge */}
+            <div className={`absolute top-4 left-4 w-10 h-10 rounded-full bg-gradient-to-br ${project.color} flex items-center justify-center text-white font-bold font-mono text-sm shadow-lg`}>
+              {String(index + 1).padStart(2, '0')}
+            </div>
 
-          {/* Category badge with bounce animation */}
-          <motion.div 
-            className="absolute top-4 right-4"
-            animate={{ 
-              y: isHovered ? -3 : 0,
-              scale: isHovered ? 1.05 : 1
-            }}
-            transition={{ type: 'spring', stiffness: 300 }}
-          >
-            <span className={`px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r ${project.color} text-white shadow-lg`}>
+            {/* Category badge */}
+            <span className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r ${project.color} text-white shadow-lg`}>
               {project.category}
             </span>
-          </motion.div>
-        </div>
 
-        <div className="p-6 md:p-8">
-          {/* Title with underline animation */}
-          <div className="mb-4">
-            <motion.h2 
-              className="text-2xl md:text-3xl font-bold text-foreground mb-2 relative inline-block"
-              animate={{ x: isHovered ? 5 : 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              {project.title}
-              <motion.span
-                className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r ${project.color}`}
-                initial={{ width: 0 }}
-                animate={{ width: isHovered ? '100%' : 0 }}
-                transition={{ duration: 0.3 }}
-              />
-            </motion.h2>
-            <p className="text-sm text-muted-foreground font-medium mb-2">{project.seoTitle}</p>
-            <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-              <motion.span 
-                className="flex items-center gap-1"
-                whileHover={{ scale: 1.05, color: 'hsl(var(--primary))' }}
-              >
-                <Users className="w-4 h-4" /> {project.clientName}
-              </motion.span>
-              <motion.span 
-                className="flex items-center gap-1"
-                whileHover={{ scale: 1.05, color: 'hsl(var(--primary))' }}
-              >
-                <Clock className="w-4 h-4" /> {project.duration}
-              </motion.span>
-              <motion.span 
-                className="flex items-center gap-1"
-                whileHover={{ scale: 1.05, color: 'hsl(var(--primary))' }}
-              >
-                <Calendar className="w-4 h-4" /> {project.completionDate}
-              </motion.span>
+            {/* Title overlay */}
+            <div className="absolute bottom-0 left-0 right-0 p-5">
+              <h2 className="text-xl md:text-2xl font-bold text-foreground mb-1">{project.title}</h2>
+              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {project.clientName}</span>
+                <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {project.duration}</span>
+              </div>
             </div>
           </div>
+        </motion.div>
 
-          {/* Keywords with staggered hover effect */}
-          <div className="flex flex-wrap gap-1.5 mb-4">
-            {project.keywords.map((keyword, i) => (
-              <motion.span 
-                key={i} 
-                className="text-xs text-muted-foreground bg-secondary px-2 py-0.5 rounded cursor-default"
-                whileHover={{ 
-                  scale: 1.1, 
-                  backgroundColor: 'hsl(var(--primary) / 0.2)',
-                  color: 'hsl(var(--primary))'
-                }}
-                transition={{ type: 'spring', stiffness: 400 }}
-              >
-                #{keyword.replace(/\s+/g, '')}
-              </motion.span>
-            ))}
-          </div>
+        {/* Results Grid - 4 metrics in 2x2 */}
+        <div className="col-span-12 lg:col-span-7 grid grid-cols-4 gap-2 md:gap-3">
+          {project.results.map((result, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.05 }}
+              whileHover={{ scale: 1.05, y: -3 }}
+              className={`text-center p-3 md:p-4 rounded-xl border border-border/50 ${
+                i === 0 ? `bg-gradient-to-br ${project.color} bg-opacity-20` : 'bg-secondary/50'
+              }`}
+            >
+              <div className={`text-lg md:text-2xl font-bold font-mono ${
+                i === 0 ? 'text-white' : `bg-gradient-to-r ${project.color} bg-clip-text text-transparent`
+              }`}>
+                {result.metric}
+              </div>
+              <div className={`text-[10px] md:text-xs mt-1 ${i === 0 ? 'text-white/80' : 'text-muted-foreground'}`}>
+                {result.label}
+              </div>
+            </motion.div>
+          ))}
+        </div>
 
-          <p className="text-muted-foreground mb-6 leading-relaxed">
+        {/* Description + Keywords */}
+        <div className="col-span-12 lg:col-span-7 bg-secondary/40 rounded-xl p-4 border border-border/30">
+          <p className="text-sm text-muted-foreground leading-relaxed mb-3 line-clamp-2">
             {project.description}
           </p>
-
-          <div className="mb-6">
-            <h4 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
-              <motion.span
-                animate={{ rotate: isHovered ? 360 : 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <Activity className="w-4 h-4 text-primary" />
-              </motion.span>
-              Live Metrics
-            </h4>
-            <AnimatedMetricsSection metrics={project.animatedMetrics} projectColor={project.color} />
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-            {project.funFacts.map((fact, i) => (
-              <FunFactCard key={i} fact={fact} index={i} color={project.color} />
+          <div className="flex flex-wrap gap-1.5">
+            {project.keywords.slice(0, 4).map((keyword, i) => (
+              <span key={i} className="text-[10px] text-muted-foreground bg-secondary px-2 py-0.5 rounded">
+                #{keyword.replace(/\s+/g, '')}
+              </span>
             ))}
-          </div>
-
-          {/* Results with enhanced animations */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            {project.results.map((result, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                whileHover={{ 
-                  scale: 1.08, 
-                  y: -5,
-                  boxShadow: '0 10px 30px -10px hsl(var(--primary) / 0.3)'
-                }}
-                className="text-center p-4 bg-secondary/50 rounded-lg border border-border/50 cursor-default"
-              >
-                <motion.div 
-                  className={`text-2xl md:text-3xl font-bold bg-gradient-to-r ${project.color} bg-clip-text text-transparent font-mono`}
-                  whileHover={{ scale: 1.1 }}
-                >
-                  {result.metric}
-                </motion.div>
-                <div className="text-xs text-muted-foreground mt-1">{result.label}</div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Tech stack with enhanced badges */}
-          <div className="mb-6">
-            <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-              <motion.span
-                animate={{ y: isHovered ? [0, -2, 0] : 0 }}
-                transition={{ duration: 0.5, repeat: isHovered ? Infinity : 0, repeatDelay: 0.5 }}
-              >
-                <Terminal className="w-4 h-4" />
-              </motion.span>
-              Tech Stack
-            </h4>
-            <div className="flex flex-wrap gap-2">
-              {project.technologies.map((tech, i) => (
-                <TechBadge key={tech} tech={tech} index={i} />
-              ))}
-            </div>
-          </div>
-
-          {/* Chat-style Client Testimonial */}
-          <div className="mb-6">
-            <h4 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
-              <MessageCircle className="w-4 h-4 text-primary" />
-              Client Feedback
-            </h4>
-            <ChatStyleTestimonial feedback={project.clientFeedback} color={project.color} />
-          </div>
-
-          <AnimatePresence>
-            {isExpanded && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3 }}
-                className="overflow-hidden mt-6"
-              >
-                <div className="mb-6 p-4 bg-secondary/50 rounded-lg border border-border/30">
-                  <h4 className="font-semibold text-foreground mb-3">Project Details</h4>
-                  <div className="text-muted-foreground text-sm space-y-3">
-                    {project.longDescription.split('\n\n').map((p, i) => (
-                      <p key={i}>{p}</p>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-6 mb-6">
-                  <div className="p-4 bg-destructive/10 rounded-lg border border-destructive/20">
-                    <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                      <Target className="w-4 h-4 text-destructive" /> Challenges
-                    </h4>
-                    <ul className="space-y-2">
-                      {project.challenges.map((challenge, i) => (
-                        <motion.li
-                          key={i}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.1 }}
-                          className="flex items-start gap-2 text-sm text-muted-foreground"
-                        >
-                          <span className="w-1.5 h-1.5 rounded-full bg-destructive mt-2 shrink-0" />
-                          {challenge}
-                        </motion.li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="p-4 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
-                    <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Solutions
-                    </h4>
-                    <ul className="space-y-2">
-                      {project.solutions.map((solution, i) => (
-                        <motion.li
-                          key={i}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.1 }}
-                          className="flex items-start gap-2 text-sm text-muted-foreground"
-                        >
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 shrink-0" />
-                          {solution}
-                        </motion.li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="mb-6">
-                  <h4 className="text-sm font-semibold text-foreground mb-3">Services Provided</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {project.services.map((service, i) => (
-                      <span
-                        key={i}
-                        className="px-3 py-1 bg-secondary text-muted-foreground rounded-full text-xs"
-                      >
-                        {service}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {project.awards.length > 0 && (
-                  <div className="flex flex-wrap gap-3">
-                    {project.awards.map((award, i) => (
-                      <span
-                        key={i}
-                        className={`inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r ${project.color} text-white rounded-full text-sm font-medium shadow-lg`}
-                      >
-                        <Award className="w-4 h-4" /> {award}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <div className="flex flex-wrap items-center gap-4 mt-6 pt-6 border-t border-border/50">
-            <Button
-              onClick={onToggle}
-              className={`flex items-center gap-2 font-semibold ${isExpanded ? 'bg-secondary text-foreground hover:bg-secondary/80' : 'bg-yellow-400 hover:bg-yellow-300 text-black'}`}
-            >
-              {isExpanded ? 'Show Less' : 'View Details'}
-              <motion.span
-                animate={{ rotate: isExpanded ? 180 : 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <ChevronDown className="w-4 h-4" />
-              </motion.span>
-            </Button>
-
-            {project.siteUrl && (
-              <Button 
-                size="sm" 
-                asChild 
-                className={`bg-gradient-to-r ${project.color} border-0 text-white hover:opacity-90`}
-              >
-                <a href={project.siteUrl} target="_blank" rel="noopener noreferrer">
-                  <ExternalLink className="w-4 h-4 mr-2" /> Visit Site
-                </a>
-              </Button>
-            )}
-
-            <Button size="sm" asChild className="bg-gradient-to-r from-emerald-500/80 to-blue-500/80 border-0 text-white hover:opacity-90">
-              <Link to="/project-quote">
-                Start Similar Project <ArrowRight className="w-4 h-4 ml-2" />
-              </Link>
-            </Button>
           </div>
         </div>
-      </motion.div>
+
+        {/* Animated Metrics - Compact row */}
+        <div className="col-span-12 grid grid-cols-4 gap-2 md:gap-3">
+          {project.animatedMetrics.map((metric, i) => {
+            const { count, ref } = useAnimatedCounter(metric.value);
+            return (
+              <motion.div
+                key={i}
+                ref={ref}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05 }}
+                whileHover={{ scale: 1.03 }}
+                className="bg-secondary/50 rounded-xl p-3 text-center border border-border/30"
+              >
+                <div className={`inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br ${metric.color} text-white mb-2`}>
+                  {getMetricIconSmall(metric.icon)}
+                </div>
+                <div className={`text-sm md:text-lg font-bold font-mono bg-gradient-to-r ${metric.color} bg-clip-text text-transparent`}>
+                  {count.toLocaleString()}{metric.suffix}
+                </div>
+                <div className="text-[10px] text-muted-foreground truncate">{metric.label}</div>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Tech Stack + Services Side by Side */}
+        <div className="col-span-6 bg-secondary/30 rounded-xl p-4 border border-border/30">
+          <h4 className="text-xs font-semibold text-foreground mb-2 flex items-center gap-1.5">
+            <Terminal className="w-3 h-3 text-primary" /> Tech Stack
+          </h4>
+          <div className="flex flex-wrap gap-1.5">
+            {project.technologies.slice(0, 4).map((tech, i) => (
+              <span key={i} className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-mono">
+                {tech}
+              </span>
+            ))}
+            {project.technologies.length > 4 && (
+              <span className="text-[10px] bg-secondary text-muted-foreground px-2 py-0.5 rounded-full">
+                +{project.technologies.length - 4}
+              </span>
+            )}
+          </div>
+        </div>
+
+        <div className="col-span-6 bg-secondary/30 rounded-xl p-4 border border-border/30">
+          <h4 className="text-xs font-semibold text-foreground mb-2 flex items-center gap-1.5">
+            <Layers className="w-3 h-3 text-primary" /> Services
+          </h4>
+          <div className="flex flex-wrap gap-1.5">
+            {project.services.slice(0, 3).map((service, i) => (
+              <span key={i} className="text-[10px] bg-secondary text-muted-foreground px-2 py-0.5 rounded-full">
+                {service}
+              </span>
+            ))}
+            {project.services.length > 3 && (
+              <span className="text-[10px] bg-secondary text-muted-foreground px-2 py-0.5 rounded-full">
+                +{project.services.length - 3}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Challenges & Solutions - Side by Side */}
+        <div className="col-span-6 bg-destructive/10 rounded-xl p-4 border border-destructive/20">
+          <h4 className="text-xs font-semibold text-foreground mb-2 flex items-center gap-1.5">
+            <Target className="w-3 h-3 text-destructive" /> Challenges
+          </h4>
+          <ul className="space-y-1">
+            {project.challenges.slice(0, 3).map((challenge, i) => (
+              <li key={i} className="flex items-start gap-1.5 text-[11px] text-muted-foreground">
+                <span className="w-1 h-1 rounded-full bg-destructive mt-1.5 shrink-0" />
+                <span className="line-clamp-1">{challenge}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="col-span-6 bg-emerald-500/10 rounded-xl p-4 border border-emerald-500/20">
+          <h4 className="text-xs font-semibold text-foreground mb-2 flex items-center gap-1.5">
+            <CheckCircle2 className="w-3 h-3 text-emerald-500" /> Solutions
+          </h4>
+          <ul className="space-y-1">
+            {project.solutions.slice(0, 3).map((solution, i) => (
+              <li key={i} className="flex items-start gap-1.5 text-[11px] text-muted-foreground">
+                <span className="w-1 h-1 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
+                <span className="line-clamp-1">{solution}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Client Testimonial - Full Width Compact */}
+        <div className="col-span-12 lg:col-span-8 bg-gradient-to-r from-secondary/50 via-secondary/30 to-transparent rounded-xl p-4 border-l-4 border-primary">
+          <div className="flex items-start gap-3">
+            <img 
+              src={project.clientFeedback.avatar} 
+              alt={project.clientFeedback.clientName}
+              className="w-10 h-10 rounded-full object-cover border-2 border-primary/30"
+            />
+            <div className="flex-1 min-w-0">
+              <p className="text-xs text-muted-foreground italic line-clamp-2 mb-2">
+                "{project.clientFeedback.text}"
+              </p>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-medium text-foreground">{project.clientFeedback.clientName}</span>
+                <span className="text-[10px] text-muted-foreground">• {project.clientFeedback.clientRole}</span>
+                <div className="flex gap-0.5 ml-auto">
+                  {[...Array(project.clientFeedback.rating)].map((_, i) => (
+                    <Star key={i} className="w-3 h-3 fill-primary text-primary" />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA Buttons */}
+        <div className="col-span-12 lg:col-span-4 flex items-center justify-end gap-2">
+          {project.siteUrl && (
+            <Button size="sm" variant="outline" asChild className="text-xs h-8">
+              <a href={project.siteUrl} target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="w-3 h-3 mr-1.5" /> Visit
+              </a>
+            </Button>
+          )}
+          <Button size="sm" asChild className={`text-xs h-8 bg-gradient-to-r ${project.color} border-0 text-white`}>
+            <Link to="/project-quote">
+              Start Project <ArrowRight className="w-3 h-3 ml-1.5" />
+            </Link>
+          </Button>
+        </div>
+
+        {/* Awards (if any) */}
+        {project.awards.length > 0 && (
+          <div className="col-span-12 flex justify-center gap-2">
+            {project.awards.map((award, i) => (
+              <span key={i} className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary/10 text-primary rounded-full text-[10px] font-medium">
+                <Award className="w-3 h-3" /> {award}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Divider */}
+      <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mt-10" />
     </motion.article>
   );
 };
 
+// Small metric icon helper
+const getMetricIconSmall = (icon: string) => {
+  switch (icon) {
+    case 'users': return <Users className="w-4 h-4" />;
+    case 'deals': return <TrendingUp className="w-4 h-4" />;
+    case 'automation': return <Zap className="w-4 h-4" />;
+    case 'reports': return <BarChart3 className="w-4 h-4" />;
+    case 'pages': return <Layers className="w-4 h-4" />;
+    case 'forms': return <Mail className="w-4 h-4" />;
+    case 'speed': return <Rocket className="w-4 h-4" />;
+    case 'visitors': return <Users className="w-4 h-4" />;
+    case 'keywords': return <Search className="w-4 h-4" />;
+    case 'backlinks': return <GitBranch className="w-4 h-4" />;
+    case 'content': return <Terminal className="w-4 h-4" />;
+    case 'traffic': return <Activity className="w-4 h-4" />;
+    case 'followers': return <Users className="w-4 h-4" />;
+    case 'posts': return <Layers className="w-4 h-4" />;
+    case 'reach': return <Globe className="w-4 h-4" />;
+    case 'conversions': return <Target className="w-4 h-4" />;
+    case 'meetings': return <Video className="w-4 h-4" />;
+    case 'participants': return <Users className="w-4 h-4" />;
+    case 'hours': return <Clock className="w-4 h-4" />;
+    case 'uptime': return <Shield className="w-4 h-4" />;
+    case 'tasks': return <CheckCircle2 className="w-4 h-4" />;
+    case 'emails': return <Mail className="w-4 h-4" />;
+    case 'leads': return <Users className="w-4 h-4" />;
+    case 'properties': return <Database className="w-4 h-4" />;
+    case 'agents': return <Users className="w-4 h-4" />;
+    case 'subscribers': return <Mail className="w-4 h-4" />;
+    case 'opens': return <Mail className="w-4 h-4" />;
+    case 'revenue': return <TrendingUp className="w-4 h-4" />;
+    case 'episodes': return <Video className="w-4 h-4" />;
+    case 'views': return <Globe className="w-4 h-4" />;
+    case 'downloads': return <Rocket className="w-4 h-4" />;
+    case 'members': return <Users className="w-4 h-4" />;
+    case 'active': return <Activity className="w-4 h-4" />;
+    case 'messages': return <MessageCircle className="w-4 h-4" />;
+    case 'events': return <Calendar className="w-4 h-4" />;
+    default: return <Sparkles className="w-4 h-4" />;
+  }
+};
+
 const ProjectDetail = () => {
-  const [expandedProjects, setExpandedProjects] = useState<Set<string>>(new Set());
-
-  const toggleProject = (id: string) => {
-    setExpandedProjects(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(id)) {
-        newSet.delete(id);
-      } else {
-        newSet.add(id);
-      }
-      return newSet;
-    });
-  };
-
   return (
     <div className="min-h-screen bg-background dark">
       <Helmet>
@@ -1400,8 +1290,6 @@ const ProjectDetail = () => {
                 key={project.id}
                 project={project}
                 index={index}
-                isExpanded={expandedProjects.has(project.id)}
-                onToggle={() => toggleProject(project.id)}
               />
             ))}
           </div>
