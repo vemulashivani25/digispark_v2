@@ -110,7 +110,7 @@ export const projectQuoteSchema = z.object({
     .or(z.literal("")),
   pages: z.number().min(1).max(100).default(5),
   timeline: z.string().min(1, { message: "Please select a timeline" }),
-  budget: z.number().min(0).max(10000000).default(5000),
+  budget: z.number().min(20, { message: "Minimum budget is $20" }).max(1000, { message: "Maximum budget is $1000" }).default(100),
   comments: z
     .string()
     .trim()
