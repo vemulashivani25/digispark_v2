@@ -343,15 +343,14 @@ const Portfolio = () => {
       
       <Navbar />
 
-      <section className="pt-24 pb-12 bg-black relative overflow-hidden">
+      <section className="pt-20 sm:pt-24 pb-8 sm:pb-12 bg-black relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-black via-black/90 to-black pointer-events-none"></div>
-        <div className="absolute w-[70rem] h-[70rem] bg-yellow-400/5 rounded-full blur-[100px] -top-40 -right-20 animate-pulse-slow"></div>
-        <div className="absolute w-[50rem] h-[50rem] bg-purple-500/5 rounded-full blur-[100px] -bottom-20 -left-20 animate-pulse-slow" style={{ animationDelay: '1.5s' }}></div>
+        <div className="absolute w-[40rem] sm:w-[70rem] h-[40rem] sm:h-[70rem] bg-yellow-400/5 rounded-full blur-[100px] -top-20 sm:-top-40 -right-10 sm:-right-20 animate-pulse-slow"></div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-3xl mx-auto">
             <motion.h1 
-              className="text-5xl md:text-6xl font-bold text-white mb-6"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-3 sm:mb-4 md:mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -359,7 +358,7 @@ const Portfolio = () => {
               Our <span className="text-yellow-400">Portfolio</span>
             </motion.h1>
             <motion.p 
-              className="text-xl text-gray-300 mb-10"
+              className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 mb-6 sm:mb-8 md:mb-10"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -368,7 +367,7 @@ const Portfolio = () => {
             </motion.p>
             
             <motion.div 
-              className="flex flex-wrap justify-center gap-3 mb-8"
+              className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 sm:mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
@@ -378,7 +377,7 @@ const Portfolio = () => {
                   key={tag}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`px-4 py-2 rounded-full font-medium text-sm md:text-base transition-colors duration-300
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-medium text-xs sm:text-sm md:text-base transition-colors duration-300
                     ${selectedTag === tag
                       ? "bg-yellow-400 text-black"
                       : "bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white"
@@ -393,10 +392,10 @@ const Portfolio = () => {
         </div>
       </section>
 
-      <section className="py-12 bg-black relative overflow-hidden">
+      <section className="py-8 sm:py-10 md:py-12 bg-black relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
           <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.5 }}

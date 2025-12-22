@@ -198,50 +198,36 @@ const Blog = () => {
         />
         
         {/* Search Section */}
-        <section className="py-8 bg-black relative overflow-hidden">
-          {/* Animated background orbs */}
+        <section className="py-4 sm:py-6 md:py-8 bg-black relative overflow-hidden">
           <div className="absolute inset-0 overflow-hidden">
             <motion.div
-              className="absolute w-96 h-96 bg-yellow-400/5 rounded-full blur-3xl -top-48 -left-48"
-              animate={{ 
-                scale: [1, 1.2, 1],
-                opacity: [0.3, 0.5, 0.3]
-              }}
-              transition={{ duration: 8, repeat: Infinity }}
-            />
-            <motion.div
-              className="absolute w-96 h-96 bg-amber-400/5 rounded-full blur-3xl -bottom-48 -right-48"
-              animate={{ 
-                scale: [1.2, 1, 1.2],
-                opacity: [0.5, 0.3, 0.5]
-              }}
+              className="absolute w-64 sm:w-96 h-64 sm:h-96 bg-yellow-400/5 rounded-full blur-3xl -top-32 sm:-top-48 -left-32 sm:-left-48"
+              animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
               transition={{ duration: 8, repeat: Infinity }}
             />
           </div>
 
           <div className="container mx-auto px-4 relative z-10">
-            {/* Stats bar showing blog metrics */}
             <motion.div
-              className="flex flex-wrap justify-center gap-8 mb-8"
+              className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8 mb-4 sm:mb-6 md:mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
               <div className="flex items-center gap-2 text-gray-400">
-                <BookOpen className="w-5 h-5 text-yellow-400" />
-                <span className="text-sm">{blogPosts.length} Articles</span>
+                <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400" />
+                <span className="text-xs sm:text-sm">{blogPosts.length} Articles</span>
               </div>
               <div className="flex items-center gap-2 text-gray-400">
-                <TrendingUp className="w-5 h-5 text-yellow-400" />
-                <span className="text-sm">{blogPosts.filter(p => p.featured).length} Featured</span>
+                <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400" />
+                <span className="text-xs sm:text-sm">{blogPosts.filter(p => p.featured).length} Featured</span>
               </div>
               <div className="flex items-center gap-2 text-gray-400">
-                <Sparkles className="w-5 h-5 text-yellow-400" />
-                <span className="text-sm">{categories.length} Categories</span>
+                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400" />
+                <span className="text-xs sm:text-sm">{categories.length} Categories</span>
               </div>
             </motion.div>
 
-            {/* Search input with glow effect */}
             <motion.div 
               className="relative max-w-xl mx-auto"
               initial={{ opacity: 0, scale: 0.95 }}
@@ -250,23 +236,22 @@ const Blog = () => {
             >
               <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400/20 to-amber-500/20 rounded-xl blur-lg opacity-70" />
               <div className="relative flex items-center bg-white/10 backdrop-blur-sm border border-gray-700/50 rounded-xl overflow-hidden focus-within:border-yellow-400/50 transition-all duration-300">
-                <Search className="w-5 h-5 text-gray-400 ml-4" />
+                <Search className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 ml-3 sm:ml-4" />
                 <Input
                   type="text"
-                  placeholder="Search articles, topics, or tags..."
+                  placeholder="Search articles..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="border-0 bg-transparent py-6 text-white placeholder-gray-500 focus-visible:ring-0 focus-visible:ring-offset-0"
+                  className="border-0 bg-transparent py-3 sm:py-4 md:py-6 text-white placeholder-gray-500 focus-visible:ring-0 focus-visible:ring-offset-0 text-sm sm:text-base"
                 />
-                {/* Clear search button */}
                 {searchTerm && (
                   <motion.button
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     onClick={() => setSearchTerm("")}
-                    className="p-2 mr-2 text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-white/10"
+                    className="p-1.5 sm:p-2 mr-2 text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-white/10"
                   >
-                    <X className="w-4 h-4" />
+                    <X className="w-3 h-3 sm:w-4 sm:h-4" />
                   </motion.button>
                 )}
               </div>
@@ -275,24 +260,21 @@ const Blog = () => {
         </section>
         
         {/* Blog Posts Grid Section */}
-        <section className="py-20 bg-gray-50 relative">
-          {/* Subtle background pattern */}
+        <section className="py-10 sm:py-14 md:py-20 bg-gray-50 relative">
           <div className="absolute inset-0 bg-grid-gray-900/[0.02] bg-[length:20px_20px]" />
           
           <div className="container mx-auto px-4 relative">
-            {/* Category Filter Component */}
             <CategoryFilter 
               categories={categories} 
               selectedCategory={selectedCategory} 
               onCategorySelect={setSelectedCategory} 
             />
             
-            {/* Posts Grid with Animation */}
             <AnimatePresence mode="wait">
               {filteredPosts.length > 0 ? (
                 <motion.div 
                   key="posts-grid"
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -308,7 +290,6 @@ const Blog = () => {
                   ))}
                 </motion.div>
               ) : (
-                // No results state
                 <motion.div
                   key="no-results"
                   initial={{ opacity: 0, scale: 0.95 }}
@@ -346,57 +327,44 @@ const Blog = () => {
             
             {/* Newsletter CTA Section */}
             <motion.div 
-              className="mt-20 bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white rounded-2xl p-8 max-w-4xl mx-auto relative overflow-hidden"
+              className="mt-10 sm:mt-14 md:mt-20 bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 max-w-4xl mx-auto relative overflow-hidden"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              {/* Animated glow effects */}
               <motion.div
-                className="absolute -top-24 -right-24 w-48 h-48 bg-yellow-400/20 rounded-full blur-3xl"
+                className="absolute -top-16 sm:-top-24 -right-16 sm:-right-24 w-32 sm:w-48 h-32 sm:h-48 bg-yellow-400/20 rounded-full blur-3xl"
                 animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-                transition={{ duration: 4, repeat: Infinity }}
-              />
-              <motion.div
-                className="absolute -bottom-24 -left-24 w-48 h-48 bg-amber-400/20 rounded-full blur-3xl"
-                animate={{ scale: [1.2, 1, 1.2], opacity: [0.5, 0.3, 0.5] }}
                 transition={{ duration: 4, repeat: Infinity }}
               />
               
               <div className="relative z-10">
-                <div className="text-center mb-6">
+                <div className="text-center mb-4 sm:mb-6">
                   <motion.div
                     initial={{ scale: 0 }}
                     whileInView={{ scale: 1 }}
                     viewport={{ once: true }}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-400/10 border border-yellow-400/20 rounded-full text-yellow-400 text-sm mb-4"
+                    className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-yellow-400/10 border border-yellow-400/20 rounded-full text-yellow-400 text-xs sm:text-sm mb-3 sm:mb-4"
                   >
-                    <Sparkles className="w-4 h-4" />
+                    <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
                     <span>Join 5,000+ subscribers</span>
                   </motion.div>
-                  <h3 className="text-2xl font-bold mb-2">Stay Updated</h3>
-                  <p className="text-gray-300">Subscribe to our newsletter for the latest insights and articles</p>
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-1 sm:mb-2">Stay Updated</h3>
+                  <p className="text-gray-300 text-xs sm:text-sm md:text-base">Subscribe for the latest insights</p>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 max-w-xl mx-auto">
                   <Input
                     type="email"
                     placeholder="Enter your email"
-                    className="bg-white/10 border-gray-700 text-white focus:border-yellow-400 placeholder-gray-500"
+                    className="bg-white/10 border-gray-700 text-white focus:border-yellow-400 placeholder-gray-500 text-sm sm:text-base"
                   />
-                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                    <Button 
-                      className="bg-yellow-500 hover:bg-yellow-600 text-black whitespace-nowrap font-medium w-full sm:w-auto"
-                      onClick={() => {
-                        toast({
-                          title: "Thank you for subscribing!",
-                          description: "You'll receive our next newsletter soon."
-                        });
-                      }}
-                    >
-                      Subscribe Now
-                    </Button>
-                  </motion.div>
+                  <Button 
+                    className="bg-yellow-500 hover:bg-yellow-600 text-black whitespace-nowrap font-medium text-sm sm:text-base"
+                    onClick={() => toast({ title: "Thank you!", description: "You'll receive our newsletter soon." })}
+                  >
+                    Subscribe
+                  </Button>
                 </div>
               </div>
             </motion.div>
