@@ -30,6 +30,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import Navbar from '@/components/Navbar';
 import FooterSection from '@/components/FooterSection';
+import AuthBackground from '@/components/auth/AuthBackground';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -42,7 +43,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Helmet } from 'react-helmet';
-import { ArrowLeft, Mail, Lock, User, KeyRound, Eye, EyeOff } from 'lucide-react';
+import { ArrowLeft, Mail, Lock, User, KeyRound, Eye, EyeOff, Sparkles } from 'lucide-react';
 import { mediumTap, successFeedback } from '@/utils/hapticFeedback';
 
 const loginSchema = z.object({
@@ -223,39 +224,79 @@ const Auth = () => {
       
       <Navbar />
       
-      <div className="pt-32 pb-20 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-black/95 to-black/90 pointer-events-none"></div>
-        
-        {/* Animated background elements */}
-        <div className="absolute w-[40rem] h-[40rem] bg-yellow-400/5 rounded-full blur-3xl top-0 -right-20 animate-pulse-slow"></div>
-        <div className="absolute w-[30rem] h-[30rem] bg-blue-400/5 rounded-full blur-3xl -bottom-20 -left-20 animate-pulse-slow" style={{ animationDelay: '1.5s' }}></div>
+      <div className="pt-32 pb-20 relative min-h-screen">
+        {/* Creative animated background */}
+        <AuthBackground />
         
         <div className="container mx-auto px-4 relative z-10">
           <motion.div 
             className="text-center mb-10"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
           >
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              <span className="text-yellow-400">Account</span> Access
-            </h1>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            {/* Animated sparkle icon */}
+            <motion.div
+              className="inline-flex items-center justify-center w-16 h-16 mb-6 rounded-2xl bg-gradient-to-br from-yellow-400/20 to-green-400/20 border border-yellow-400/30"
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ duration: 0.6, type: 'spring', stiffness: 200 }}
+            >
+              <Sparkles className="w-8 h-8 text-yellow-400" />
+            </motion.div>
+            
+            <motion.h1 
+              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <span className="bg-gradient-to-r from-yellow-400 via-yellow-300 to-green-400 bg-clip-text text-transparent">
+                {showNewPassword ? 'New Password' : showForgotPassword ? 'Reset' : 'Welcome'}
+              </span>
+              {' '}
+              <span className="text-white">
+                {showNewPassword ? 'Setup' : showForgotPassword ? 'Password' : 'Back'}
+              </span>
+            </motion.h1>
+            
+            <motion.p 
+              className="text-lg text-gray-400 max-w-md mx-auto"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
               {showNewPassword 
-                ? 'Set your new password' 
+                ? 'Create a strong, secure password for your account' 
                 : showForgotPassword 
-                  ? 'Reset your password' 
-                  : 'Sign in to your account or create a new one'}
-            </p>
+                  ? 'Enter your email to receive a password reset link' 
+                  : 'Sign in to unlock exclusive resources and features'}
+            </motion.p>
           </motion.div>
           
           <motion.div 
             className="max-w-md mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.3, ease: 'easeOut' }}
           >
-            <div className="bg-gray-900/60 backdrop-blur-md p-8 rounded-xl border border-gray-800/50">
+            {/* Glowing card effect */}
+            <div className="relative group">
+              {/* Animated glow border */}
+              <motion.div
+                className="absolute -inset-0.5 bg-gradient-to-r from-yellow-400 via-green-400 to-yellow-400 rounded-2xl opacity-20 blur-sm"
+                animate={{
+                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                  ease: 'linear',
+                }}
+                style={{ backgroundSize: '200% 200%' }}
+              />
+              
+              <div className="relative bg-gray-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 shadow-2xl">
               {showNewPassword ? (
                 // New Password Form (after recovery)
                 <div>
@@ -682,6 +723,7 @@ const Auth = () => {
                   </TabsContent>
                 </Tabs>
               )}
+              </div>
             </div>
           </motion.div>
         </div>
