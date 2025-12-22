@@ -225,35 +225,38 @@ const ProjectQuote = () => {
     };
   }, [formData.selectedCategory, formData.selectedFeatures.length, formData.pages, formData.timeline]);
 
-  // Calculate budget based on selections
+  // Calculate budget based on selections (clamped between $20 - $1000)
   useEffect(() => {
     let base = 0;
 
-    // Base cost per category
+    // Base cost per category (adjusted for $20-$1000 range)
     const categoryCosts = {
-      "web-development": 3000,
-      seo: 1500,
-      crm: 2000,
-      "digital-marketing": 2500,
-      "virtual-assistance": 1000,
-      support: 1200,
+      "web-development": 400,
+      seo: 200,
+      crm: 300,
+      "digital-marketing": 350,
+      "virtual-assistance": 150,
+      support: 180,
     };
 
     if (formData.selectedCategory) {
-      base = categoryCosts[formData.selectedCategory as keyof typeof categoryCosts] || 1000;
+      base = categoryCosts[formData.selectedCategory as keyof typeof categoryCosts] || 100;
     }
 
-    // Add cost for each feature (avg $300 per feature)
-    const featureCost = formData.selectedFeatures.length * 300;
+    // Add cost for each feature (avg $50 per feature)
+    const featureCost = formData.selectedFeatures.length * 50;
 
     // Factor in page count for web projects
-    const pagesCost = formData.selectedCategory === "web-development" ? Math.max(0, formData.pages - 3) * 200 : 0;
+    const pagesCost = formData.selectedCategory === "web-development" ? Math.max(0, formData.pages - 3) * 30 : 0;
 
     // Calculate total
     let total = base + featureCost + pagesCost;
 
-    // Budget range adjustment (±20%)
-    total = Math.round(total * (0.8 + Math.random() * 0.4));
+    // Budget range adjustment (±10%)
+    total = Math.round(total * (0.9 + Math.random() * 0.2));
+
+    // Clamp between $20 and $1000
+    total = Math.max(20, Math.min(1000, total));
 
     setEstimatedBudget(total);
   }, [formData.selectedCategory, formData.selectedFeatures, formData.pages]);
