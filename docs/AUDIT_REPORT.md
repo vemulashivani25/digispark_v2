@@ -34,7 +34,6 @@ This document provides a complete A-Z audit of the DigiSpark digital agency webs
 | Project Inquiries | ⚠️ Info | Admin-only SELECT policy exists |
 | Blog Suggestions | ⚠️ Info | Admin-only SELECT policy exists |
 | User Profiles | ✅ Good | RLS policies properly configured |
-| Project Messages | ✅ Good | Sender/client validation in place |
 | Resources Table | ✅ Good | Public read for active resources only |
 | Blog Posts | ✅ Good | Standard public blog behavior |
 
@@ -74,11 +73,6 @@ This document provides a complete A-Z audit of the DigiSpark digital agency webs
 | `newsletter_subscriptions` | ✅ | Email subscribers |
 | `project_inquiries` | ✅ | Project inquiry forms |
 | `project_quotes` | ✅ | Quote request data |
-| `client_projects` | ✅ | Client project tracking |
-| `project_files` | ✅ | Project file attachments |
-| `project_invoices` | ✅ | Invoice management |
-| `project_messages` | ✅ | Project communication |
-| `project_milestones` | ✅ | Project milestones |
 | `resources` | ✅ | Downloadable resources |
 | `profiles` | ✅ | User profile data |
 | `user_roles` | ✅ | Role assignments |
@@ -88,7 +82,6 @@ This document provides a complete A-Z audit of the DigiSpark digital agency webs
 | Function | Security | Purpose |
 |----------|----------|---------|
 | `has_role` | ✅ SECURITY DEFINER | Check user role |
-| `is_client` | ✅ SECURITY DEFINER | Check client status |
 | `handle_new_user` | ✅ SECURITY DEFINER | Auto-create profile |
 | `update_updated_at_column` | ✅ Standard | Timestamp updates |
 
@@ -314,7 +307,6 @@ digispark/
 | Feature | Priority | Effort |
 |---------|----------|--------|
 | Blog analytics tracking | Medium | Low |
-| Client portal dashboard | High | Medium |
 | Multi-language support | Medium | High |
 | Advanced search/filtering | Medium | Medium |
 | Email campaign integration | High | Medium |
