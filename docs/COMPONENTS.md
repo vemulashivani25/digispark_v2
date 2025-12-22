@@ -786,7 +786,19 @@ Industry category filter for browsing success stories by industry.
 
 **File:** `src/components/success-stories/ServiceFilter.tsx`
 
-Service type filter.
+Service type filter for browsing success stories by service category.
+
+> ⚠️ **NOTE:** This component is currently **commented out** in the Success Stories page (`src/pages/SuccessStories.tsx`). 
+> To re-enable the "Filter by Service" feature, uncomment the `<ServiceFilter>` section in the page file.
+
+```tsx
+// Currently commented out in SuccessStories.tsx:
+<ServiceFilter 
+  services={services} 
+  activeFilter={filter} 
+  onFilterChange={setFilter} 
+/>
+```
 
 ---
 

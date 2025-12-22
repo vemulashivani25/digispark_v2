@@ -372,7 +372,13 @@ const SuccessStories = () => {
               />
             </div> */}
 
-            <ServiceFilter services={services} activeFilter={filter} onFilterChange={setFilter} />
+            {/* 
+              NOTE: Service Filter section is commented out for now.
+              To re-enable, uncomment the section below.
+              This filter allows users to browse success stories by service type.
+              See docs/COMPONENTS.md for more details.
+            */}
+            {/* <ServiceFilter services={services} activeFilter={filter} onFilterChange={setFilter} /> */}
 
             {/* Real-Time Fun Facts Ticker */}
             <motion.div
