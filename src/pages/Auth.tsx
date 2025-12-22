@@ -23,7 +23,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -31,6 +31,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import Navbar from '@/components/Navbar';
 import FooterSection from '@/components/FooterSection';
 import AuthBackground from '@/components/auth/AuthBackground';
+import AnimatedAuthIcon from '@/components/auth/AnimatedAuthIcon';
+import { useTypingPlaceholder } from '@/hooks/useTypingPlaceholder';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -43,8 +45,15 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Helmet } from 'react-helmet';
-import { ArrowLeft, Mail, Lock, User, KeyRound, Eye, EyeOff, Sparkles } from 'lucide-react';
+import { ArrowLeft, Mail, Lock, User, KeyRound, Eye, EyeOff } from 'lucide-react';
 import { mediumTap, successFeedback } from '@/utils/hapticFeedback';
+
+const EMAIL_PLACEHOLDERS = [
+  "john.doe@example.com",
+  "your.email@company.com",
+  "hello@yourname.com",
+  "contact@business.org",
+];
 
 const loginSchema = z.object({
   email: z.string()
@@ -120,6 +129,14 @@ const Auth = () => {
   const [showNewConfirmPasswordField, setShowNewConfirmPasswordField] = useState(false);
   const { signIn, signUp, signInWithGoogle, resetPassword, updatePassword, user, loading } = useAuth();
   const navigate = useNavigate();
+  
+  // Animated typing placeholder for email inputs
+  const emailPlaceholder = useTypingPlaceholder({
+    placeholders: EMAIL_PLACEHOLDERS,
+    typingSpeed: 80,
+    deletingSpeed: 40,
+    pauseDuration: 2500,
+  });
 
   useEffect(() => {
     // Redirect if user is already logged in and not in recovery mode
@@ -235,33 +252,62 @@ const Auth = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
           >
-            {/* Animated sparkle icon */}
-            <motion.div
-              className="inline-flex items-center justify-center w-16 h-16 mb-6 rounded-2xl bg-gradient-to-br from-yellow-400/20 to-green-400/20 border border-yellow-400/30"
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ duration: 0.6, type: 'spring', stiffness: 200 }}
-            >
-              <Sparkles className="w-8 h-8 text-yellow-400" />
-            </motion.div>
+            {/* Animated Login Icon */}
+            {!showNewPassword && !showForgotPassword && (
+              <AnimatedAuthIcon isLogin={activeTab === 'login'} />
+            )}
             
-            <motion.h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <span className="bg-gradient-to-r from-yellow-400 via-yellow-300 to-green-400 bg-clip-text text-transparent">
-                {showNewPassword ? 'New Password' : showForgotPassword ? 'Reset' : 'Welcome'}
-              </span>
-              {' '}
-              <span className="text-white">
-                {showNewPassword ? 'Setup' : showForgotPassword ? 'Password' : 'Back'}
-              </span>
-            </motion.h1>
+            {/* Dynamic elegant heading */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={showNewPassword ? 'new' : showForgotPassword ? 'forgot' : activeTab}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4 }}
+              >
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+                  {showNewPassword ? (
+                    <>
+                      <span className="bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 bg-clip-text text-transparent">
+                        Secure Your
+                      </span>
+                      <br />
+                      <span className="text-white font-light tracking-tight">Account</span>
+                    </>
+                  ) : showForgotPassword ? (
+                    <>
+                      <span className="bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 bg-clip-text text-transparent">
+                        Reset Your
+                      </span>
+                      <br />
+                      <span className="text-white font-light tracking-tight">Password</span>
+                    </>
+                  ) : activeTab === 'login' ? (
+                    <>
+                      <span className="bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(250,204,21,0.3)]">
+                        Welcome
+                      </span>
+                      <br />
+                      <span className="text-white font-light tracking-tight italic">Back</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="bg-gradient-to-r from-green-400 via-emerald-300 to-green-500 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(34,197,94,0.3)]">
+                        Welcome to
+                      </span>
+                      <br />
+                      <span className="text-white font-light tracking-tight">
+                        Digi<span className="text-yellow-400">Spark</span>
+                      </span>
+                    </>
+                  )}
+                </h1>
+              </motion.div>
+            </AnimatePresence>
             
             <motion.p 
-              className="text-lg text-gray-400 max-w-md mx-auto"
+              className="text-base md:text-lg text-gray-400 max-w-md mx-auto font-light"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
@@ -270,7 +316,9 @@ const Auth = () => {
                 ? 'Create a strong, secure password for your account' 
                 : showForgotPassword 
                   ? 'Enter your email to receive a password reset link' 
-                  : 'Sign in to unlock exclusive resources and features'}
+                  : activeTab === 'login'
+                    ? 'Sign in to access your dashboard and resources'
+                    : 'Join our community and unlock exclusive features'}
             </motion.p>
           </motion.div>
           
@@ -417,8 +465,8 @@ const Auth = () => {
                               <div className="relative group">
                                 <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 group-focus-within:text-yellow-400 transition-colors duration-300" size={18} />
                                 <Input 
-                                  placeholder="your.email@example.com" 
-                                  className="bg-gray-800/50 border-gray-700 pl-10 text-white transition-all duration-300 focus:border-yellow-400 focus:ring-yellow-400/20" 
+                                  placeholder={emailPlaceholder || "email@example.com"} 
+                                  className="bg-gray-800/50 border-gray-700 pl-10 text-white transition-all duration-300 focus:border-yellow-400 focus:ring-yellow-400/20 placeholder:text-gray-500" 
                                   {...field} 
                                 />
                               </div>
@@ -469,8 +517,8 @@ const Auth = () => {
                                 <div className="relative group">
                                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 group-focus-within:text-yellow-400 transition-colors duration-300" size={18} />
                                   <Input 
-                                    placeholder="your.email@example.com" 
-                                    className="bg-gray-800/50 border-gray-700 pl-10 text-white transition-all duration-300 focus:border-yellow-400 focus:ring-yellow-400/20" 
+                                    placeholder={emailPlaceholder || "email@example.com"} 
+                                    className="bg-gray-800/50 border-gray-700 pl-10 text-white transition-all duration-300 focus:border-yellow-400 focus:ring-yellow-400/20 placeholder:text-gray-500" 
                                     {...field} 
                                   />
                                 </div>
@@ -599,8 +647,8 @@ const Auth = () => {
                                 <div className="relative group">
                                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 group-focus-within:text-yellow-400 transition-colors duration-300" size={18} />
                                   <Input 
-                                    placeholder="your.email@example.com" 
-                                    className="bg-gray-800/50 border-gray-700 pl-10 text-white transition-all duration-300 focus:border-yellow-400 focus:ring-yellow-400/20" 
+                                    placeholder={emailPlaceholder || "email@example.com"} 
+                                    className="bg-gray-800/50 border-gray-700 pl-10 text-white transition-all duration-300 focus:border-yellow-400 focus:ring-yellow-400/20 placeholder:text-gray-500" 
                                     {...field} 
                                   />
                                 </div>
