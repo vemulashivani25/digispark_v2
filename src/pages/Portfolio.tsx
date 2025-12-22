@@ -317,25 +317,28 @@ const Portfolio = () => {
   
   return (
     <div className="min-h-screen bg-black page-transition">
-      {/* SEO Meta Tags */}
+      {/* SEO Meta Tags - Optimized for target services */}
       <Helmet>
-        <title>Portfolio | DigiSpark - Our Work, Case Studies & Results</title>
+        <title>Portfolio | HubSpot CRM, Video Editing & Web Development Case Studies | DigiSpark</title>
         <meta 
           name="description" 
-          content="Explore our portfolio of successful projects spanning CRM implementation, e-commerce, SEO campaigns, virtual assistance, web development, and digital marketing strategies." 
+          content="Explore DigiSpark's portfolio of successful HubSpot CRM implementations, cold email marketing campaigns, video/audio editing projects, Zoom support solutions, and custom web development case studies with measurable results." 
         />
         <meta 
           name="keywords" 
-          content="portfolio, case studies, HubSpot CRM, e-commerce, SEO, virtual assistance, digital marketing, video production, web development, success stories, client projects" 
+          content="HubSpot CRM case studies, cold email marketing portfolio, video editing portfolio, audio editing samples, Zoom support case studies, web development portfolio, marketing automation examples, digital agency work, client success stories" 
         />
-        <meta property="og:title" content="Portfolio | DigiSpark - Our Work & Case Studies" />
-        <meta property="og:description" content="See how we've helped businesses transform their digital presence with real project examples." />
+        <meta property="og:title" content="Portfolio | HubSpot CRM & Digital Agency Case Studies | DigiSpark" />
+        <meta property="og:description" content="See real results from our HubSpot CRM, cold email marketing, video editing, and web development projects." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://yourdomain.com/portfolio" />
-        <meta property="og:image" content="https://yourdomain.com/images/portfolio-og.jpg" />
+        <meta property="og:url" content="https://digispark.agency/portfolio" />
+        <meta property="og:image" content="https://digispark.agency/og-portfolio.jpg" />
+        <meta property="og:site_name" content="DigiSpark Agency" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://yourdomain.com/portfolio" />
+        <meta name="twitter:title" content="DigiSpark Portfolio | HubSpot CRM & Digital Projects" />
+        <meta name="twitter:description" content="Case studies showcasing HubSpot CRM, video editing, and web development success." />
+        <meta name="robots" content="index, follow, max-image-preview:large" />
+        <link rel="canonical" href="https://digispark.agency/portfolio" />
       </Helmet>
       
       <Navbar />

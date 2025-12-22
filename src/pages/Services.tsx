@@ -72,51 +72,67 @@ const Services = () => {
     });
   }, []);
 
-  // JSON-LD structured data for services
+  // JSON-LD structured data for services - Enhanced for target keywords
   const servicesSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
-    "serviceType": "Digital Services",
+    "serviceType": "Digital Agency Services",
     "provider": {
       "@type": "Organization",
       "name": "DigiSpark",
-      "url": "https://yourdomain.com"
+      "url": "https://digispark.agency"
     },
     "areaServed": "Worldwide",
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
-      "name": "Digital Services",
+      "name": "Professional Digital Services",
       "itemListElement": [
         {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Service",
-            "name": "Web Development",
-            "description": "Custom web development solutions using modern technologies"
+            "name": "HubSpot CRM Implementation",
+            "description": "Expert HubSpot CRM setup, customization, integration, and training. Optimize your sales pipeline, automate marketing workflows, and improve customer relationships with our certified HubSpot solutions."
           }
         },
         {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Service",
-            "name": "Digital Marketing",
-            "description": "Comprehensive digital marketing strategies for growth"
+            "name": "Marketing Automation",
+            "description": "Streamline your marketing with automated email sequences, lead nurturing workflows, CRM automation, and sales pipeline optimization. Increase conversions with data-driven automation strategies."
           }
         },
         {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Service",
-            "name": "SEO Services",
-            "description": "Search engine optimization to improve online visibility"
+            "name": "Cold Email Marketing",
+            "description": "Strategic B2B cold email outreach campaigns for lead generation. Includes prospect research, email copywriting, deliverability optimization, and campaign analytics for maximum response rates."
           }
         },
         {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Service",
-            "name": "HubSpot CRM",
-            "description": "HubSpot CRM implementation and optimization"
+            "name": "Zoom Virtual Support",
+            "description": "Professional Zoom meeting management, virtual assistance, webinar support, and remote meeting coordination. Ensure flawless virtual events and meetings with expert technical support."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Video & Audio Editing",
+            "description": "Professional video editing, audio production, podcast editing, and multimedia content creation. Transform raw footage into polished, engaging content that captivates your audience."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Website Development",
+            "description": "Custom responsive website design and development using React, Next.js, and modern technologies. Create fast, SEO-optimized websites that convert visitors into customers."
           }
         }
       ]
@@ -126,21 +142,27 @@ const Services = () => {
   return (
     <div className="bg-black transition-all duration-500 ease-in-out relative">
       <Helmet>
-        <title>Our Services | DigiSpark</title>
-        <meta name="description" content="Comprehensive digital services including HubSpot CRM, Web Development, SEO, Virtual Assistance, Digital Marketing, and Video Production, tailored to transform your business." />
-        <meta name="keywords" content="HubSpot CRM, web development, SEO services, virtual assistance, digital marketing, video production, UI/UX design, e-commerce solutions, content marketing, PPC campaigns" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-        <meta property="og:title" content="Our Services | DigiSpark" />
-        <meta property="og:description" content="Transform your business with our comprehensive digital services." />
+        <title>HubSpot CRM, Cold Email Marketing & Web Development Services | DigiSpark</title>
+        <meta name="description" content="DigiSpark offers expert HubSpot CRM implementation, marketing automation, cold email campaigns, Zoom virtual support, professional video/audio editing, and custom website development. Get a free consultation for your project." />
+        <meta name="keywords" content="HubSpot CRM implementation, HubSpot partner, marketing automation services, cold email marketing, cold outreach campaigns, B2B lead generation, Zoom support services, virtual assistance, video editing services, audio editing, podcast editing, website development, web design agency, custom web development, responsive websites, digital marketing services, CRM integration, sales automation" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+        
+        <meta property="og:title" content="HubSpot CRM, Cold Email Marketing & Web Development | DigiSpark" />
+        <meta property="og:description" content="Expert HubSpot CRM, cold email campaigns, Zoom support, video editing & custom web development. Transform your business today." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://yourdomain.com/services" />
-        <meta property="og:image" content="https://yourdomain.com/images/services-og.jpg" />
+        <meta property="og:url" content="https://digispark.agency/services" />
+        <meta property="og:image" content="https://digispark.agency/og-services.jpg" />
+        <meta property="og:site_name" content="DigiSpark Agency" />
+        
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Our Services | DigiSpark" />
-        <meta name="twitter:description" content="Transform your business with our comprehensive digital services." />
-        <meta name="robots" content="index, follow" />
-        <meta name="author" content="DigiSpark Team" />
-        <link rel="canonical" href="https://yourdomain.com/services" />
+        <meta name="twitter:title" content="HubSpot CRM & Digital Services | DigiSpark" />
+        <meta name="twitter:description" content="Expert HubSpot CRM, cold email marketing, Zoom support, video editing & web development." />
+        <meta name="twitter:image" content="https://digispark.agency/og-services.jpg" />
+        
+        <meta name="robots" content="index, follow, max-image-preview:large" />
+        <meta name="author" content="DigiSpark Agency" />
+        <link rel="canonical" href="https://digispark.agency/services" />
+        
         <script type="application/ld+json">
           {JSON.stringify(servicesSchema)}
         </script>
