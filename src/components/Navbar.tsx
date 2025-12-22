@@ -197,114 +197,79 @@ const Navbar = () => {
             )}
           </nav>
 
+          {/* Mobile hamburger button - simple and compact */}
           <button 
             aria-label="Menu Toggle" 
-            className="md:hidden focus:outline-none relative z-50 p-2 -mr-2 min-h-[44px] min-w-[44px] flex items-center justify-center touch-target" 
+            className="md:hidden focus:outline-none relative z-50 p-2" 
             onClick={toggleMenu}
           >
-            <div className="w-6 flex flex-col items-end space-y-1.5 overflow-hidden">
+            <div className="w-5 flex flex-col items-end space-y-1">
               <motion.span
-                animate={isMenuOpen ? { y: 6, rotate: 45, width: 24 } : { y: 0, rotate: 0, width: 24 }}
+                animate={isMenuOpen ? { y: 5, rotate: 45, width: 20 } : { y: 0, rotate: 0, width: 20 }}
                 className="h-0.5 bg-white block"
               ></motion.span>
               <motion.span
-                animate={isMenuOpen ? { width: 0 } : { width: 16 }}
+                animate={isMenuOpen ? { opacity: 0, width: 0 } : { opacity: 1, width: 14 }}
                 className="h-0.5 bg-white block"
               ></motion.span>
               <motion.span
-                animate={isMenuOpen ? { y: -6, rotate: -45, width: 24 } : { y: 0, rotate: 0, width: 20 }}
+                animate={isMenuOpen ? { y: -5, rotate: -45, width: 20 } : { y: 0, rotate: 0, width: 18 }}
                 className="h-0.5 bg-white block"
               ></motion.span>
             </div>
           </button>
 
+          {/* Mobile menu - compact slide-down */}
           <AnimatePresence>
             {isMenuOpen && (
               <motion.div
-                className="fixed inset-0 bg-black/98 flex items-center justify-center md:hidden z-40 safe-area-top safe-area-bottom"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
+                className="absolute top-full left-0 right-0 bg-black/95 backdrop-blur-lg border-b border-white/10 md:hidden"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
               >
-                <nav className="flex flex-col items-center space-y-4 text-lg w-full px-8 max-h-[80vh] overflow-y-auto scrollbar-hide">
-                  <Link to="/" className={`text-lg font-medium py-3 min-h-[48px] flex items-center ${pathname === "/" ? "text-yellow-400" : "text-white"}`} onClick={closeMenu}>
-                    Home
-                  </Link>
-                  <Link
-                    to="/services"
-                    className={`text-lg font-medium py-3 min-h-[48px] flex items-center ${pathname === "/services" ? "text-yellow-400" : "text-white"}`}
-                    onClick={closeMenu}
-                  >
-                    Services
-                  </Link>
-                  <Link
-                    to="/portfolio"
-                    className={`text-lg font-medium py-3 min-h-[48px] flex items-center ${pathname === "/portfolio" ? "text-yellow-400" : "text-white"}`}
-                    onClick={closeMenu}
-                  >
-                    Portfolio
-                  </Link>
-                  <Link
-                    to="/success-stories"
-                    className={`text-lg font-medium py-3 min-h-[48px] flex items-center ${pathname === "/success-stories" ? "text-yellow-400" : "text-white"}`}
-                    onClick={closeMenu}
-                  >
-                    Success Stories
-                  </Link>
-                  <Link
-                    to="/blog"
-                    className={`text-lg font-medium py-3 min-h-[48px] flex items-center ${pathname === "/blog" || pathname.startsWith("/blog/") ? "text-yellow-400" : "text-white"}`}
-                    onClick={closeMenu}
-                  >
-                    Blog
-                  </Link>
-                  <Link
-                    to="/faq"
-                    className={`text-lg font-medium py-3 min-h-[48px] flex items-center ${pathname === "/faq" ? "text-yellow-400" : "text-white"}`}
-                    onClick={closeMenu}
-                  >
-                    FAQ
-                  </Link>
-                  <Link
-                    to="/about"
-                    className={`text-lg font-medium py-3 min-h-[48px] flex items-center ${pathname === "/about" ? "text-yellow-400" : "text-white"}`}
-                    onClick={closeMenu}
-                  >
-                    About
-                  </Link>
-                  <Link
-                    to="/project-quote"
-                    className={`text-lg font-medium py-3 min-h-[48px] flex items-center ${pathname === "/project-quote" ? "text-yellow-400" : "text-white"}`}
-                    onClick={closeMenu}
-                  >
-                    Project Quote
-                  </Link>
-                  <Link
-                    to="/contact"
-                    className={`text-lg font-medium py-3 min-h-[48px] flex items-center ${pathname === "/contact" ? "text-yellow-400" : "text-white"}`}
-                    onClick={closeMenu}
-                  >
-                    Contact
-                  </Link>
-                  <div className="pt-4 w-full flex justify-center">
+                <nav className="container mx-auto px-4 py-3">
+                  <div className="grid grid-cols-2 gap-2">
+                    <Link to="/" className={`text-sm font-medium py-2.5 px-3 rounded-lg ${pathname === "/" ? "text-yellow-400 bg-white/5" : "text-white/90"}`} onClick={closeMenu}>
+                      Home
+                    </Link>
+                    <Link to="/services" className={`text-sm font-medium py-2.5 px-3 rounded-lg ${pathname === "/services" ? "text-yellow-400 bg-white/5" : "text-white/90"}`} onClick={closeMenu}>
+                      Services
+                    </Link>
+                    <Link to="/portfolio" className={`text-sm font-medium py-2.5 px-3 rounded-lg ${pathname === "/portfolio" ? "text-yellow-400 bg-white/5" : "text-white/90"}`} onClick={closeMenu}>
+                      Portfolio
+                    </Link>
+                    <Link to="/success-stories" className={`text-sm font-medium py-2.5 px-3 rounded-lg ${pathname === "/success-stories" ? "text-yellow-400 bg-white/5" : "text-white/90"}`} onClick={closeMenu}>
+                      Success Stories
+                    </Link>
+                    <Link to="/blog" className={`text-sm font-medium py-2.5 px-3 rounded-lg ${pathname === "/blog" || pathname.startsWith("/blog/") ? "text-yellow-400 bg-white/5" : "text-white/90"}`} onClick={closeMenu}>
+                      Blog
+                    </Link>
+                    <Link to="/about" className={`text-sm font-medium py-2.5 px-3 rounded-lg ${pathname === "/about" ? "text-yellow-400 bg-white/5" : "text-white/90"}`} onClick={closeMenu}>
+                      About
+                    </Link>
+                    <Link to="/faq" className={`text-sm font-medium py-2.5 px-3 rounded-lg ${pathname === "/faq" ? "text-yellow-400 bg-white/5" : "text-white/90"}`} onClick={closeMenu}>
+                      FAQ
+                    </Link>
+                    <Link to="/contact" className={`text-sm font-medium py-2.5 px-3 rounded-lg ${pathname === "/contact" ? "text-yellow-400 bg-white/5" : "text-white/90"}`} onClick={closeMenu}>
+                      Contact
+                    </Link>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-white/10 flex gap-2">
+                    <Link to="/project-quote" className="flex-1 text-center text-sm font-medium py-2.5 px-3 rounded-lg bg-white/5 text-white/90" onClick={closeMenu}>
+                      Get Quote
+                    </Link>
                     {!user ? (
-                      <Link
-                        to="/auth"
-                        className="bg-yellow-400 text-black px-8 py-3 rounded-md font-medium hover:bg-yellow-300 transition-colors min-h-[48px] flex items-center justify-center"
-                        onClick={closeMenu}
-                      >
+                      <Link to="/auth" className="flex-1 text-center bg-yellow-400 text-black text-sm font-medium py-2.5 px-4 rounded-lg" onClick={closeMenu}>
                         Sign In
                       </Link>
                     ) : (
                       <button
-                        onClick={() => {
-                          signOut();
-                          closeMenu();
-                        }}
-                        className="bg-gray-800 text-white px-8 py-3 rounded-md font-medium flex items-center gap-2 min-h-[48px] justify-center"
+                        onClick={() => { signOut(); closeMenu(); }}
+                        className="flex-1 text-center bg-white/10 text-white text-sm font-medium py-2.5 px-4 rounded-lg flex items-center justify-center gap-1.5"
                       >
-                        <LogOut size={16} />
+                        <LogOut size={14} />
                         Sign out
                       </button>
                     )}
