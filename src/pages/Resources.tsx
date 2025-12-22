@@ -205,16 +205,16 @@ const ResourceCard = ({
           </motion.button>
         </motion.div>
 
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
           {/* Icon with subtle background */}
-          <div className="relative mb-4">
+          <div className="relative mb-3 sm:mb-4">
             <div
-              className="relative w-12 h-12 bg-gray-800/80 rounded-lg flex items-center justify-center border border-gray-700/50 group-hover:border-yellow-500/20 transition-colors duration-300"
+              className="relative w-10 h-10 sm:w-12 sm:h-12 bg-gray-800/80 rounded-lg flex items-center justify-center border border-gray-700/50 group-hover:border-yellow-500/20 transition-colors duration-300"
             >
               {resource.iconComponent && (
                 <resource.iconComponent
                   className="text-yellow-400 transition-transform duration-300 group-hover:scale-105"
-                  size={24}
+                  size={20}
                 />
               )}
             </div>
@@ -222,7 +222,7 @@ const ResourceCard = ({
 
           {/* Title with underline animation */}
           <div className="relative mb-2">
-            <h3 className="text-xl font-bold text-white group-hover:text-yellow-400 transition-colors duration-300">
+            <h3 className="text-base sm:text-xl font-bold text-white group-hover:text-yellow-400 transition-colors duration-300">
               {resource.title}
             </h3>
             <motion.div
@@ -234,18 +234,18 @@ const ResourceCard = ({
           </div>
 
           {/* Description */}
-          <p className="text-gray-400 text-sm mb-5 line-clamp-2 group-hover:text-gray-300 transition-colors">
+          <p className="text-gray-400 text-xs sm:text-sm mb-3 sm:mb-5 line-clamp-2 group-hover:text-gray-300 transition-colors">
             {resource.description}
           </p>
 
           {/* Tags */}
-          <div className="flex flex-wrap gap-2 mb-4">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
             <span
-              className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-gray-800/60 text-gray-300 border border-gray-600/30`}
+              className={`inline-flex items-center gap-1 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium bg-gray-800/60 text-gray-300 border border-gray-600/30`}
             >
               {resource.category}
             </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-gray-800/40 text-gray-400 border border-gray-700/20">
+            <span className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium bg-gray-800/40 text-gray-400 border border-gray-700/20">
               {resource.type}
             </span>
           </div>
@@ -255,14 +255,14 @@ const ResourceCard = ({
             href={resource.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-yellow-400 hover:text-yellow-300 font-medium transition-colors group/link"
+            className="inline-flex items-center gap-1.5 sm:gap-2 text-yellow-400 hover:text-yellow-300 font-medium text-sm transition-colors group/link"
           >
-            <span>Visit Resource</span>
+            <span>Visit</span>
             <motion.div
               animate={{ x: isHovered ? 5 : 0 }}
               transition={{ duration: 0.2 }}
             >
-              <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1" />
+              <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 transition-transform group-hover/link:translate-x-1" />
             </motion.div>
           </a>
         </div>
@@ -454,10 +454,10 @@ const Resources = () => {
       </Helmet>
       <Navbar />
 
-      <main className="container mx-auto px-4 py-24">
+      <main className="container mx-auto px-4 py-16 sm:py-24">
         {/* Hero Section */}
         <motion.div
-          className="text-center mb-16 relative"
+          className="text-center mb-8 sm:mb-16 relative"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -465,7 +465,7 @@ const Resources = () => {
           {/* Animated background elements */}
           <div className="absolute -inset-x-20 -top-20 -bottom-40 pointer-events-none overflow-hidden">
             <motion.div
-              className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-yellow-500/10 rounded-full blur-3xl"
+              className="absolute top-0 left-1/4 w-[250px] sm:w-[500px] h-[250px] sm:h-[500px] bg-yellow-500/10 rounded-full blur-3xl"
               animate={{ 
                 scale: [1, 1.2, 1],
                 x: [0, 30, 0],
@@ -473,7 +473,7 @@ const Resources = () => {
               transition={{ duration: 8, repeat: Infinity }}
             />
             <motion.div
-              className="absolute bottom-20 right-1/4 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-3xl"
+              className="absolute bottom-20 right-1/4 w-[250px] sm:w-[500px] h-[250px] sm:h-[500px] bg-purple-500/10 rounded-full blur-3xl"
               animate={{ 
                 scale: [1.2, 1, 1.2],
                 x: [0, -30, 0],
@@ -489,16 +489,16 @@ const Resources = () => {
             className="relative z-10"
           >
             <motion.div
-              className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-500/10 border border-yellow-500/30 rounded-full text-yellow-400 text-sm font-medium mb-6"
+              className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-yellow-500/10 border border-yellow-500/30 rounded-full text-yellow-400 text-xs sm:text-sm font-medium mb-4 sm:mb-6"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
-              <Sparkles className="w-4 h-4" />
+              <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
               <span>{resources.length}+ Curated Resources</span>
             </motion.div>
 
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+            <h1 className="text-2xl sm:text-4xl md:text-6xl font-bold text-white mb-3 sm:mb-6">
               Helpful <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500">Resources</span>
             </h1>
             <motion.p 

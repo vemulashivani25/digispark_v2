@@ -131,10 +131,10 @@ const Tools = () => {
     return (
       <div className="min-h-screen bg-black">
         <Navbar />
-        <section className="pt-32 pb-20 min-h-screen flex items-center justify-center relative overflow-hidden">
+        <section className="pt-20 sm:pt-28 pb-12 sm:pb-20 min-h-[85vh] sm:min-h-screen flex items-center justify-center relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-black via-black/90 to-black pointer-events-none"></div>
-          <div className="absolute w-[40rem] h-[40rem] bg-yellow-400/5 rounded-full blur-3xl -top-20 -right-20 animate-pulse"></div>
-          <div className="absolute w-[30rem] h-[30rem] bg-purple-400/10 rounded-full blur-2xl bottom-0 left-0 animate-pulse"></div>
+          <div className="absolute w-[20rem] sm:w-[40rem] h-[20rem] sm:h-[40rem] bg-yellow-400/5 rounded-full blur-3xl -top-20 -right-20 animate-pulse"></div>
+          <div className="absolute w-[15rem] sm:w-[30rem] h-[15rem] sm:h-[30rem] bg-purple-400/10 rounded-full blur-2xl bottom-0 left-0 animate-pulse"></div>
 
           <motion.div
             className="container mx-auto px-4 relative z-10 text-center max-w-2xl"
@@ -143,41 +143,41 @@ const Tools = () => {
             transition={{ duration: 0.6 }}
           >
             <motion.div
-              className="w-24 h-24 bg-gradient-to-br from-yellow-400/20 to-purple-400/20 rounded-full flex items-center justify-center mx-auto mb-8 border border-yellow-400/30"
+              className="w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-br from-yellow-400/20 to-purple-400/20 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-8 border border-yellow-400/30"
               animate={{
                 scale: [1, 1.05, 1],
                 rotate: [0, 5, -5, 0],
               }}
               transition={{ duration: 3, repeat: Infinity }}
             >
-              <Lock className="w-10 h-10 text-yellow-400" />
+              <Lock className="w-7 h-7 sm:w-10 sm:h-10 text-yellow-400" />
             </motion.div>
 
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6">
               Unlock Our <span className="text-yellow-400">Digital Tools</span>
             </h1>
 
-            <p className="text-xl text-gray-300 mb-4">Hey there, creative soul! 👋</p>
+            <p className="text-base sm:text-xl text-gray-300 mb-2 sm:mb-4">Hey there, creative soul! 👋</p>
 
-            <p className="text-gray-400 mb-8 leading-relaxed">
+            <p className="text-sm sm:text-base text-gray-400 mb-6 sm:mb-8 leading-relaxed">
               Our tools are like a secret garden of creativity - you just need a key to enter! Sign in to access our
               color palette generator, font pairing tool, and traffic analytics simulator. We promise it's worth it (and
               free)!
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-12">
               <Button
-                size="lg"
-                className="bg-yellow-400 hover:bg-yellow-300 text-black font-semibold"
+                size="default"
+                className="bg-yellow-400 hover:bg-yellow-300 text-black font-semibold text-sm sm:text-base"
                 onClick={() => navigate("/auth")}
               >
-                <Sparkles className="w-5 h-5 mr-2" />
+                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                 Sign In to Unlock
               </Button>
               <Button
                 variant="outline"
-                size="lg"
-                className="border-gray-600 text-black-300 hover:bg-white-800"
+                size="default"
+                className="border-gray-600 text-black-300 hover:bg-white-800 text-sm sm:text-base"
                 onClick={() => navigate("/")}
               >
                 Back to Home
@@ -185,17 +185,17 @@ const Tools = () => {
             </div>
 
             {/* Human touch section */}
-            <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
+            <div className="grid grid-cols-2 gap-2 sm:gap-4 max-w-md mx-auto">
               {humanTouchMessages.map((item, index) => (
                 <motion.div
                   key={index}
-                  className="flex items-center gap-2 text-sm text-gray-400 bg-gray-900/50 rounded-lg p-3 border border-gray-800"
+                  className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-400 bg-gray-900/50 rounded-lg p-2 sm:p-3 border border-gray-800"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 + index * 0.1 }}
                 >
-                  <item.icon className="w-4 h-4 text-yellow-400 flex-shrink-0" />
-                  <span className="text-xs">{item.text}</span>
+                  <item.icon className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 flex-shrink-0" />
+                  <span className="text-[10px] sm:text-xs">{item.text}</span>
                 </motion.div>
               ))}
             </div>
@@ -210,57 +210,57 @@ const Tools = () => {
     <div className="min-h-screen bg-black page-transition">
       <Navbar />
 
-      <section className="pt-32 pb-20 bg-black relative overflow-hidden">
+      <section className="pt-20 sm:pt-28 pb-10 sm:pb-20 bg-black relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-black via-black/90 to-black pointer-events-none"></div>
-        <div className="absolute w-[40rem] h-[40rem] bg-yellow-400/5 rounded-full blur-3xl -top-20 -right-20 animate-pulse-slow"></div>
+        <div className="absolute w-[20rem] sm:w-[40rem] h-[20rem] sm:h-[40rem] bg-yellow-400/5 rounded-full blur-3xl -top-20 -right-20 animate-pulse-slow"></div>
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+            <h1 className="text-2xl sm:text-4xl md:text-6xl font-bold text-white mb-3 sm:mb-6">
               Digital <span className="text-yellow-400">Tools</span>
             </h1>
-            <p className="text-xl text-gray-300 mb-8">Free web tools to help you with your digital projects</p>
+            <p className="text-sm sm:text-lg md:text-xl text-gray-300 mb-4 sm:mb-8">Free web tools to help you with your digital projects</p>
           </div>
 
           {/* Music Player */}
-          <div className="fixed bottom-24 right-6 z-40">
+          <div className="fixed bottom-20 sm:bottom-24 right-4 sm:right-6 z-40">
             <MusicPlayer />
           </div>
 
-          <Tabs defaultValue="qr-code" className="w-full mt-12">
-            <TabsList className="flex flex-wrap justify-center gap-2 bg-gray-900/50 p-3 h-auto">
-              <TabsTrigger value="qr-code" className="text-white text-sm px-4 py-2">
+          <Tabs defaultValue="qr-code" className="w-full mt-6 sm:mt-12">
+            <TabsList className="flex flex-wrap justify-center gap-1 sm:gap-2 bg-gray-900/50 p-2 sm:p-3 h-auto overflow-x-auto">
+              <TabsTrigger value="qr-code" className="text-white text-xs sm:text-sm px-2 sm:px-4 py-1.5 sm:py-2">
                 QR Code
               </TabsTrigger>
-              <TabsTrigger value="robots-txt" className="text-white text-sm px-4 py-2">
+              <TabsTrigger value="robots-txt" className="text-white text-xs sm:text-sm px-2 sm:px-4 py-1.5 sm:py-2">
                 Robots.txt
               </TabsTrigger>
-              <TabsTrigger value="sitemap" className="text-white text-sm px-4 py-2">
+              <TabsTrigger value="sitemap" className="text-white text-xs sm:text-sm px-2 sm:px-4 py-1.5 sm:py-2">
                 Sitemap
               </TabsTrigger>
-              <TabsTrigger value="schema-markup" className="text-white text-sm px-4 py-2">
-                Schema Markup
+              <TabsTrigger value="schema-markup" className="text-white text-xs sm:text-sm px-2 sm:px-4 py-1.5 sm:py-2">
+                Schema
               </TabsTrigger>
-              <TabsTrigger value="meta-tags" className="text-white text-sm px-4 py-2">
+              <TabsTrigger value="meta-tags" className="text-white text-xs sm:text-sm px-2 sm:px-4 py-1.5 sm:py-2">
                 Meta Tags
               </TabsTrigger>
-              <TabsTrigger value="keyword-density" className="text-white text-sm px-4 py-2">
-                Keyword Checker
+              <TabsTrigger value="keyword-density" className="text-white text-xs sm:text-sm px-2 sm:px-4 py-1.5 sm:py-2">
+                Keywords
               </TabsTrigger>
-              <TabsTrigger value="gradient" className="text-white text-sm px-4 py-2">
+              <TabsTrigger value="gradient" className="text-white text-xs sm:text-sm px-2 sm:px-4 py-1.5 sm:py-2">
                 Gradients
               </TabsTrigger>
-              <TabsTrigger value="lorem-ipsum" className="text-white text-sm px-4 py-2">
+              <TabsTrigger value="lorem-ipsum" className="text-white text-xs sm:text-sm px-2 sm:px-4 py-1.5 sm:py-2">
                 Lorem Ipsum
               </TabsTrigger>
-              <TabsTrigger value="color-palette" className="text-white text-sm px-4 py-2">
-                Color Palette
+              <TabsTrigger value="color-palette" className="text-white text-xs sm:text-sm px-2 sm:px-4 py-1.5 sm:py-2">
+                Colors
               </TabsTrigger>
-              <TabsTrigger value="font-pairing" className="text-white text-sm px-4 py-2">
-                Font Pairing
+              <TabsTrigger value="font-pairing" className="text-white text-xs sm:text-sm px-2 sm:px-4 py-1.5 sm:py-2">
+                Fonts
               </TabsTrigger>
-              <TabsTrigger value="traffic-analytics" className="text-white text-sm px-4 py-2">
-                Traffic Analytics
+              <TabsTrigger value="traffic-analytics" className="text-white text-xs sm:text-sm px-2 sm:px-4 py-1.5 sm:py-2">
+                Analytics
               </TabsTrigger>
             </TabsList>
 

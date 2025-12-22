@@ -249,20 +249,20 @@ const SuccessStories = () => {
 
       <Navbar />
 
-      <main className="pt-20 pb-20">
-        <section className="pt-20 pb-10 bg-black relative overflow-hidden">
+      <main className="pt-16 sm:pt-20 pb-10 sm:pb-20">
+        <section className="pt-12 sm:pt-20 pb-6 sm:pb-10 bg-black relative overflow-hidden">
           <div className="absolute inset-0 bg-grid-white/[0.04] bg-[length:20px_20px] pointer-events-none" />
-          <div className="absolute w-[50rem] h-[50rem] bg-yellow-400/5 rounded-full blur-3xl -top-20 -right-60 animate-pulse-slow" />
-          <div className="absolute w-[30rem] h-[30rem] bg-purple-400/10 rounded-full blur-2xl -bottom-10 -left-20 animate-pulse-slow" />
+          <div className="absolute w-[25rem] sm:w-[50rem] h-[25rem] sm:h-[50rem] bg-yellow-400/5 rounded-full blur-3xl -top-20 -right-60 animate-pulse-slow" />
+          <div className="absolute w-[15rem] sm:w-[30rem] h-[15rem] sm:h-[30rem] bg-purple-400/10 rounded-full blur-2xl -bottom-10 -left-20 animate-pulse-slow" />
 
           <div className="container mx-auto px-4 relative z-10">
             <motion.div
-              className="text-center mb-16"
+              className="text-center mb-8 sm:mb-16"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 relative">
+              <h1 className="text-2xl sm:text-4xl md:text-6xl font-bold text-white mb-3 sm:mb-6 relative">
                 Client{" "}
                 <span className="relative">
                   <span className="text-yellow-400">Success Stories</span>
@@ -274,47 +274,47 @@ const SuccessStories = () => {
                   />
                 </span>
               </h1>
-              <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
+              <p className="text-sm sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
                 Real results from our innovative digital solutions. Explore how we've helped businesses transform and
                 grow.
               </p>
 
               <motion.div
-                className="mt-8 flex flex-wrap justify-center gap-4"
+                className="mt-4 sm:mt-8 flex flex-wrap justify-center gap-2 sm:gap-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
               >
                 <Button
                   variant="outline"
-                  size="lg"
-                  className="bg-transparent border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black"
+                  size="sm"
+                  className="bg-transparent border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black text-xs sm:text-sm"
                   onClick={() => {
                     const element = document.getElementById("success-stories-gallery");
                     element?.scrollIntoView({ behavior: "smooth" });
                   }}
                 >
                   View Case Studies
-                  <ArrowRight className="ml-2 w-4 h-4" />
+                  <ArrowRight className="ml-1.5 sm:ml-2 w-3 h-3 sm:w-4 sm:h-4" />
                 </Button>
 
                 <Button
                   variant="outline"
-                  size="lg"
-                  className="bg-transparent border border-gray-600 text-gray-300 hover:bg-gray-800"
+                  size="sm"
+                  className="bg-transparent border border-gray-600 text-gray-300 hover:bg-gray-800 text-xs sm:text-sm"
                   onClick={() => {
                     const industrySection = document.getElementById("industry-filter");
                     industrySection?.scrollIntoView({ behavior: "smooth" });
                   }}
                 >
-                  <Search className="mr-2 w-4 h-4" />
-                  Search By Industry
+                  <Search className="mr-1.5 sm:mr-2 w-3 h-3 sm:w-4 sm:h-4" />
+                  By Industry
                 </Button>
               </motion.div>
             </motion.div>
 
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
+              className="grid grid-cols-3 gap-3 sm:gap-8 mb-8 sm:mb-16"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -322,7 +322,7 @@ const SuccessStories = () => {
               {stats.map((stat, index) => (
                 <motion.div
                   key={stat.label}
-                  className="bg-gradient-to-br from-gray-900/80 to-gray-900/20 border border-gray-800/50 rounded-xl p-6 text-center relative overflow-hidden group"
+                  className="bg-gradient-to-br from-gray-900/80 to-gray-900/20 border border-gray-800/50 rounded-lg sm:rounded-xl p-3 sm:p-6 text-center relative overflow-hidden group"
                   whileHover={hoverEffect}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -330,14 +330,14 @@ const SuccessStories = () => {
                 >
                   <div className="absolute inset-0 opacity-20 bg-pattern-grid pointer-events-none" />
 
-                  <div className="absolute top-6 right-6 w-20 h-20 bg-yellow-400/10 rounded-full blur-xl group-hover:bg-yellow-400/20 transition-all duration-700" />
+                  <div className="absolute top-4 sm:top-6 right-4 sm:right-6 w-12 sm:w-20 h-12 sm:h-20 bg-yellow-400/10 rounded-full blur-xl group-hover:bg-yellow-400/20 transition-all duration-700" />
 
-                  <div className="w-16 h-16 bg-gradient-to-br from-yellow-400/20 to-purple-400/10 rounded-2xl flex items-center justify-center mx-auto mb-4 relative z-10 border border-white/5">
-                    <stat.icon className="w-8 h-8 text-yellow-400" />
+                  <div className="w-10 h-10 sm:w-16 sm:h-16 bg-gradient-to-br from-yellow-400/20 to-purple-400/10 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-2 sm:mb-4 relative z-10 border border-white/5">
+                    <stat.icon className="w-5 h-5 sm:w-8 sm:h-8 text-yellow-400" />
                   </div>
 
                   <motion.h3
-                    className="text-4xl font-bold text-white mb-2"
+                    className="text-xl sm:text-4xl font-bold text-white mb-1 sm:mb-2"
                     initial={{ scale: 0.5, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ duration: 0.5, delay: 0.6 + stat.animDelay }}
@@ -345,10 +345,10 @@ const SuccessStories = () => {
                     {stat.value}
                   </motion.h3>
 
-                  <p className="text-gray-400 text-lg">{stat.label}</p>
+                  <p className="text-gray-400 text-xs sm:text-lg">{stat.label}</p>
 
                   <motion.div
-                    className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-yellow-400 to-purple-400"
+                    className="absolute bottom-0 left-0 h-0.5 sm:h-1 bg-gradient-to-r from-yellow-400 to-purple-400"
                     initial={{ width: "0%" }}
                     whileInView={{ width: "100%" }}
                     viewport={{ once: true }}
@@ -370,40 +370,40 @@ const SuccessStories = () => {
 
             {/* Real-Time Fun Facts Ticker */}
             <motion.div
-              className="mt-12 relative overflow-hidden"
+              className="mt-6 sm:mt-12 relative overflow-hidden"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
             >
-              <div className="bg-gradient-to-r from-gray-900/80 via-gray-800/60 to-gray-900/80 border border-yellow-400/20 rounded-2xl p-6 backdrop-blur-lg">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+              <div className="bg-gradient-to-r from-gray-900/80 via-gray-800/60 to-gray-900/80 border border-yellow-400/20 rounded-xl sm:rounded-2xl p-4 sm:p-6 backdrop-blur-lg">
+                <div className="flex items-center justify-between mb-4 sm:mb-6">
+                  <h3 className="text-sm sm:text-lg font-semibold text-white flex items-center gap-2">
                     <motion.span
-                      className="w-2 h-2 rounded-full bg-green-400"
+                      className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-green-400"
                       animate={{ scale: [1, 1.3, 1], opacity: [1, 0.7, 1] }}
                       transition={{ duration: 1.5, repeat: Infinity }}
                     />
-                    Live Stats & Fun Facts
+                    Live Stats
                   </h3>
-                  <span className="text-xs text-gray-400">Updates in real-time</span>
+                  <span className="text-[10px] sm:text-xs text-gray-400">Real-time</span>
                 </div>
 
                 {/* Live Counters */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 mb-4 sm:mb-6">
                   {[
-                    { label: "Projects Delivered", value: liveCounter.projectsCompleted, icon: Trophy },
-                    { label: "Coffees Consumed", value: liveCounter.coffeesCups, icon: Coffee },
+                    { label: "Projects", value: liveCounter.projectsCompleted, icon: Trophy },
+                    { label: "Coffees", value: liveCounter.coffeesCups, icon: Coffee },
                     { label: "Lines of Code", value: liveCounter.linesOfCode, icon: Zap },
                     { label: "Happy Moments", value: liveCounter.happyMoments, icon: Sparkles },
                   ].map((counter, idx) => (
                     <motion.div
                       key={counter.label}
-                      className="bg-black/40 rounded-xl p-4 border border-gray-700/50 group hover:border-yellow-400/50 transition-all duration-300"
+                      className="bg-black/40 rounded-lg sm:rounded-xl p-2.5 sm:p-4 border border-gray-700/50 group hover:border-yellow-400/50 transition-all duration-300"
                       whileHover={{ scale: 1.02, y: -2 }}
                     >
-                      <counter.icon className="w-5 h-5 text-yellow-400 mb-2" />
+                      <counter.icon className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 mb-1 sm:mb-2" />
                       <motion.p
-                        className="text-2xl font-bold text-white"
+                        className="text-lg sm:text-2xl font-bold text-white"
                         key={counter.value}
                         initial={{ scale: 1.1, color: "#facc15" }}
                         animate={{ scale: 1, color: "#ffffff" }}
@@ -411,13 +411,13 @@ const SuccessStories = () => {
                       >
                         {counter.value.toLocaleString()}
                       </motion.p>
-                      <p className="text-xs text-gray-400">{counter.label}</p>
+                      <p className="text-[10px] sm:text-xs text-gray-400">{counter.label}</p>
                     </motion.div>
                   ))}
                 </div>
 
                 {/* Rotating Fun Facts */}
-                <div className="relative h-16 overflow-hidden">
+                <div className="relative h-12 sm:h-16 overflow-hidden">
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={activeFact}
@@ -428,13 +428,13 @@ const SuccessStories = () => {
                       transition={{ duration: 0.5 }}
                     >
                       <div
-                        className={`flex items-center gap-4 px-6 py-3 rounded-full bg-gradient-to-r ${funFacts[activeFact].color} bg-opacity-20`}
+                        className={`flex items-center gap-2 sm:gap-4 px-3 sm:px-6 py-2 sm:py-3 rounded-full bg-gradient-to-r ${funFacts[activeFact].color} bg-opacity-20`}
                       >
                         {(() => {
                           const IconComponent = funFacts[activeFact].icon;
-                          return <IconComponent className="w-6 h-6 text-white" />;
+                          return <IconComponent className="w-4 h-4 sm:w-6 sm:h-6 text-white flex-shrink-0" />;
                         })()}
-                        <p className="text-white font-medium text-sm md:text-base">{funFacts[activeFact].text}</p>
+                        <p className="text-white font-medium text-xs sm:text-sm md:text-base line-clamp-1">{funFacts[activeFact].text}</p>
                       </div>
                     </motion.div>
                   </AnimatePresence>
