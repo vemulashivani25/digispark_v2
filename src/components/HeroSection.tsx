@@ -145,19 +145,113 @@ const HeroSection = () => {
 
   return (
     <section id="top" className="relative min-h-[85vh] sm:min-h-screen flex items-center justify-center overflow-hidden bg-black pt-16 sm:pt-20">
+      {/* Base gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-black/95 to-black/90 pointer-events-none"></div>
-      <AmbientParticles count={20} />
+      
+      {/* Elegant grid pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(234,179,8,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(234,179,8,0.03)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none"></div>
+      
+      {/* Radial gradient spotlight */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(234,179,8,0.15),transparent)] pointer-events-none"></div>
+      
+      <AmbientParticles count={25} />
+      
+      {/* Animated background orbs */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        {/* Primary golden orb - top left */}
         <motion.div 
-          className="absolute w-[30rem] sm:w-[50rem] h-[30rem] sm:h-[50rem] rounded-full bg-yellow-400/5 blur-3xl top-1/4 -left-1/3"
-          animate={{ scale: [1, 1.1, 1], opacity: [0.05, 0.1, 0.05] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute w-[35rem] sm:w-[55rem] h-[35rem] sm:h-[55rem] rounded-full bg-gradient-to-br from-yellow-400/10 via-yellow-500/5 to-transparent blur-3xl top-1/4 -left-1/3"
+          animate={{ 
+            scale: [1, 1.15, 1], 
+            opacity: [0.08, 0.15, 0.08],
+            x: [0, 30, 0],
+            y: [0, -20, 0]
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
+        
+        {/* Secondary purple orb - bottom right */}
         <motion.div 
-          className="absolute w-[25rem] sm:w-[40rem] h-[25rem] sm:h-[40rem] rounded-full bg-purple-400/5 blur-3xl bottom-0 right-0"
-          animate={{ scale: [1.1, 1, 1.1], opacity: [0.03, 0.08, 0.03] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute w-[28rem] sm:w-[45rem] h-[28rem] sm:h-[45rem] rounded-full bg-gradient-to-tl from-purple-500/8 via-violet-400/5 to-transparent blur-3xl bottom-0 right-0"
+          animate={{ 
+            scale: [1.1, 1, 1.1], 
+            opacity: [0.05, 0.12, 0.05],
+            x: [0, -25, 0],
+            y: [0, 15, 0]
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
         />
+        
+        {/* Tertiary accent orb - center */}
+        <motion.div 
+          className="absolute w-[20rem] sm:w-[30rem] h-[20rem] sm:h-[30rem] rounded-full bg-gradient-to-r from-amber-400/6 to-orange-400/4 blur-3xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          animate={{ 
+            scale: [1, 1.2, 1], 
+            opacity: [0.04, 0.1, 0.04],
+            rotate: [0, 180, 360]
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        />
+        
+        {/* Floating light particles */}
+        <motion.div
+          className="absolute w-2 h-2 rounded-full bg-yellow-400/40 top-[20%] left-[15%]"
+          animate={{ 
+            y: [0, -40, 0],
+            opacity: [0.3, 0.8, 0.3],
+            scale: [1, 1.5, 1]
+          }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute w-1.5 h-1.5 rounded-full bg-yellow-300/50 top-[60%] right-[20%]"
+          animate={{ 
+            y: [0, -30, 0],
+            opacity: [0.4, 0.9, 0.4],
+            scale: [1, 1.3, 1]
+          }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        />
+        <motion.div
+          className="absolute w-1 h-1 rounded-full bg-amber-400/60 top-[40%] left-[70%]"
+          animate={{ 
+            y: [0, -25, 0],
+            opacity: [0.5, 1, 0.5],
+            scale: [1, 1.4, 1]
+          }}
+          transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        />
+        <motion.div
+          className="absolute w-1.5 h-1.5 rounded-full bg-yellow-500/45 top-[75%] left-[30%]"
+          animate={{ 
+            y: [0, -35, 0],
+            opacity: [0.35, 0.85, 0.35],
+            scale: [1, 1.2, 1]
+          }}
+          transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+        />
+        
+        {/* Elegant line accents */}
+        <motion.div
+          className="absolute top-[30%] left-0 w-[200px] sm:w-[400px] h-[1px] bg-gradient-to-r from-transparent via-yellow-400/20 to-transparent"
+          animate={{ 
+            x: [-100, 100, -100],
+            opacity: [0, 0.6, 0]
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute bottom-[25%] right-0 w-[150px] sm:w-[300px] h-[1px] bg-gradient-to-r from-transparent via-purple-400/15 to-transparent"
+          animate={{ 
+            x: [100, -100, 100],
+            opacity: [0, 0.5, 0]
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+        />
+        
+        {/* Corner glow accents */}
+        <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-gradient-to-br from-yellow-400/5 to-transparent pointer-events-none"></div>
+        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-gradient-to-tl from-purple-400/3 to-transparent pointer-events-none"></div>
       </div>
       
       <div className="container mx-auto px-4 z-10">
