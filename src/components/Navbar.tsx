@@ -114,17 +114,13 @@ const Navbar = () => {
             >
               Home
             </Link>
-            <NavDropdownLink
-              title="Services"
-              isScrolled={isScrolled}
-              links={[
-                { label: "All Services", href: "/services" },
-                { label: "Web Development", href: "/services#web-development" },
-                { label: "Digital Marketing", href: "/services#digital-marketing" },
-                { label: "SEO Services", href: "/services#seo" },
-                { label: "Virtual Assistance", href: "/services#virtual-assistance" },
-              ]}
-            />
+            <Link
+              to="/services"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className={`nav-link text-sm font-medium ${pathname === "/services" ? "text-yellow-400" : "text-white hover:text-yellow-400"}`}
+            >
+              Services
+            </Link>
             <NavDropdownLink
               title="Work"
               isScrolled={isScrolled}
