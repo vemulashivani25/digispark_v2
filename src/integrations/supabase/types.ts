@@ -556,9 +556,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_client: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
-      app_role: "admin" | "moderator" | "user"
+      app_role: "admin" | "moderator" | "user" | "client"
       invoice_status: "draft" | "sent" | "paid" | "overdue" | "cancelled"
       milestone_status: "pending" | "in_progress" | "completed" | "delayed"
       project_status:
@@ -695,7 +696,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "moderator", "user"],
+      app_role: ["admin", "moderator", "user", "client"],
       invoice_status: ["draft", "sent", "paid", "overdue", "cancelled"],
       milestone_status: ["pending", "in_progress", "completed", "delayed"],
       project_status: [

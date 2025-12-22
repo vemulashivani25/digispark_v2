@@ -3,7 +3,7 @@ import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
 
-type AppRole = 'admin' | 'moderator' | 'user';
+type AppRole = 'admin' | 'moderator' | 'user' | 'client';
 type UserRole = AppRole | null;
 
 type AuthContextType = {
@@ -11,6 +11,7 @@ type AuthContextType = {
   user: User | null;
   userRole: UserRole;
   isAdmin: boolean;
+  isClient: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, fullName: string) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
@@ -243,13 +244,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const isAdmin = userRole === 'admin';
+  const isClient = userRole === 'client';
 
   return (
     <AuthContext.Provider value={{ 
       session, 
       user, 
       userRole, 
-      isAdmin, 
+      isAdmin,
+      isClient, 
       signIn, 
       signUp, 
       signInWithGoogle,
