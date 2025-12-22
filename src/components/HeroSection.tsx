@@ -144,99 +144,66 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section id="top" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+    <section id="top" className="relative min-h-[85vh] sm:min-h-screen flex items-center justify-center overflow-hidden bg-black pt-16 sm:pt-20">
       <div className="absolute inset-0 bg-gradient-to-b from-black via-black/95 to-black/90 pointer-events-none"></div>
-      <AmbientParticles count={40} />
+      <AmbientParticles count={20} />
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <motion.div 
-          className="absolute w-[50rem] h-[50rem] rounded-full bg-yellow-400/5 blur-3xl top-1/4 -left-1/3"
-          animate={{ 
-            scale: [1, 1.1, 1],
-            opacity: [0.05, 0.1, 0.05],
-          }}
+          className="absolute w-[30rem] sm:w-[50rem] h-[30rem] sm:h-[50rem] rounded-full bg-yellow-400/5 blur-3xl top-1/4 -left-1/3"
+          animate={{ scale: [1, 1.1, 1], opacity: [0.05, 0.1, 0.05] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div 
-          className="absolute w-[40rem] h-[40rem] rounded-full bg-purple-400/5 blur-3xl bottom-0 right-0"
-          animate={{ 
-            scale: [1.1, 1, 1.1],
-            opacity: [0.03, 0.08, 0.03],
-          }}
+          className="absolute w-[25rem] sm:w-[40rem] h-[25rem] sm:h-[40rem] rounded-full bg-purple-400/5 blur-3xl bottom-0 right-0"
+          animate={{ scale: [1.1, 1, 1.1], opacity: [0.03, 0.08, 0.03] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        />
-        <motion.div 
-          className="absolute top-1/4 right-1/4 w-32 h-32 border border-yellow-400/10 rounded-full"
-          animate={{ rotate: 360, y: [0, -20, 0] }}
-          transition={{ rotate: { duration: 20, repeat: Infinity, ease: "linear" }, y: { duration: 4, repeat: Infinity, ease: "easeInOut" } }}
-        />
-        <motion.div 
-          className="absolute bottom-1/3 left-1/3 w-24 h-24 border border-yellow-400/10 rounded-md"
-          animate={{ rotate: -360, x: [0, 20, 0] }}
-          transition={{ rotate: { duration: 25, repeat: Infinity, ease: "linear" }, x: { duration: 5, repeat: Infinity, ease: "easeInOut" } }}
-        />
-        <motion.div 
-          className="absolute top-2/3 right-1/3 w-16 h-16 border border-yellow-400/10 rounded-lg"
-          animate={{ rotate: 180, scale: [1, 1.2, 1] }}
-          transition={{ rotate: { duration: 15, repeat: Infinity, ease: "linear" }, scale: { duration: 3, repeat: Infinity, ease: "easeInOut" } }}
         />
       </div>
       
-      <div className="container mx-auto px-4 sm:px-6 z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <div className="container mx-auto px-4 z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-center">
           <div className="text-center lg:text-left">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 sm:mb-6 font-space animate-fade-in leading-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-3 sm:mb-4 font-space animate-fade-in leading-tight">
               We Create <Typewriter /> Experiences
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 animate-fade-in opacity-90 max-w-xl mx-auto lg:mx-0">
-              Transform your brand with cutting-edge design and innovative solutions tailored to meet your business goals
+            <p className="text-sm sm:text-base md:text-lg text-gray-300 mb-4 sm:mb-6 animate-fade-in opacity-90 max-w-xl mx-auto lg:mx-0">
+              Transform your brand with cutting-edge design and innovative solutions
             </p>
-            <div className="flex flex-col sm:flex-row flex-wrap justify-center lg:justify-start gap-3 sm:gap-4">
+            <div className="flex flex-row justify-center lg:justify-start gap-2 sm:gap-3">
               <Button
-                size="lg"
-                className="w-full sm:w-auto min-h-[48px] bg-gradient-to-r from-yellow-400 to-yellow-500 text-black 
-                  hover:from-yellow-500 hover:to-yellow-600 transition-all duration-500 
-                  transform hover:-translate-y-1 hover:shadow-[0_20px_50px_-12px_rgba(234,179,8,0.4)]
-                  active:translate-y-0.5 active:shadow-none
-                  group relative overflow-hidden text-base font-semibold"
+                size="default"
+                className="min-h-[40px] sm:min-h-[44px] bg-gradient-to-r from-yellow-400 to-yellow-500 text-black 
+                  hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300 
+                  text-sm sm:text-base font-semibold px-4 sm:px-6"
               >
-                <span className="absolute inset-0 bg-gradient-to-r from-yellow-300 to-yellow-400 opacity-0 
-                  group-hover:opacity-100 transition-opacity duration-500"/>
-                <span className="relative z-10 flex items-center justify-center">
-                  View Our Work
-                  <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300" />
+                <span className="flex items-center">
+                  View Work
+                  <ArrowRight className="ml-1.5 h-4 w-4" />
                 </span>
               </Button>
               <Button
-                size="lg"
+                size="default"
                 variant="outline"
-                className="w-full sm:w-auto min-h-[48px] text-yellow-400 border-yellow-400 hover:bg-yellow-400/10 hover:scale-105 transition-all duration-300 text-base font-semibold"
+                className="min-h-[40px] sm:min-h-[44px] text-yellow-400 border-yellow-400 hover:bg-yellow-400/10 text-sm sm:text-base font-semibold px-4 sm:px-6"
               >
-                Get in Touch
+                Contact
               </Button>
             </div>
           </div>
-          <div className="relative mt-8 lg:mt-0">
+          <div className="relative mt-4 lg:mt-0 hidden sm:block">
             <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-transparent rounded-full blur-3xl animate-pulse-slow"></div>
-            <div ref={containerRef} className="relative flex justify-center items-center glass-effect p-4 sm:p-6 md:p-8 rounded-2xl h-[180px] sm:h-[220px] md:h-[300px]" />
+            <div ref={containerRef} className="relative flex justify-center items-center glass-effect p-4 sm:p-6 rounded-xl h-[150px] sm:h-[200px] md:h-[250px]" />
           </div>
         </div>
       </div>
 
       <motion.div 
-        animate={{ 
-          y: [0, 10, 0],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          repeatType: "reverse"
-        }}
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 cursor-pointer"
-        onClick={() => {
-          document.getElementById("process")?.scrollIntoView({ behavior: "smooth" });
-        }}
+        animate={{ y: [0, 8, 0] }}
+        transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+        className="absolute bottom-6 sm:bottom-10 left-1/2 transform -translate-x-1/2 cursor-pointer"
+        onClick={() => document.getElementById("process")?.scrollIntoView({ behavior: "smooth" })}
       >
-        <ArrowDown className="text-yellow-400 h-8 w-8" />
+        <ArrowDown className="text-yellow-400 h-6 w-6 sm:h-8 sm:w-8" />
       </motion.div>
     </section>
   );

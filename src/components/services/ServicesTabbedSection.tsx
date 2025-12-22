@@ -200,17 +200,17 @@ const ServicesTabbedSection: React.FC = () => {
   };
 
   return (
-    <section className="py-16 bg-black relative overflow-hidden">
+    <section className="py-10 sm:py-12 md:py-16 bg-black relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-full bg-grid-white/[0.02] pointer-events-none bg-[length:30px_30px]"></div>
       <div className="absolute w-full h-full">
-        <div className="absolute top-40 left-20 w-72 h-72 bg-indigo-600/10 rounded-full filter blur-[100px]"></div>
-        <div className="absolute bottom-40 right-20 w-80 h-80 bg-yellow-600/10 rounded-full filter blur-[100px]"></div>
+        <div className="absolute top-40 left-20 w-48 sm:w-72 h-48 sm:h-72 bg-indigo-600/10 rounded-full filter blur-[100px]"></div>
+        <div className="absolute bottom-40 right-20 w-56 sm:w-80 h-56 sm:h-80 bg-yellow-600/10 rounded-full filter blur-[100px]"></div>
       </div>
 
       <div className="container mx-auto px-4 relative">
-        <div className="text-center mb-12">
+        <div className="text-center mb-6 sm:mb-8 md:mb-12">
           <motion.h2
-            className="text-3xl md:text-5xl font-bold text-white mb-4"
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-2 sm:mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -219,34 +219,33 @@ const ServicesTabbedSection: React.FC = () => {
             Our <span className="text-yellow-400">Services</span> Categories
           </motion.h2>
           <motion.p
-            className="text-gray-400 max-w-2xl mx-auto"
+            className="text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            Browse our comprehensive range of services designed to transform your digital presence and drive growth for
-            your business.
+            Browse our comprehensive range of services designed to transform your digital presence.
           </motion.p>
         </div>
 
         <Tabs defaultValue={categories[0]} value={activeCategory} className="w-full" onValueChange={handleTabChange}>
-          <div className="flex justify-center mb-14">
+          <div className="flex justify-center mb-6 sm:mb-10 md:mb-14">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="w-full max-w-5xl"
+              className="w-full max-w-5xl overflow-x-auto scrollbar-hide"
             >
-              <TabsList className="w-full bg-transparent p-0 h-auto flex flex-wrap justify-center gap-4">
+              <TabsList className="w-full bg-transparent p-0 h-auto flex flex-nowrap sm:flex-wrap justify-start sm:justify-center gap-2 sm:gap-3 md:gap-4 pb-2">
                 {categories.map((category, index) => (
                   <TabsTrigger
                     key={category}
                     value={category}
-                    className="relative group py-0 px-0 bg-transparent border-0 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+                    className="relative group py-0 px-0 bg-transparent border-0 data-[state=active]:bg-transparent data-[state=active]:shadow-none flex-shrink-0"
                   >
                     <motion.div
-                      className="relative px-8 py-4 rounded-2xl cursor-pointer overflow-hidden"
+                      className="relative px-3 sm:px-5 md:px-8 py-2 sm:py-3 md:py-4 rounded-lg sm:rounded-xl md:rounded-2xl cursor-pointer overflow-hidden"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       animate={{
@@ -256,44 +255,13 @@ const ServicesTabbedSection: React.FC = () => {
                             : "linear-gradient(135deg, rgba(31, 41, 55, 0.6) 0%, rgba(17, 24, 39, 0.8) 100%)",
                         boxShadow:
                           activeCategory === category
-                            ? "0 10px 40px -10px rgba(250, 204, 21, 0.5), 0 0 0 1px rgba(250, 204, 21, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)"
-                            : "0 4px 20px -5px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(75, 85, 99, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
+                            ? "0 8px 30px -8px rgba(250, 204, 21, 0.5)"
+                            : "0 4px 15px -5px rgba(0, 0, 0, 0.4)",
                       }}
                       transition={{ duration: 0.4, ease: "easeOut" }}
                     >
-                      {/* Shine effect on hover */}
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                      </div>
-
-                      {/* Floating particles for active state */}
-                      {activeCategory === category && (
-                        <>
-                          <motion.div
-                            className="absolute top-2 right-3 w-1 h-1 rounded-full bg-white/60"
-                            animate={{ y: [-2, 2, -2], opacity: [0.6, 1, 0.6] }}
-                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                          />
-                          <motion.div
-                            className="absolute bottom-3 left-4 w-1.5 h-1.5 rounded-full bg-white/40"
-                            animate={{ y: [2, -2, 2], opacity: [0.4, 0.8, 0.4] }}
-                            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                          />
-                        </>
-                      )}
-
-                      {/* Category number badge 
-                      <div className={`absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300 ${
-                        activeCategory === category 
-                          ? "bg-gray-900 text-yellow-400 shadow-lg" 
-                          : "bg-gray-700/50 text-gray-400"
-                      }`}>
-                        {allServices.filter(s => s.category === category).length}
-                      </div> */}
-
-                      {/* Text content */}
                       <span
-                        className={`relative z-10 font-semibold text-sm tracking-wide transition-colors duration-300 ${
+                        className={`relative z-10 font-medium sm:font-semibold text-xs sm:text-sm tracking-wide transition-colors duration-300 whitespace-nowrap ${
                           activeCategory === category ? "text-gray-900" : "text-gray-300 group-hover:text-white"
                         }`}
                       >
