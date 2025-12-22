@@ -101,8 +101,8 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-20">
           <Link to="/" className="flex items-center relative z-50">
-            <span className="text-white font-bold text-2xl">
-              Digi<span className="text-yellow-400">Spark</span>
+            <span className="text-white font-bold text-3xl drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.5)] transition-all duration-300">
+              Digi<span className="text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.4)]">Spark</span>
             </span>
           </Link>
 
