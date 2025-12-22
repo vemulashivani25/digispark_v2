@@ -1,21 +1,70 @@
 /**
- * About Page Component
- * Displays company information, story, values, team, and testimonials
- * SEO optimized with proper meta tags for search engine visibility
+ * ============================================================================
+ * About Page
+ * ============================================================================
+ * 
+ * Company information page featuring story, values, team, and testimonials.
+ * SEO optimized with proper meta tags for search engine visibility.
+ * 
+ * SECTIONS (in order):
+ * 1. Navbar - Main navigation (@/components/Navbar)
+ * 2. Hero Section - Page header with title
+ * 3. Company Story - About the agency origin
+ * 4. Our Values - Core principles (Excellence, Collaboration, etc.)
+ * 5. AgencyStatsInfoGraphic - Statistics (@/components/infographics/AgencyStatsInfoGraphic)
+ * 6. ProcessSection - How we work (@/components/ProcessSection)
+ * 7. MeetTheTeamSection - Team members (@/components/MeetTheTeamSection)
+ * 8. GlobalPresenceSection - World locations (@/components/GlobalPresenceSection)
+ * 9. TestimonialsSection - Client reviews (@/components/TestimonialsSection)
+ * 10. NewsletterSection - Email subscription (@/components/newsletter/NewsletterSection)
+ * 11. FooterSection - Site footer (@/components/FooterSection)
+ * 
+ * @author DigiSpark Team
+ * @version 1.0.0
+ * ============================================================================
  */
+
 import React from "react";
 import { Helmet } from "react-helmet";
-import Navbar from "@/components/Navbar";
-import FooterSection from "@/components/FooterSection";
-import ProcessSection from "@/components/ProcessSection";
-import AgencyStatsInfoGraphic from "@/components/infographics/AgencyStatsInfoGraphic";
-import MeetTheTeamSection from "@/components/MeetTheTeamSection";
-import GlobalPresenceSection from "@/components/GlobalPresenceSection";
-import NewsletterSection from "@/components/newsletter/NewsletterSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import ScrollToTop from "@/components/ScrollToTop";
 import { motion } from "framer-motion";
+
+// ============================================================================
+// COMPONENT IMPORTS
+// ============================================================================
+
+/** Main navigation with dropdowns */
+import Navbar from "@/components/Navbar";
+
+/** Site footer with links and social */
+import FooterSection from "@/components/FooterSection";
+
+/** Visual process steps display */
+import ProcessSection from "@/components/ProcessSection";
+
+/** Animated agency statistics */
+import AgencyStatsInfoGraphic from "@/components/infographics/AgencyStatsInfoGraphic";
+
+/** Team members showcase */
+import MeetTheTeamSection from "@/components/MeetTheTeamSection";
+
+/** World map with office locations */
+import GlobalPresenceSection from "@/components/GlobalPresenceSection";
+
+/** Newsletter email subscription */
+import NewsletterSection from "@/components/newsletter/NewsletterSection";
+
+/** Client testimonials carousel */
+import TestimonialsSection from "@/components/TestimonialsSection";
+
+/** Floating scroll-to-top button */
+import ScrollToTop from "@/components/ScrollToTop";
+
+/** Project inquiry popup */
 import ProjectInquiryPopup from "@/components/ProjectInquiryPopup";
+
+// ============================================================================
+// ABOUT PAGE COMPONENT
+// ============================================================================
 
 const About = () => {
   return (
