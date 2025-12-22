@@ -6,9 +6,6 @@ export const vibrate = (pattern: number | number[] = 50) => {
   }
 };
 
-// Light tap - for button clicks
-export const lightTap = () => vibrate(30);
-
 // Medium tap - for form submissions
 export const mediumTap = () => vibrate(50);
 
