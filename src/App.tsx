@@ -51,6 +51,7 @@ import Faq from "./pages/Faq";
 import Tools from "./pages/Tools";
 import ProjectDetail from "./pages/ProjectDetail";
 import Documentation from "./pages/Documentation";
+import ClientDashboard from "./pages/ClientDashboard";
 
 // ============================================================================
 // MAIN APP COMPONENT
@@ -122,6 +123,7 @@ const App = () => {
                 {/* ========== AUTH ROUTES ========== */}
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/admin" element={<Admin />} />
+                <Route path="/dashboard" element={<ClientDashboard />} />
 
                 {/* ========== FALLBACK ========== */}
                 <Route path="*" element={<NotFound />} />
