@@ -101,51 +101,6 @@ export type Database = {
         }
         Relationships: []
       }
-      client_projects: {
-        Row: {
-          budget: number | null
-          category: string
-          client_id: string
-          created_at: string
-          description: string | null
-          end_date: string | null
-          id: string
-          progress: number | null
-          start_date: string | null
-          status: Database["public"]["Enums"]["project_status"]
-          title: string
-          updated_at: string
-        }
-        Insert: {
-          budget?: number | null
-          category: string
-          client_id: string
-          created_at?: string
-          description?: string | null
-          end_date?: string | null
-          id?: string
-          progress?: number | null
-          start_date?: string | null
-          status?: Database["public"]["Enums"]["project_status"]
-          title: string
-          updated_at?: string
-        }
-        Update: {
-          budget?: number | null
-          category?: string
-          client_id?: string
-          created_at?: string
-          description?: string | null
-          end_date?: string | null
-          id?: string
-          progress?: number | null
-          start_date?: string | null
-          status?: Database["public"]["Enums"]["project_status"]
-          title?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
       contact_submissions: {
         Row: {
           company: string | null
@@ -230,47 +185,6 @@ export type Database = {
         }
         Relationships: []
       }
-      project_files: {
-        Row: {
-          created_at: string
-          file_size: number | null
-          file_type: string
-          file_url: string
-          id: string
-          name: string
-          project_id: string
-          uploaded_by: string
-        }
-        Insert: {
-          created_at?: string
-          file_size?: number | null
-          file_type: string
-          file_url: string
-          id?: string
-          name: string
-          project_id: string
-          uploaded_by: string
-        }
-        Update: {
-          created_at?: string
-          file_size?: number | null
-          file_type?: string
-          file_url?: string
-          id?: string
-          name?: string
-          project_id?: string
-          uploaded_by?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "project_files_project_id_fkey"
-            columns: ["project_id"]
-            isOneToOne: false
-            referencedRelation: "client_projects"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       project_inquiries: {
         Row: {
           created_at: string
@@ -294,135 +208,6 @@ export type Database = {
           name?: string
         }
         Relationships: []
-      }
-      project_invoices: {
-        Row: {
-          amount: number
-          created_at: string
-          description: string | null
-          due_date: string
-          id: string
-          invoice_number: string
-          paid_date: string | null
-          project_id: string
-          status: Database["public"]["Enums"]["invoice_status"]
-          updated_at: string
-        }
-        Insert: {
-          amount: number
-          created_at?: string
-          description?: string | null
-          due_date: string
-          id?: string
-          invoice_number: string
-          paid_date?: string | null
-          project_id: string
-          status?: Database["public"]["Enums"]["invoice_status"]
-          updated_at?: string
-        }
-        Update: {
-          amount?: number
-          created_at?: string
-          description?: string | null
-          due_date?: string
-          id?: string
-          invoice_number?: string
-          paid_date?: string | null
-          project_id?: string
-          status?: Database["public"]["Enums"]["invoice_status"]
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "project_invoices_project_id_fkey"
-            columns: ["project_id"]
-            isOneToOne: false
-            referencedRelation: "client_projects"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      project_messages: {
-        Row: {
-          created_at: string
-          id: string
-          is_read: boolean | null
-          message: string
-          project_id: string
-          sender_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          is_read?: boolean | null
-          message: string
-          project_id: string
-          sender_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          is_read?: boolean | null
-          message?: string
-          project_id?: string
-          sender_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "project_messages_project_id_fkey"
-            columns: ["project_id"]
-            isOneToOne: false
-            referencedRelation: "client_projects"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      project_milestones: {
-        Row: {
-          completed_date: string | null
-          created_at: string
-          description: string | null
-          due_date: string | null
-          id: string
-          order_index: number
-          project_id: string
-          status: Database["public"]["Enums"]["milestone_status"]
-          title: string
-          updated_at: string
-        }
-        Insert: {
-          completed_date?: string | null
-          created_at?: string
-          description?: string | null
-          due_date?: string | null
-          id?: string
-          order_index?: number
-          project_id: string
-          status?: Database["public"]["Enums"]["milestone_status"]
-          title: string
-          updated_at?: string
-        }
-        Update: {
-          completed_date?: string | null
-          created_at?: string
-          description?: string | null
-          due_date?: string | null
-          id?: string
-          order_index?: number
-          project_id?: string
-          status?: Database["public"]["Enums"]["milestone_status"]
-          title?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "project_milestones_project_id_fkey"
-            columns: ["project_id"]
-            isOneToOne: false
-            referencedRelation: "client_projects"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       project_quotes: {
         Row: {
@@ -556,19 +341,9 @@ export type Database = {
         }
         Returns: boolean
       }
-      is_client: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user" | "client"
-      invoice_status: "draft" | "sent" | "paid" | "overdue" | "cancelled"
-      milestone_status: "pending" | "in_progress" | "completed" | "delayed"
-      project_status:
-        | "pending"
-        | "in_progress"
-        | "review"
-        | "completed"
-        | "on_hold"
-        | "cancelled"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -697,16 +472,6 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user", "client"],
-      invoice_status: ["draft", "sent", "paid", "overdue", "cancelled"],
-      milestone_status: ["pending", "in_progress", "completed", "delayed"],
-      project_status: [
-        "pending",
-        "in_progress",
-        "review",
-        "completed",
-        "on_hold",
-        "cancelled",
-      ],
     },
   },
 } as const
