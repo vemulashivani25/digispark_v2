@@ -118,24 +118,24 @@ const PortfolioSection = () => {
   };
 
   return (
-    <section id="portfolio" className="py-20 bg-black relative overflow-hidden">
+    <section id="portfolio" className="py-12 sm:py-16 md:py-20 bg-black relative overflow-hidden">
       <div className="absolute inset-0 bg-grid-white/[0.02] bg-[length:20px_20px]"></div>
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+        <div className="text-center mb-10 sm:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4">
             Featured <span className="text-yellow-400">Work</span>
           </h2>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-300 max-w-2xl mx-auto px-4">
             Explore our portfolio of successful projects across various industries and technologies
           </p>
           
-          <Tabs defaultValue="all" value={activeCategory} onValueChange={setActiveCategory} className="mt-10">
+          <Tabs defaultValue="all" value={activeCategory} onValueChange={setActiveCategory} className="mt-8 sm:mt-10">
             <TabsList className="flex flex-wrap justify-center bg-transparent h-auto gap-2 p-1">
               {categories.map(category => (
                 <TabsTrigger
                   key={category.id}
                   value={category.id}
-                  className="px-4 py-2 rounded-full bg-gray-800 data-[state=active]:bg-yellow-400 data-[state=active]:text-black"
+                  className="px-3 sm:px-4 py-2 text-sm rounded-full bg-gray-800 data-[state=active]:bg-yellow-400 data-[state=active]:text-black min-h-[40px]"
                 >
                   {category.name}
                 </TabsTrigger>
@@ -144,11 +144,11 @@ const PortfolioSection = () => {
           </Tabs>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-max">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 auto-rows-max">
           {filteredProjects.map((project, idx) => (
             <motion.div 
               key={project.id} 
-              className={`${idx % 3 === 1 ? "md:mt-12" : ""}`}
+              className={`${idx % 3 === 1 && window.innerWidth >= 1024 ? "lg:mt-12" : ""}`}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -171,7 +171,7 @@ const PortfolioSection = () => {
                   }`}>
                     <Button 
                       variant="secondary" 
-                      className="bg-yellow-400 hover:bg-yellow-500 text-black flex items-center gap-2"
+                      className="bg-yellow-400 hover:bg-yellow-500 text-black flex items-center gap-2 min-h-[44px]"
                     >
                       View Project <ExternalLink size={16} />
                     </Button>
@@ -182,16 +182,16 @@ const PortfolioSection = () => {
                     </span>
                   </div>
                 </div>
-                <CardContent className="flex-grow p-6">
-                  <h3 className="text-xl font-semibold mb-3 group-hover:text-yellow-400 transition-colors">
+                <CardContent className="flex-grow p-4 sm:p-6">
+                  <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3 group-hover:text-yellow-400 transition-colors">
                     {project.title}
                   </h3>
-                  <p className="text-gray-400 mb-4 text-sm">
+                  <p className="text-gray-400 mb-3 sm:mb-4 text-sm">
                     {project.description}
                   </p>
-                  <div className="mb-4">
+                  <div className="mb-3 sm:mb-4">
                     <h4 className="text-xs font-semibold text-yellow-400 mb-2">Technologies</h4>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
                       {project.tech.map((tech) => (
                         <span 
                           key={tech} 
@@ -203,10 +203,10 @@ const PortfolioSection = () => {
                     </div>
                   </div>
                 </CardContent>
-                <div className="p-6 pt-0">
+                <div className="p-4 sm:p-6 pt-0">
                   <Button 
                     variant="ghost" 
-                    className="w-full border border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-yellow-400 group/btn transition-colors"
+                    className="w-full border border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-yellow-400 group/btn transition-colors min-h-[44px]"
                     onClick={() => handleCaseStudyClick(project)}
                   >
                     <span>Case Study</span> 
@@ -218,8 +218,8 @@ const PortfolioSection = () => {
           ))}
         </div>
         
-        <div className="text-center mt-12">
-          <Button variant="outline" className="border-yellow-400 text-yellow-400 hover:bg-yellow-400/10">
+        <div className="text-center mt-8 sm:mt-12">
+          <Button variant="outline" className="border-yellow-400 text-yellow-400 hover:bg-yellow-400/10 min-h-[48px] px-6">
             View All Projects
           </Button>
         </div>

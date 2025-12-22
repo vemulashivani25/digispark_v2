@@ -197,7 +197,11 @@ const Navbar = () => {
             )}
           </nav>
 
-          <button aria-label="Menu Toggle" className="md:hidden focus:outline-none relative z-50" onClick={toggleMenu}>
+          <button 
+            aria-label="Menu Toggle" 
+            className="md:hidden focus:outline-none relative z-50 p-2 -mr-2 min-h-[44px] min-w-[44px] flex items-center justify-center touch-target" 
+            onClick={toggleMenu}
+          >
             <div className="w-6 flex flex-col items-end space-y-1.5 overflow-hidden">
               <motion.span
                 animate={isMenuOpen ? { y: 6, rotate: 45, width: 24 } : { y: 0, rotate: 0, width: 24 }}
@@ -217,92 +221,94 @@ const Navbar = () => {
           <AnimatePresence>
             {isMenuOpen && (
               <motion.div
-                className="fixed inset-0 bg-black/95 flex items-center justify-center md:hidden z-40"
+                className="fixed inset-0 bg-black/98 flex items-center justify-center md:hidden z-40 safe-area-top safe-area-bottom"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <nav className="flex flex-col items-center space-y-6 text-lg">
-                  <Link to="/" className={`text-lg font-medium ${pathname === "/" ? "text-yellow-400" : "text-white"}`} onClick={closeMenu}>
+                <nav className="flex flex-col items-center space-y-4 text-lg w-full px-8 max-h-[80vh] overflow-y-auto scrollbar-hide">
+                  <Link to="/" className={`text-lg font-medium py-3 min-h-[48px] flex items-center ${pathname === "/" ? "text-yellow-400" : "text-white"}`} onClick={closeMenu}>
                     Home
                   </Link>
                   <Link
                     to="/services"
-                    className={`text-lg font-medium ${pathname === "/services" ? "text-yellow-400" : "text-white"}`}
+                    className={`text-lg font-medium py-3 min-h-[48px] flex items-center ${pathname === "/services" ? "text-yellow-400" : "text-white"}`}
                     onClick={closeMenu}
                   >
                     Services
                   </Link>
                   <Link
                     to="/portfolio"
-                    className={`text-lg font-medium ${pathname === "/portfolio" ? "text-yellow-400" : "text-white"}`}
+                    className={`text-lg font-medium py-3 min-h-[48px] flex items-center ${pathname === "/portfolio" ? "text-yellow-400" : "text-white"}`}
                     onClick={closeMenu}
                   >
                     Portfolio
                   </Link>
                   <Link
                     to="/success-stories"
-                    className={`text-lg font-medium ${pathname === "/success-stories" ? "text-yellow-400" : "text-white"}`}
+                    className={`text-lg font-medium py-3 min-h-[48px] flex items-center ${pathname === "/success-stories" ? "text-yellow-400" : "text-white"}`}
                     onClick={closeMenu}
                   >
                     Success Stories
                   </Link>
                   <Link
                     to="/blog"
-                    className={`text-lg font-medium ${pathname === "/blog" || pathname.startsWith("/blog/") ? "text-yellow-400" : "text-white"}`}
+                    className={`text-lg font-medium py-3 min-h-[48px] flex items-center ${pathname === "/blog" || pathname.startsWith("/blog/") ? "text-yellow-400" : "text-white"}`}
                     onClick={closeMenu}
                   >
                     Blog
                   </Link>
                   <Link
                     to="/faq"
-                    className={`text-lg font-medium ${pathname === "/faq" ? "text-yellow-400" : "text-white"}`}
+                    className={`text-lg font-medium py-3 min-h-[48px] flex items-center ${pathname === "/faq" ? "text-yellow-400" : "text-white"}`}
                     onClick={closeMenu}
                   >
                     FAQ
                   </Link>
                   <Link
                     to="/about"
-                    className={`text-lg font-medium ${pathname === "/about" ? "text-yellow-400" : "text-white"}`}
+                    className={`text-lg font-medium py-3 min-h-[48px] flex items-center ${pathname === "/about" ? "text-yellow-400" : "text-white"}`}
                     onClick={closeMenu}
                   >
                     About
                   </Link>
                   <Link
                     to="/project-quote"
-                    className={`text-lg font-medium ${pathname === "/project-quote" ? "text-yellow-400" : "text-white"}`}
+                    className={`text-lg font-medium py-3 min-h-[48px] flex items-center ${pathname === "/project-quote" ? "text-yellow-400" : "text-white"}`}
                     onClick={closeMenu}
                   >
                     Project Quote
                   </Link>
                   <Link
                     to="/contact"
-                    className={`text-lg font-medium ${pathname === "/contact" ? "text-yellow-400" : "text-white"}`}
+                    className={`text-lg font-medium py-3 min-h-[48px] flex items-center ${pathname === "/contact" ? "text-yellow-400" : "text-white"}`}
                     onClick={closeMenu}
                   >
                     Contact
                   </Link>
-                  {!user ? (
-                    <Link
-                      to="/auth"
-                      className="bg-yellow-400 text-black px-6 py-2 rounded-md font-medium hover:bg-yellow-300 transition-colors"
-                      onClick={closeMenu}
-                    >
-                      Sign In
-                    </Link>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        signOut();
-                        closeMenu();
-                      }}
-                      className="bg-gray-800 text-white px-6 py-2 rounded-md font-medium flex items-center gap-2"
-                    >
-                      <LogOut size={16} />
-                      Sign out
-                    </button>
-                  )}
+                  <div className="pt-4 w-full flex justify-center">
+                    {!user ? (
+                      <Link
+                        to="/auth"
+                        className="bg-yellow-400 text-black px-8 py-3 rounded-md font-medium hover:bg-yellow-300 transition-colors min-h-[48px] flex items-center justify-center"
+                        onClick={closeMenu}
+                      >
+                        Sign In
+                      </Link>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          signOut();
+                          closeMenu();
+                        }}
+                        className="bg-gray-800 text-white px-8 py-3 rounded-md font-medium flex items-center gap-2 min-h-[48px] justify-center"
+                      >
+                        <LogOut size={16} />
+                        Sign out
+                      </button>
+                    )}
+                  </div>
                 </nav>
               </motion.div>
             )}

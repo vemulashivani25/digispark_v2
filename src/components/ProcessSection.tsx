@@ -91,30 +91,30 @@ const processes = [
 
 const ProcessSection = () => {
   return (
-    <section id="process" className="py-24 bg-gradient-to-br from-black via-gray-900/95 to-gray-950 relative overflow-hidden">
+    <section id="process" className="py-16 sm:py-20 md:py-24 bg-gradient-to-br from-black via-gray-900/95 to-gray-950 relative overflow-hidden">
       <div className="absolute inset-0 bg-grid-white/[0.02] bg-[length:20px_20px]" />
       <div className="absolute w-full h-full">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-yellow-400/5 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-yellow-400/5 rounded-full blur-[120px]" />
+        <div className="absolute top-0 right-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-yellow-400/5 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 left-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-yellow-400/5 rounded-full blur-[120px]" />
       </div>
       
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <motion.div 
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-yellow-400 via-yellow-200 to-yellow-400 bg-clip-text text-transparent">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-yellow-400 via-yellow-200 to-yellow-400 bg-clip-text text-transparent">
             Our Process
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
+          <p className="text-gray-400 max-w-2xl mx-auto text-sm sm:text-base px-4">
             A systematic approach to delivering exceptional digital solutions
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {processes.map((process, idx) => {
             const Icon = process.icon;
             return (
@@ -124,27 +124,27 @@ const ProcessSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className={`group p-6 rounded-2xl bg-gradient-to-br ${process.color} 
+                className={`group p-4 sm:p-6 rounded-xl sm:rounded-2xl bg-gradient-to-br ${process.color} 
                   backdrop-blur-lg border border-white/10 ${process.hoverColor} 
-                  hover:transform hover:scale-105 transition-all duration-300
-                  hover:shadow-lg`}
+                  hover:transform hover:scale-[1.02] sm:hover:scale-105 transition-all duration-300
+                  hover:shadow-lg active:scale-[0.98]`}
               >
-                <span className="block text-4xl font-bold text-gray-700/20 mb-4">{process.number}</span>
-                <div className="flex items-start gap-4">
-                  <div className={`p-3 rounded-xl bg-gray-900 ${process.iconColor} 
-                    group-hover:scale-110 transition-transform duration-300`}>
-                    <Icon className="w-6 h-6" aria-hidden="true" />
+                <span className="block text-3xl sm:text-4xl font-bold text-gray-700/20 mb-3 sm:mb-4">{process.number}</span>
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className={`p-2 sm:p-3 rounded-lg sm:rounded-xl bg-gray-900 ${process.iconColor} 
+                    group-hover:scale-110 transition-transform duration-300 flex-shrink-0`}>
+                    <Icon className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-yellow-400 
+                    <h3 className="text-lg sm:text-xl font-bold text-white mb-1 sm:mb-2 group-hover:text-yellow-400 
                       transition-colors">{process.title}</h3>
-                    <p className="text-gray-400">{process.description}</p>
+                    <p className="text-gray-400 text-sm sm:text-base">{process.description}</p>
                   </div>
                 </div>
                 
-                <div className="mt-4 space-y-1">
-                  <div className="h-1 w-16 bg-gradient-to-r from-yellow-400/50 to-transparent rounded" />
-                  <div className="h-1 w-12 bg-gradient-to-r from-yellow-400/30 to-transparent rounded" />
+                <div className="mt-3 sm:mt-4 space-y-1">
+                  <div className="h-1 w-12 sm:w-16 bg-gradient-to-r from-yellow-400/50 to-transparent rounded" />
+                  <div className="h-1 w-8 sm:w-12 bg-gradient-to-r from-yellow-400/30 to-transparent rounded" />
                 </div>
               </motion.div>
             );
