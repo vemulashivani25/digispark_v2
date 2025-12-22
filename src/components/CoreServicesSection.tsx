@@ -32,26 +32,24 @@ const CoreServicesSection = () => {
   };
   
   return (
-    <section ref={ref} className="py-24 bg-gradient-to-b from-gray-900 to-black relative overflow-hidden">
+    <section ref={ref} className="py-12 sm:py-16 md:py-24 bg-gradient-to-b from-gray-900 to-black relative overflow-hidden">
       <div className="absolute inset-0 bg-grid-white/[0.02] bg-[length:20px_20px]"></div>
       <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-yellow-400/5 rounded-full blur-[100px]"></div>
       <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-blue-400/5 rounded-full blur-[100px]"></div>
       
       <div className="container mx-auto px-4 relative z-10">
         <motion.div 
-          className="text-center mb-16"
+          className="text-center mb-8 sm:mb-12 md:mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={controls}
-          variants={{
-            visible: { opacity: 1, y: 0 }
-          }}
+          variants={{ visible: { opacity: 1, y: 0 } }}
           transition={{ duration: 0.7 }}
         >
-          <h2 className="text-3xl md:text-5xl font-bold mb-3">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3">
             <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">Our Services </span>
             <span className="text-yellow-400">Categories</span>
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
+          <p className="text-gray-400 max-w-2xl mx-auto text-sm sm:text-base">
             Our specialized services deliver exceptional results for businesses of all sizes.
           </p>
         </motion.div>
@@ -131,7 +129,7 @@ const CoreServicesSection = () => {
         </div>
         
         <motion.div 
-          className="flex flex-col lg:flex-row gap-8 items-center justify-center max-w-5xl mx-auto"
+          className="flex flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-8 items-center justify-center max-w-5xl mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           key={selected}
@@ -147,37 +145,31 @@ const CoreServicesSection = () => {
               <img
                 src={menuItems[selected].img}
                 alt={menuItems[selected].label}
-                className="w-full h-[350px] object-cover transition-all duration-700"
+                className="w-full h-[200px] sm:h-[280px] lg:h-[350px] object-cover transition-all duration-700"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-              <div className="absolute bottom-0 left-0 p-6">
-                <div className="bg-black/60 backdrop-blur-sm py-2 px-4 rounded-lg inline-block">
-                  <span className="text-yellow-400 font-semibold">{menuItems[selected].label}</span>
+              <div className="absolute bottom-0 left-0 p-3 sm:p-6">
+                <div className="bg-black/60 backdrop-blur-sm py-1.5 sm:py-2 px-3 sm:px-4 rounded-lg inline-block">
+                  <span className="text-yellow-400 font-semibold text-sm sm:text-base">{menuItems[selected].label}</span>
                 </div>
               </div>
             </div>
           </motion.div>
           
           <motion.div 
-            className="w-full lg:w-1/2 text-left"
+            className="w-full lg:w-1/2 text-center lg:text-left"
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
-            <h3 className="text-3xl font-bold mb-4 text-white">{menuItems[selected].label}</h3>
-            <div className="h-1 w-20 bg-yellow-400 mb-6"></div>
-            <p className="text-gray-300 mb-8">{menuItems[selected].description}</p>
-            <motion.div 
-              className="mt-6"
-              whileHover={{ x: 5 }}
-              transition={{ type: "spring", stiffness: 400 }}
-            >
-              <button 
-                onClick={handleServiceClick}
-                className="group inline-flex items-center font-semibold text-yellow-400 hover:text-yellow-300"
-              >
+            <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 sm:mb-4 text-white">{menuItems[selected].label}</h3>
+            <div className="h-1 w-16 sm:w-20 bg-yellow-400 mb-3 sm:mb-6 mx-auto lg:mx-0"></div>
+            <p className="text-gray-300 mb-4 sm:mb-8 text-sm sm:text-base">{menuItems[selected].description}</p>
+            <motion.div className="mt-3 sm:mt-6" whileHover={{ x: 5 }} transition={{ type: "spring", stiffness: 400 }}>
+              <button onClick={handleServiceClick} className="group inline-flex items-center font-semibold text-yellow-400 hover:text-yellow-300 text-sm sm:text-base">
                 Learn more about {menuItems[selected].label} 
-                <ArrowRight className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 ml-2 transition-transform group-hover:translate-x-1" />
               </button>
             </motion.div>
           </motion.div>

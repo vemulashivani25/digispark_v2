@@ -19,16 +19,15 @@ const ServicesListSection: React.FC = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-gray-50/80 relative overflow-hidden">
-      {/* Background Elements */}
+    <section className="py-10 sm:py-14 md:py-20 bg-gradient-to-b from-white to-gray-50/80 relative overflow-hidden">
       <div className="absolute inset-0 bg-grid-black/[0.02] bg-[length:20px_20px]"></div>
-      <div className="absolute w-[800px] h-[800px] bg-yellow-100/30 rounded-full blur-3xl -top-96 -right-96"></div>
-      <div className="absolute w-[600px] h-[600px] bg-blue-100/30 rounded-full blur-3xl -bottom-32 -left-32"></div>
+      <div className="absolute w-[400px] sm:w-[800px] h-[400px] sm:h-[800px] bg-yellow-100/30 rounded-full blur-3xl -top-48 sm:-top-96 -right-48 sm:-right-96"></div>
+      <div className="absolute w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-blue-100/30 rounded-full blur-3xl -bottom-16 sm:-bottom-32 -left-16 sm:-left-32"></div>
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-16">
+        <div className="text-center mb-8 sm:mb-12 md:mb-16">
           <motion.h2
-            className="text-3xl md:text-4xl font-bold mb-4"
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 sm:mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -37,17 +36,17 @@ const ServicesListSection: React.FC = () => {
             Our <span className="text-yellow-500">Services</span>
           </motion.h2>
           <motion.p
-            className="text-gray-600 max-w-2xl mx-auto"
+            className="text-gray-600 max-w-2xl mx-auto text-xs sm:text-sm md:text-base"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            Comprehensive digital solutions tailored to drive your business growth and transform your online presence.
+            Comprehensive digital solutions tailored to drive your business growth.
           </motion.p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-10">
           {services.map((service, idx) => {
             const ServiceIcon = service.icon;
             
@@ -61,74 +60,45 @@ const ServicesListSection: React.FC = () => {
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 whileHover={{ scale: 1.03 }}
               >
-                <Card className="h-full overflow-hidden bg-gradient-to-tr from-white to-gray-50/90 border-0 shadow-xl">
+                <Card className="h-full overflow-hidden bg-gradient-to-tr from-white to-gray-50/90 border-0 shadow-lg sm:shadow-xl">
                   <CardContent className="p-0">
-                    {/* Decorative Elements */}
-                    <div className="absolute top-0 right-0 w-32 h-32 -m-8 rounded-full bg-yellow-400/10 blur-2xl 
+                    <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 -m-6 sm:-m-8 rounded-full bg-yellow-400/10 blur-2xl 
                       transform rotate-45 group-hover:bg-yellow-400/20 transition-all duration-700"></div>
                     
-                    <div className="absolute -top-6 -left-6 w-24 h-24 rounded-full bg-gradient-to-br 
-                      from-yellow-200/20 to-transparent transform -rotate-12 group-hover:scale-110 transition-all duration-700"></div>
-                    
-                    <div className="relative p-8">
-                      {/* Top Content */}
-                      <div className="flex justify-between items-start mb-6">
+                    <div className="relative p-4 sm:p-6 md:p-8">
+                      <div className="flex justify-between items-start mb-4 sm:mb-6">
                         <motion.div 
-                          className={`p-4 rounded-xl bg-${service.highlight}-500/20 
-                            group-hover:bg-${service.highlight}-500/30 transition-colors duration-300`}
+                          className={`p-2.5 sm:p-3 md:p-4 rounded-lg sm:rounded-xl bg-${service.highlight}-500/20`}
                           whileHover={{ scale: 1.1, rotate: 5 }}
                         >
-                          <ServiceIcon className={`h-8 w-8 text-${service.highlight}-600`} />
+                          <ServiceIcon className={`h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-${service.highlight}-600`} />
                         </motion.div>
-                        
-                        <div className="flex space-x-1">
-                          {[...Array(3)].map((_, i) => (
-                            <motion.div 
-                              key={i}
-                              className="w-1 h-6 rounded-full bg-yellow-400/30"
-                              animate={{ height: [6, 24, 6] }}
-                              transition={{
-                                duration: 1,
-                                repeat: Infinity,
-                                repeatType: "reverse",
-                                delay: i * 0.2,
-                                ease: "easeInOut"
-                              }}
-                            />
-                          ))}
-                        </div>
                       </div>
                       
-                      {/* Main Content */}
-                      <h3 className="text-2xl font-bold mb-3 text-gray-900 group-hover:text-yellow-700 transition-colors">
+                      <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 text-gray-900 group-hover:text-yellow-700 transition-colors">
                         {service.title}
                       </h3>
-                      <p className="text-gray-600 mb-6 group-hover:text-gray-700 transition-colors">
+                      <p className="text-gray-600 mb-3 sm:mb-4 md:mb-6 group-hover:text-gray-700 transition-colors text-xs sm:text-sm md:text-base line-clamp-2 sm:line-clamp-3">
                         {service.description}
                       </p>
                       
-                      {/* Features Tags */}
-                      <div className="flex flex-wrap gap-2 mb-6">
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4 sm:mb-6">
                         {service.features.slice(0, 3).map((feature, i) => (
-                          <motion.span 
+                          <span 
                             key={i} 
-                            className="px-3 py-1 text-xs bg-yellow-400/20 text-yellow-900 rounded-full
-                              hover:bg-yellow-400/30 transition-colors"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
+                            className="px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs bg-yellow-400/20 text-yellow-900 rounded-full"
                           >
                             {feature}
-                          </motion.span>
+                          </span>
                         ))}
                       </div>
                       
-                      {/* Button and Number */}
                       <div className="flex justify-between items-center">
                         <Button 
                           variant="ghost"
-                          className="group-hover:bg-yellow-500/10 group-hover:text-yellow-700 transition-colors p-0"
+                          size="sm"
+                          className="group-hover:bg-yellow-500/10 group-hover:text-yellow-700 transition-colors p-0 text-xs sm:text-sm"
                           onClick={() => {
-                            // Generate a slug from the title if one doesn't exist
                             const serviceSlug = hasSlug(service) 
                               ? service.slug 
                               : service.title.toLowerCase().replace(/\s+/g, '-');
@@ -136,30 +106,16 @@ const ServicesListSection: React.FC = () => {
                           }}
                         >
                           Learn more 
-                          <motion.span
-                            initial={{ x: 0 }}
-                            animate={{ x: [0, 5, 0] }}
-                            transition={{
-                              duration: 1.5,
-                              repeat: Infinity,
-                              repeatType: "loop",
-                              ease: "easeInOut",
-                              repeatDelay: 1
-                            }}
-                          >
-                            <ArrowRight className="ml-2 h-4 w-4" />
-                          </motion.span>
+                          <ArrowRight className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
                         </Button>
                         
-                        {/* Decorative number */}
-                        <div className="text-5xl font-bold text-gray-900/5 group-hover:text-gray-900/10 transition-colors">
+                        <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900/5">
                           {(idx + 1).toString().padStart(2, '0')}
                         </div>
                       </div>
                     </div>
                     
-                    {/* Bottom decorative bar */}
-                    <div className="h-1.5 w-full bg-gradient-to-r from-yellow-300/80 via-yellow-500/80 to-amber-500/80"></div>
+                    <div className="h-1 sm:h-1.5 w-full bg-gradient-to-r from-yellow-300/80 via-yellow-500/80 to-amber-500/80"></div>
                   </CardContent>
                 </Card>
               </motion.div>
