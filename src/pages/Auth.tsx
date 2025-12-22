@@ -42,7 +42,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Helmet } from 'react-helmet';
-import { ArrowLeft, Mail, Lock, User, KeyRound } from 'lucide-react';
+import { ArrowLeft, Mail, Lock, User, KeyRound, Eye, EyeOff } from 'lucide-react';
 import { mediumTap, successFeedback } from '@/utils/hapticFeedback';
 
 const loginSchema = z.object({
@@ -112,6 +112,11 @@ const Auth = () => {
   const [activeTab, setActiveTab] = useState<'login' | 'register'>('login');
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(isRecovery);
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showRegisterPassword, setShowRegisterPassword] = useState(false);
+  const [showRegisterConfirmPassword, setShowRegisterConfirmPassword] = useState(false);
+  const [showNewPasswordField, setShowNewPasswordField] = useState(false);
+  const [showNewConfirmPasswordField, setShowNewConfirmPasswordField] = useState(false);
   const { signIn, signUp, signInWithGoogle, resetPassword, updatePassword, user, loading } = useAuth();
   const navigate = useNavigate();
 
@@ -268,14 +273,21 @@ const Auth = () => {
                           <FormItem>
                             <FormLabel className="text-gray-300">New Password</FormLabel>
                             <FormControl>
-                              <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={18} />
+                              <div className="relative group">
+                                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 group-focus-within:text-yellow-400 transition-colors duration-300" size={18} />
                                 <Input 
-                                  type="password" 
+                                  type={showNewPasswordField ? "text" : "password"} 
                                   placeholder="••••••••" 
-                                  className="bg-gray-800/50 border-gray-700 pl-10" 
+                                  className="bg-gray-800/50 border-gray-700 pl-10 pr-10 text-white transition-all duration-300 focus:border-yellow-400 focus:ring-yellow-400/20" 
                                   {...field} 
                                 />
+                                <button
+                                  type="button"
+                                  onClick={() => setShowNewPasswordField(!showNewPasswordField)}
+                                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-yellow-400 transition-colors duration-300"
+                                >
+                                  {showNewPasswordField ? <EyeOff size={18} /> : <Eye size={18} />}
+                                </button>
                               </div>
                             </FormControl>
                             <FormMessage />
@@ -290,14 +302,21 @@ const Auth = () => {
                           <FormItem>
                             <FormLabel className="text-gray-300">Confirm New Password</FormLabel>
                             <FormControl>
-                              <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={18} />
+                              <div className="relative group">
+                                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 group-focus-within:text-yellow-400 transition-colors duration-300" size={18} />
                                 <Input 
-                                  type="password" 
+                                  type={showNewConfirmPasswordField ? "text" : "password"} 
                                   placeholder="••••••••" 
-                                  className="bg-gray-800/50 border-gray-700 pl-10" 
+                                  className="bg-gray-800/50 border-gray-700 pl-10 pr-10 text-white transition-all duration-300 focus:border-yellow-400 focus:ring-yellow-400/20" 
                                   {...field} 
                                 />
+                                <button
+                                  type="button"
+                                  onClick={() => setShowNewConfirmPasswordField(!showNewConfirmPasswordField)}
+                                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-yellow-400 transition-colors duration-300"
+                                >
+                                  {showNewConfirmPasswordField ? <EyeOff size={18} /> : <Eye size={18} />}
+                                </button>
                               </div>
                             </FormControl>
                             <FormMessage />
@@ -354,11 +373,11 @@ const Auth = () => {
                           <FormItem>
                             <FormLabel className="text-gray-300">Email</FormLabel>
                             <FormControl>
-                              <div className="relative">
-                                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={18} />
+                              <div className="relative group">
+                                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 group-focus-within:text-yellow-400 transition-colors duration-300" size={18} />
                                 <Input 
                                   placeholder="your.email@example.com" 
-                                  className="bg-gray-800/50 border-gray-700 pl-10" 
+                                  className="bg-gray-800/50 border-gray-700 pl-10 text-white transition-all duration-300 focus:border-yellow-400 focus:ring-yellow-400/20" 
                                   {...field} 
                                 />
                               </div>
@@ -396,7 +415,7 @@ const Auth = () => {
                     </TabsTrigger>
                   </TabsList>
                   
-                  <TabsContent value="login">
+                  <TabsContent value="login" className="p-1">
                     <Form {...loginForm}>
                       <form onSubmit={loginForm.handleSubmit(onLoginSubmit)} className="space-y-6">
                         <FormField
@@ -406,11 +425,11 @@ const Auth = () => {
                             <FormItem>
                               <FormLabel className="text-gray-300">Email</FormLabel>
                               <FormControl>
-                                <div className="relative">
-                                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={18} />
+                                <div className="relative group">
+                                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 group-focus-within:text-yellow-400 transition-colors duration-300" size={18} />
                                   <Input 
                                     placeholder="your.email@example.com" 
-                                    className="bg-gray-800/50 border-gray-700 pl-10" 
+                                    className="bg-gray-800/50 border-gray-700 pl-10 text-white transition-all duration-300 focus:border-yellow-400 focus:ring-yellow-400/20" 
                                     {...field} 
                                   />
                                 </div>
@@ -427,14 +446,21 @@ const Auth = () => {
                             <FormItem>
                               <FormLabel className="text-gray-300">Password</FormLabel>
                               <FormControl>
-                                <div className="relative">
-                                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={18} />
+                                <div className="relative group">
+                                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 group-focus-within:text-yellow-400 transition-colors duration-300" size={18} />
                                   <Input 
-                                    type="password" 
+                                    type={showLoginPassword ? "text" : "password"} 
                                     placeholder="••••••••" 
-                                    className="bg-gray-800/50 border-gray-700 pl-10" 
+                                    className="bg-gray-800/50 border-gray-700 pl-10 pr-10 text-white transition-all duration-300 focus:border-yellow-400 focus:ring-yellow-400/20" 
                                     {...field} 
                                   />
+                                  <button
+                                    type="button"
+                                    onClick={() => setShowLoginPassword(!showLoginPassword)}
+                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-yellow-400 transition-colors duration-300"
+                                  >
+                                    {showLoginPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                  </button>
                                 </div>
                               </FormControl>
                               <FormMessage />
@@ -498,7 +524,7 @@ const Auth = () => {
                     </Form>
                   </TabsContent>
                   
-                  <TabsContent value="register">
+                  <TabsContent value="register" className="p-1">
                     <Form {...registerForm}>
                       <form onSubmit={registerForm.handleSubmit(onRegisterSubmit)} className="space-y-6">
                         <FormField
@@ -508,11 +534,11 @@ const Auth = () => {
                             <FormItem>
                               <FormLabel className="text-gray-300">Full Name</FormLabel>
                               <FormControl>
-                                <div className="relative">
-                                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={18} />
+                                <div className="relative group">
+                                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 group-focus-within:text-yellow-400 transition-colors duration-300" size={18} />
                                   <Input 
                                     placeholder="John Smith" 
-                                    className="bg-gray-800/50 border-gray-700 pl-10" 
+                                    className="bg-gray-800/50 border-gray-700 pl-10 text-white transition-all duration-300 focus:border-yellow-400 focus:ring-yellow-400/20" 
                                     {...field} 
                                   />
                                 </div>
@@ -529,11 +555,11 @@ const Auth = () => {
                             <FormItem>
                               <FormLabel className="text-gray-300">Email</FormLabel>
                               <FormControl>
-                                <div className="relative">
-                                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={18} />
+                                <div className="relative group">
+                                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 group-focus-within:text-yellow-400 transition-colors duration-300" size={18} />
                                   <Input 
                                     placeholder="your.email@example.com" 
-                                    className="bg-gray-800/50 border-gray-700 pl-10" 
+                                    className="bg-gray-800/50 border-gray-700 pl-10 text-white transition-all duration-300 focus:border-yellow-400 focus:ring-yellow-400/20" 
                                     {...field} 
                                   />
                                 </div>
@@ -550,14 +576,21 @@ const Auth = () => {
                             <FormItem>
                               <FormLabel className="text-gray-300">Password</FormLabel>
                               <FormControl>
-                                <div className="relative">
-                                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={18} />
+                                <div className="relative group">
+                                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 group-focus-within:text-yellow-400 transition-colors duration-300" size={18} />
                                   <Input 
-                                    type="password" 
+                                    type={showRegisterPassword ? "text" : "password"} 
                                     placeholder="••••••••" 
-                                    className="bg-gray-800/50 border-gray-700 pl-10" 
+                                    className="bg-gray-800/50 border-gray-700 pl-10 pr-10 text-white transition-all duration-300 focus:border-yellow-400 focus:ring-yellow-400/20" 
                                     {...field} 
                                   />
+                                  <button
+                                    type="button"
+                                    onClick={() => setShowRegisterPassword(!showRegisterPassword)}
+                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-yellow-400 transition-colors duration-300"
+                                  >
+                                    {showRegisterPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                  </button>
                                 </div>
                               </FormControl>
                               <FormMessage />
@@ -572,14 +605,21 @@ const Auth = () => {
                             <FormItem>
                               <FormLabel className="text-gray-300">Confirm Password</FormLabel>
                               <FormControl>
-                                <div className="relative">
-                                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={18} />
+                                <div className="relative group">
+                                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 group-focus-within:text-yellow-400 transition-colors duration-300" size={18} />
                                   <Input 
-                                    type="password" 
+                                    type={showRegisterConfirmPassword ? "text" : "password"} 
                                     placeholder="••••••••" 
-                                    className="bg-gray-800/50 border-gray-700 pl-10" 
+                                    className="bg-gray-800/50 border-gray-700 pl-10 pr-10 text-white transition-all duration-300 focus:border-yellow-400 focus:ring-yellow-400/20" 
                                     {...field} 
                                   />
+                                  <button
+                                    type="button"
+                                    onClick={() => setShowRegisterConfirmPassword(!showRegisterConfirmPassword)}
+                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-yellow-400 transition-colors duration-300"
+                                  >
+                                    {showRegisterConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                  </button>
                                 </div>
                               </FormControl>
                               <FormMessage />
