@@ -297,8 +297,13 @@ const Auth = () => {
                         <span className="text-white font-light tracking-tight">
                           Welcome to
                         </span>
-                        <span className="text-white font-light tracking-tight">
-                          Digi<span className="text-yellow-400">Spark</span>
+                        <span className="relative inline-block">
+                          <span className="relative z-10 font-bold tracking-tight">
+                            <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">Digi</span>
+                            <span className="bg-gradient-to-r from-yellow-300 via-yellow-400 to-amber-500 bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(250,204,21,0.5)]">Spark</span>
+                          </span>
+                          {/* Elegant glow backdrop */}
+                          <span className="absolute inset-0 blur-xl bg-gradient-to-r from-yellow-400/20 via-amber-300/30 to-yellow-400/20 -z-10 scale-150"></span>
                         </span>
                       </>
                     )}
