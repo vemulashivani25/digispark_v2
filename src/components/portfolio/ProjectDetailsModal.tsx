@@ -29,6 +29,7 @@ export interface ProjectDetails {
   imageUrl: string;
   galleryImages: string[];
   link?: string;
+  demoUrl?: string; // Live demo iframe URL
   testimonial?: {
     quote: string;
     author: string;
@@ -49,12 +50,14 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState<boolean[]>([]);
+  const [showLiveDemo, setShowLiveDemo] = useState(false);
   
   // Reset image index when project changes
   useEffect(() => {
     if (project) {
       setCurrentImageIndex(0);
       setLoadedImages(Array(project.galleryImages.length).fill(false));
+      setShowLiveDemo(false);
     }
   }, [project]);
   
@@ -113,72 +116,116 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({
             
             <div className="p-5 md:p-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* Image gallery */}
+                {/* Image gallery / Live Demo */}
                 <div className="col-span-1">
-                  <div className="relative aspect-video bg-gray-800 rounded-lg overflow-hidden">
-                    {project.galleryImages.map((image, idx) => (
-                      <motion.div
-                        key={idx}
-                        initial={{ opacity: 0 }}
-                        animate={{ 
-                          opacity: currentImageIndex === idx ? 1 : 0,
-                          scale: currentImageIndex === idx ? 1 : 1.1
-                        }}
-                        transition={{ duration: 0.3 }}
-                        className="absolute inset-0"
-                        style={{ display: currentImageIndex === idx ? 'block' : 'none' }}
+                  {/* Toggle between gallery and live demo */}
+                  {project.demoUrl && (
+                    <div className="flex gap-2 mb-4">
+                      <button
+                        onClick={() => setShowLiveDemo(false)}
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                          !showLiveDemo 
+                            ? 'bg-yellow-400 text-black' 
+                            : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                        }`}
                       >
-                        <img
-                          src={image}
-                          alt={`${project.title} - Image ${idx + 1}`}
-                          className="w-full h-full object-cover"
-                          onLoad={() => handleImageLoad(idx)}
-                        />
-                        
-                        {!loadedImages[idx] && (
-                          <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
-                            <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-yellow-400"></div>
+                        Gallery
+                      </button>
+                      <button
+                        onClick={() => setShowLiveDemo(true)}
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${
+                          showLiveDemo 
+                            ? 'bg-yellow-400 text-black' 
+                            : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                        }`}
+                      >
+                        <Globe className="w-4 h-4" />
+                        Live Demo
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Live Demo iFrame */}
+                  {showLiveDemo && project.demoUrl ? (
+                    <div className="relative aspect-video bg-gray-800 rounded-lg overflow-hidden border border-gray-700">
+                      <iframe
+                        src={project.demoUrl}
+                        title={`${project.title} - Live Demo`}
+                        className="w-full h-full"
+                        sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                        loading="lazy"
+                      />
+                      <div className="absolute top-2 right-2 bg-green-500/90 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
+                        <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                        Live
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="relative aspect-video bg-gray-800 rounded-lg overflow-hidden">
+                      {project.galleryImages.map((image, idx) => (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0 }}
+                          animate={{ 
+                            opacity: currentImageIndex === idx ? 1 : 0,
+                            scale: currentImageIndex === idx ? 1 : 1.1
+                          }}
+                          transition={{ duration: 0.3 }}
+                          className="absolute inset-0"
+                          style={{ display: currentImageIndex === idx ? 'block' : 'none' }}
+                        >
+                          <img
+                            src={image}
+                            alt={`${project.title} - Image ${idx + 1}`}
+                            className="w-full h-full object-cover"
+                            onLoad={() => handleImageLoad(idx)}
+                          />
+                          
+                          {!loadedImages[idx] && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
+                              <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-yellow-400"></div>
+                            </div>
+                          )}
+                        </motion.div>
+                      ))}
+                      
+                      {/* Navigation buttons */}
+                      {project.galleryImages.length > 1 && (
+                        <>
+                          <button
+                            onClick={prevImage}
+                            className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full transition-colors"
+                            aria-label="Previous image"
+                          >
+                            <ChevronLeft className="w-5 h-5" />
+                          </button>
+                          <button
+                            onClick={nextImage}
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full transition-colors"
+                            aria-label="Next image"
+                          >
+                            <ChevronRight className="w-5 h-5" />
+                          </button>
+                          
+                          {/* Image indicators */}
+                          <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-2">
+                            {project.galleryImages.map((_, idx) => (
+                              <button
+                                key={idx}
+                                onClick={() => setCurrentImageIndex(idx)}
+                                className={`w-2 h-2 rounded-full transition-all ${
+                                  currentImageIndex === idx 
+                                    ? "bg-yellow-400 w-4" 
+                                    : "bg-gray-400/50 hover:bg-gray-300/70"
+                                }`}
+                                aria-label={`Go to image ${idx + 1}`}
+                              />
+                            ))}
                           </div>
-                        )}
-                      </motion.div>
-                    ))}
-                    
-                    {/* Navigation buttons */}
-                    {project.galleryImages.length > 1 && (
-                      <>
-                        <button
-                          onClick={prevImage}
-                          className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full transition-colors"
-                          aria-label="Previous image"
-                        >
-                          <ChevronLeft className="w-5 h-5" />
-                        </button>
-                        <button
-                          onClick={nextImage}
-                          className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full transition-colors"
-                          aria-label="Next image"
-                        >
-                          <ChevronRight className="w-5 h-5" />
-                        </button>
-                        
-                        {/* Image indicators */}
-                        <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-2">
-                          {project.galleryImages.map((_, idx) => (
-                            <button
-                              key={idx}
-                              onClick={() => setCurrentImageIndex(idx)}
-                              className={`w-2 h-2 rounded-full transition-all ${
-                                currentImageIndex === idx 
-                                  ? "bg-yellow-400 w-4" 
-                                  : "bg-gray-400/50 hover:bg-gray-300/70"
-                              }`}
-                              aria-label={`Go to image ${idx + 1}`}
-                            />
-                          ))}
-                        </div>
-                      </>
-                    )}
-                  </div>
+                        </>
+                      )}
+                    </div>
+                  )}
                   
                   {/* Project metadata */}
                   <div className="mt-6 grid grid-cols-2 gap-4">

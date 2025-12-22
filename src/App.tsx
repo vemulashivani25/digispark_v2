@@ -25,6 +25,7 @@ import { LazyMotion, domAnimation, AnimatePresence } from "framer-motion";
 import { AuthProvider } from "@/contexts/AuthContext";
 import PreloaderNew from "./components/PreloaderNew";
 import WhatsAppChat from "./components/WhatsAppChat";
+import ReadingProgressBar from "./components/ReadingProgressBar";
 import { Toaster } from "@/components/ui/toaster";
 
 // ============================================================================
@@ -128,6 +129,9 @@ const App = () => {
             </AnimatePresence>
           </LazyMotion>
         )}
+
+        {/* Global reading progress bar - visible after preloader */}
+        {!loading && <ReadingProgressBar />}
 
         {/* Global WhatsApp floating button - visible after preloader */}
         {!loading && <WhatsAppChat phoneNumber="+1234567890" />}
