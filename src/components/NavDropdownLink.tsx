@@ -34,13 +34,13 @@ const NavDropdownLink = ({ title, links, isScrolled = false }: NavDropdownLinkPr
   return (
     <div className="relative" ref={menuRef}>
       <button
-        className={`flex items-center text-sm font-medium px-2 py-1.5 rounded-md transition-colors duration-200 ${
+        className={`flex items-center text-base font-semibold tracking-wide px-2 py-1.5 rounded-md transition-colors duration-200 ${
           isScrolled ? "text-gray-300 hover:text-yellow-400" : "text-white/90 hover:text-yellow-400"
         }`}
         onClick={() => setIsOpen(!isOpen)}
       >
         {title}
-        <ChevronDown className={`ml-1 w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
+        <ChevronDown className={`ml-1.5 w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
       </button>
       
       <AnimatePresence>
