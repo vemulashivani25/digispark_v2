@@ -6,6 +6,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "./ui/card";
+import { createToolFallback } from "@/utils/avatarFallback";
 
 const toolsData = {
   "CRM & Marketing": [
@@ -166,7 +167,7 @@ const EnhancedToolsTechSection: React.FC = () => {
                           alt={`${tool.name} logo`} 
                           className="max-h-12 max-w-12 object-contain z-10 group-hover:scale-110 transition-transform duration-300"
                           onError={(e) => {
-                            (e.target as HTMLImageElement).src = `https://via.placeholder.com/80?text=${tool.name.charAt(0)}`;
+                            (e.target as HTMLImageElement).src = createToolFallback(tool.name);
                           }}
                         />
                       </div>

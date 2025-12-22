@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { createToolFallback } from "@/utils/avatarFallback";
 
 // Type definition for a tech tool
 type TechTool = {
@@ -164,7 +165,7 @@ const TechStackMarquee: React.FC = () => {
                           alt={`${tool.name} logo`} 
                           className="max-h-12 max-w-12 group-hover:scale-110 transition-transform duration-300 z-10"
                           onError={(e) => {
-                            (e.target as HTMLImageElement).src = `https://via.placeholder.com/80?text=${tool.name.charAt(0)}`;
+                            (e.target as HTMLImageElement).src = createToolFallback(tool.name);
                           }}
                         />
                       </div>
@@ -208,7 +209,7 @@ const TechStackMarquee: React.FC = () => {
                     alt={`${selectedTool.name} logo`} 
                     className="h-16 w-16 object-contain"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = `https://via.placeholder.com/80?text=${selectedTool.name.charAt(0)}`;
+                      (e.target as HTMLImageElement).src = createToolFallback(selectedTool.name);
                     }}
                   />
                 </div>

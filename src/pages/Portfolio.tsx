@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import ProjectDetailsModal, { ProjectDetails } from "@/components/portfolio/ProjectDetailsModal";
 import WhatsAppChat from "@/components/WhatsAppChat";
+import { createLogoFallback } from "@/utils/avatarFallback";
 
 interface Project {
   id: string;
@@ -59,7 +60,7 @@ const projects: Project[] = [
       "Customer service response time decreased by 62%"
     ],
     image: "https://images.unsplash.com/photo-1560179707-f14e90ef3623?q=80&w=1200",
-    logo: "https://via.placeholder.com/100?text=FinCorp",
+    logo: createLogoFallback("FinCorp", 100),
     client: "Global Financial Services Inc.",
     industry: "Financial Services",
     tags: ["HubSpot CRM", "Automation", "Integration"],
@@ -90,7 +91,7 @@ const projects: Project[] = [
       "International sales grew by 87%"
     ],
     image: "https://images.unsplash.com/photo-1607082349566-187342175e2f?q=80&w=1200",
-    logo: "https://via.placeholder.com/100?text=FashionX",
+    logo: createLogoFallback("FashionX", 100),
     client: "LuxeStyle Couture",
     industry: "Fashion Retail",
     tags: ["E-commerce", "Web Development", "Performance"],
@@ -121,7 +122,7 @@ const projects: Project[] = [
       "Local search visibility improved by 156%"
     ],
     image: "https://images.unsplash.com/photo-1432888622747-4eb9a8f5f01a?q=80&w=1200",
-    logo: "https://via.placeholder.com/100?text=HealthNet",
+    logo: createLogoFallback("HealthNet", 100),
     client: "MedConnect Healthcare",
     industry: "Healthcare",
     tags: ["SEO", "Content Strategy", "Analytics"],
@@ -152,7 +153,7 @@ const projects: Project[] = [
       "Internal process efficiency increased by 42%"
     ],
     image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200",
-    logo: "https://via.placeholder.com/100?text=ConsultCo",
+    logo: createLogoFallback("ConsultCo", 100),
     client: "Global Consulting Partners",
     industry: "Business Consulting",
     tags: ["Virtual Assistance", "Operations", "Business Process"],
@@ -183,7 +184,7 @@ const projects: Project[] = [
       "Built email list of 75,000+ engaged subscribers"
     ],
     image: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?q=80&w=1200",
-    logo: "https://via.placeholder.com/100?text=TechSaaS",
+    logo: createLogoFallback("TechSaaS", 100),
     client: "CloudDrive Solutions",
     industry: "Software",
     tags: ["Digital Marketing", "Lead Generation", "Content"],
@@ -214,7 +215,7 @@ const projects: Project[] = [
       "Recruitment application rate increased 68%"
     ],
     image: "https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?q=80&w=1200",
-    logo: "https://via.placeholder.com/100?text=TechMerge",
+    logo: createLogoFallback("TechMerge", 100),
     client: "Nexus Technologies",
     industry: "Technology",
     tags: ["Video Production", "Branding", "Social Media"],
@@ -245,7 +246,7 @@ const projects: Project[] = [
       "Customer satisfaction scores up by 38%"
     ],
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200",
-    logo: "https://via.placeholder.com/100?text=IndustryCo",
+    logo: createLogoFallback("IndustryCo", 100),
     client: "Global Manufacturing Inc.",
     industry: "Manufacturing",
     tags: ["Web Development", "Web Application", "UX Design"],
