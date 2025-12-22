@@ -285,8 +285,91 @@ const HeroSection = () => {
             </div>
           </div>
           <div className="relative mt-4 lg:mt-0 hidden sm:block">
+            {/* Outer pulsing semi-circle glow */}
+            <motion.div 
+              className="absolute -inset-8 sm:-inset-12 bg-gradient-to-t from-yellow-400/0 via-yellow-400/15 to-yellow-400/25 rounded-t-full blur-2xl"
+              animate={{ 
+                opacity: [0.4, 0.8, 0.4],
+                scale: [0.95, 1.05, 0.95]
+              }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            />
+            
+            {/* Inner intense glow ring */}
+            <motion.div 
+              className="absolute -inset-4 sm:-inset-6 bg-gradient-to-t from-transparent via-yellow-500/20 to-yellow-400/30 rounded-t-full blur-xl"
+              animate={{ 
+                opacity: [0.5, 1, 0.5],
+                scale: [1, 1.08, 1]
+              }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+            />
+            
+            {/* Radial glow burst effect */}
+            <motion.div 
+              className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(234,179,8,0.25)_0%,transparent_70%)]"
+              animate={{ 
+                opacity: [0.3, 0.7, 0.3],
+                scale: [1, 1.15, 1]
+              }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+            />
+            
+            {/* Rotating arc glow */}
+            <motion.div 
+              className="absolute -inset-6 sm:-inset-10"
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+            >
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-[50%] bg-gradient-to-b from-yellow-400/30 via-yellow-400/10 to-transparent rounded-t-full blur-lg" />
+            </motion.div>
+            
+            {/* Secondary rotating arc */}
+            <motion.div 
+              className="absolute -inset-4 sm:-inset-8"
+              animate={{ rotate: [360, 0] }}
+              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            >
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[40%] h-[30%] bg-gradient-to-t from-amber-400/25 via-amber-400/10 to-transparent rounded-b-full blur-md" />
+            </motion.div>
+            
+            {/* Sparkle particles around the 3D element */}
+            <motion.div
+              className="absolute -top-2 left-1/4 w-1.5 h-1.5 rounded-full bg-yellow-300"
+              animate={{ 
+                opacity: [0, 1, 0],
+                scale: [0.5, 1.2, 0.5],
+                y: [0, -15, 0]
+              }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div
+              className="absolute top-1/4 -right-2 w-1 h-1 rounded-full bg-yellow-400"
+              animate={{ 
+                opacity: [0, 1, 0],
+                scale: [0.5, 1.5, 0.5],
+                x: [0, 10, 0]
+              }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}
+            />
+            <motion.div
+              className="absolute bottom-1/4 -left-3 w-1.5 h-1.5 rounded-full bg-amber-300"
+              animate={{ 
+                opacity: [0, 1, 0],
+                scale: [0.5, 1.3, 0.5],
+                x: [0, -12, 0]
+              }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
+            />
+            
+            {/* Base glow behind container */}
             <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-transparent rounded-full blur-3xl animate-pulse-slow"></div>
-            <div ref={containerRef} className="relative flex justify-center items-center glass-effect p-4 sm:p-6 rounded-xl h-[150px] sm:h-[200px] md:h-[250px]" />
+            
+            {/* 3D container with enhanced border glow */}
+            <div 
+              ref={containerRef} 
+              className="relative flex justify-center items-center p-4 sm:p-6 rounded-xl h-[150px] sm:h-[200px] md:h-[250px] bg-black/40 backdrop-blur-md border border-yellow-400/20 shadow-[0_0_40px_rgba(234,179,8,0.15),inset_0_0_20px_rgba(234,179,8,0.05)]" 
+            />
           </div>
         </div>
       </div>
