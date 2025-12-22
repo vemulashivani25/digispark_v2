@@ -35,6 +35,9 @@ digispark/
 ├── src/
 │   ├── assets/               # Images, animations, media
 │   ├── components/           # Reusable UI components
+│   │   ├── layout/          # Barrel exports for layout (index.ts)
+│   │   ├── sections/        # Barrel exports for sections (index.ts)
+│   │   ├── interactive/     # Barrel exports for interactive (index.ts)
 │   │   ├── ui/              # shadcn/ui base components
 │   │   ├── blog/            # Blog-related components
 │   │   ├── newsletter/      # Newsletter components
@@ -47,16 +50,37 @@ digispark/
 │   │   └── auth/            # Authentication components
 │   ├── contexts/            # React context providers
 │   ├── data/                # Static data files
-│   ├── hooks/               # Custom React hooks
+│   ├── hooks/               # Custom React hooks (index.ts barrel)
 │   ├── integrations/        # Third-party integrations
 │   ├── lib/                 # Utility libraries
-│   ├── pages/               # Route page components
+│   ├── pages/               # Route pages (index.ts barrel)
 │   ├── types/               # TypeScript definitions
 │   └── utils/               # Utility functions
 ├── supabase/
 │   ├── functions/           # Edge functions
 │   └── migrations/          # Database migrations
 └── configuration files
+```
+
+## 📦 Barrel Export Files
+
+Use barrel exports for cleaner imports:
+
+```typescript
+// Layout components
+import { Navbar, FooterSection, ScrollToTop } from '@/components/layout';
+
+// Section components  
+import { HeroSection, ContactSection } from '@/components/sections';
+
+// Interactive components
+import { WhatsAppChat, ProjectInquiryPopup } from '@/components/interactive';
+
+// Pages
+import { Index, About, Services } from '@/pages';
+
+// Hooks
+import { useIsMobile, useToast } from '@/hooks';
 ```
 
 ## 🔧 Tech Stack

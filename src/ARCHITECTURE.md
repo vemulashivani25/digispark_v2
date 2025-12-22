@@ -26,6 +26,9 @@ digispark/
 │   │
 │   ├── components/               # Reusable UI components
 │   │   ├── ui/                   # Base UI components (shadcn/ui)
+│   │   ├── layout/               # Layout barrel exports (index.ts)
+│   │   ├── sections/             # Section barrel exports (index.ts)
+│   │   ├── interactive/          # Interactive barrel exports (index.ts)
 │   │   ├── admin/                # Admin panel components
 │   │   ├── auth/                 # Authentication components
 │   │   ├── blog/                 # Blog-related components

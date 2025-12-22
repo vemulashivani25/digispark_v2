@@ -1,28 +1,104 @@
+/**
+ * ============================================================================
+ * Services Page
+ * ============================================================================
+ * 
+ * Comprehensive services page showcasing all agency offerings.
+ * Features tabbed navigation, process timeline, and interactive sections.
+ * 
+ * SECTIONS (in order):
+ * 1. Navbar - Main navigation (@/components/Navbar)
+ * 2. ServicesHeroSection - Hero with service highlights (@/components/services/ServicesHeroSection)
+ * 3. ServicesTabbedSection - Interactive tabbed services (@/components/services/ServicesTabbedSection)
+ * 4. ProcessSection - Visual process steps (@/components/ProcessSection)
+ * 5. ProcessTimelineSection - Timeline process (@/components/ProcessTimelineSection)
+ * 6. EnhancedServicesSection - Detailed services (@/components/services/EnhancedServicesSection)
+ * 7. ServicesListSection - Complete list (@/components/services/ServicesListSection)
+ * 8. ServicesFeaturedSection - Featured spotlight (@/components/services/ServicesFeaturedSection)
+ * 9. AdditionalServicesSection - Extra services (@/components/services/AdditionalServicesSection)
+ * 10. TechStackMarquee - Tech logos (@/components/TechStackMarquee)
+ * 11. AgencyStatsInfoGraphic - Statistics (@/components/infographics/AgencyStatsInfoGraphic)
+ * 12. NewsletterSection - Newsletter signup (@/components/newsletter/NewsletterSection)
+ * 13. ServicesPathSection - Client path (@/components/services/ServicesPathSection)
+ * 14. ServicesCtaSection - Call to action (@/components/services/ServicesCtaSection)
+ * 15. ContactSection - Contact form (@/components/ContactSection)
+ * 16. FooterSection - Site footer (@/components/FooterSection)
+ * 
+ * @author DigiSpark Team
+ * @version 1.0.0
+ * ============================================================================
+ */
+
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet";
 import { Search, Code, Palette, Rocket, Target, Zap } from "lucide-react";
 
-// Components
+// ============================================================================
+// COMPONENT IMPORTS - Layout
+// ============================================================================
+
+/** Scroll to top button */
 import ScrollToTop from "@/components/ScrollToTop";
+
+/** Site footer with links */
 import FooterSection from "@/components/FooterSection";
+
+/** Main navigation */
 import Navbar from "@/components/Navbar";
+
+// ============================================================================
+// COMPONENT IMPORTS - Services Sections
+// ============================================================================
+
+/** Hero section with main headline */
 import ServicesHeroSection from "@/components/services/ServicesHeroSection";
+
+/** Tabbed services exploration */
 import ServicesTabbedSection from "@/components/services/ServicesTabbedSection";
+
+/** Featured services spotlight */
 import ServicesFeaturedSection from "@/components/services/ServicesFeaturedSection";
+
+/** Client path selection */
 import ServicesPathSection from "@/components/services/ServicesPathSection";
 
+/** Final call-to-action */
 import ServicesCtaSection from "@/components/services/ServicesCtaSection";
+
+/** Agency statistics */
 import AgencyStatsInfoGraphic from "@/components/infographics/AgencyStatsInfoGraphic";
+
+/** Complete services list */
 import ServicesListSection from "@/components/services/ServicesListSection";
+
+/** Visual process steps */
 import ProcessSection from "@/components/ProcessSection";
+
+/** Contact form section */
 import ContactSection from "@/components/ContactSection";
+
+/** Additional services */
 import AdditionalServicesSection from "@/components/services/AdditionalServicesSection";
+
+/** Enhanced services with details */
 import EnhancedServicesSection from "@/components/services/EnhancedServicesSection";
+
+/** Newsletter subscription */
 import NewsletterSection from "@/components/newsletter/NewsletterSection";
+
+/** Scrolling tech logos */
 import TechStackMarquee from "@/components/TechStackMarquee";
+
+/** Interactive process timeline */
 import ProcessTimelineSection from "@/components/ProcessTimelineSection";
+
+/** Project inquiry popup */
 import ProjectInquiryPopup from "@/components/ProjectInquiryPopup";
+
+// ============================================================================
+// PROCESS STEPS DATA
+// ============================================================================
 
 const processSteps = [
   {
