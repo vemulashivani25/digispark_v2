@@ -156,16 +156,16 @@ const ContactSection = () => {
   }, [isSubmitted, controls]);
   
   return (
-    <section className="py-20 relative bg-gradient-to-b from-black to-gray-900 overflow-hidden">
+    <section className="py-12 sm:py-16 md:py-20 relative bg-gradient-to-b from-black to-gray-900 overflow-hidden">
       <div className="absolute inset-0 bg-grid-white/[0.02] bg-[length:20px_20px] pointer-events-none" />
-      <div className="absolute top-0 -right-40 w-[500px] h-[500px] bg-yellow-600/10 rounded-full filter blur-[80px] opacity-50" />
-      <div className="absolute bottom-0 -left-20 w-[400px] h-[400px] bg-blue-600/10 rounded-full filter blur-[80px] opacity-30" />
+      <div className="absolute top-0 -right-40 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-yellow-600/10 rounded-full filter blur-[80px] opacity-50" />
+      <div className="absolute bottom-0 -left-20 w-[250px] sm:w-[400px] h-[250px] sm:h-[400px] bg-blue-600/10 rounded-full filter blur-[80px] opacity-30" />
       
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="mx-auto max-w-2xl">
-          <div className="text-center mb-10">
+          <div className="text-center mb-8 sm:mb-10">
             <motion.h2 
-              className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-300"
+              className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-300"
               initial={{ opacity: 0, y: -20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -174,7 +174,7 @@ const ContactSection = () => {
               Get In <span className="text-yellow-400">Touch</span>
             </motion.h2>
             <motion.p 
-              className="text-gray-400 max-w-lg mx-auto"
+              className="text-gray-400 max-w-lg mx-auto text-sm sm:text-base px-4"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -194,7 +194,7 @@ const ContactSection = () => {
             {/* Decoration glow effects */}
             <div className="absolute -inset-0.5 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-xl blur-[20px] opacity-50 group-hover:opacity-75 transition duration-500"></div>
             
-            <div className="relative bg-gray-900/50 backdrop-blur-sm border border-gray-800/50 rounded-xl p-6 md:p-8 shadow-lg overflow-hidden group">
+            <div className="relative bg-gray-900/50 backdrop-blur-sm border border-gray-800/50 rounded-xl p-5 sm:p-6 md:p-8 shadow-lg overflow-hidden group">
               {/* Form completion progress bar */}
               <div className="absolute top-0 left-0 h-[2px] bg-yellow-400" style={{ width: `${formProgress}%`, transition: 'width 0.3s ease-in-out' }}></div>
               
@@ -220,8 +220,8 @@ const ContactSection = () => {
                   </p>
                 </motion.div>
               ) : (
-                <form ref={formRef} onSubmit={handleSubmit} className="space-y-6 relative z-10">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <form ref={formRef} onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 relative z-10">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                     <div className="space-y-2">
                       <label htmlFor="name" className="block text-sm font-medium text-gray-300">
                         Your Name
@@ -233,7 +233,7 @@ const ContactSection = () => {
                         value={formState.name}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg focus:ring focus:ring-yellow-500/20 focus:border-yellow-500 transition duration-200 text-white"
+                        className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg focus:ring focus:ring-yellow-500/20 focus:border-yellow-500 transition duration-200 text-white min-h-[48px] text-base"
                         placeholder="John Doe"
                       />
                     </div>
@@ -249,10 +249,42 @@ const ContactSection = () => {
                         value={formState.email}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg focus:ring focus:ring-yellow-500/20 focus:border-yellow-500 transition duration-200 text-white"
+                        className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg focus:ring focus:ring-yellow-500/20 focus:border-yellow-500 transition duration-200 text-white min-h-[48px] text-base"
                         placeholder="john@example.com"
                       />
                     </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label htmlFor="service" className="block text-sm font-medium text-gray-300">
+                      Service Interested In
+                    </label>
+                    <input
+                      id="service"
+                      name="service"
+                      type="text"
+                      value={formState.service}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg focus:ring focus:ring-yellow-500/20 focus:border-yellow-500 transition duration-200 text-white min-h-[48px] text-base"
+                      placeholder="Web Development, SEO, etc."
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-300">
+                      Message
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      value={formState.message}
+                      onChange={handleChange}
+                      rows={4}
+                      required
+                      className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg focus:ring focus:ring-yellow-500/20 focus:border-yellow-500 transition duration-200 text-white min-h-[120px] text-base resize-y"
+                      placeholder="Tell us about your project or inquiry..."
+                    ></textarea>
                   </div>
                   
                   <div className="space-y-2">

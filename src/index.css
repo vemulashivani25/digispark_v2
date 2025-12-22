@@ -151,8 +151,65 @@
     @apply bg-background/80 backdrop-blur-md border border-border/50;
   }
 
+  .glass-effect {
+    @apply bg-background/10 backdrop-blur-sm border border-white/10;
+  }
+
   /* Text Gradient */
   .text-gradient {
     @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+  }
+
+  /* Mobile-optimized touch targets */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Safe area padding for mobile */
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top, 0);
+  }
+
+  /* Mobile text optimization */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Prevent text overflow on mobile */
+  .mobile-text-clamp {
+    @apply overflow-hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+  }
+
+  /* Reduce motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-pulse-slow,
+    .hover-scale,
+    .hover-lift {
+      animation: none;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /* Mobile-specific scroll behavior */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 }

@@ -181,27 +181,27 @@ const HeroSection = () => {
         />
       </div>
       
-      <div className="container mx-auto px-4 z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="container mx-auto px-4 sm:px-6 z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           <div className="text-center lg:text-left">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 font-space animate-fade-in">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 sm:mb-6 font-space animate-fade-in leading-tight">
               We Create <Typewriter /> Experiences
             </h1>
-            <p className="text-lg md:text-xl text-gray-300 mb-8 animate-fade-in opacity-90 max-w-xl">
+            <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 animate-fade-in opacity-90 max-w-xl mx-auto lg:mx-0">
               Transform your brand with cutting-edge design and innovative solutions tailored to meet your business goals
             </p>
-            <div className="flex flex-wrap justify-center lg:justify-start gap-4">
+            <div className="flex flex-col sm:flex-row flex-wrap justify-center lg:justify-start gap-3 sm:gap-4">
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-black 
+                className="w-full sm:w-auto min-h-[48px] bg-gradient-to-r from-yellow-400 to-yellow-500 text-black 
                   hover:from-yellow-500 hover:to-yellow-600 transition-all duration-500 
                   transform hover:-translate-y-1 hover:shadow-[0_20px_50px_-12px_rgba(234,179,8,0.4)]
                   active:translate-y-0.5 active:shadow-none
-                  group relative overflow-hidden"
+                  group relative overflow-hidden text-base font-semibold"
               >
                 <span className="absolute inset-0 bg-gradient-to-r from-yellow-300 to-yellow-400 opacity-0 
                   group-hover:opacity-100 transition-opacity duration-500"/>
-                <span className="relative z-10 flex items-center">
+                <span className="relative z-10 flex items-center justify-center">
                   View Our Work
                   <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300" />
                 </span>
@@ -209,15 +209,15 @@ const HeroSection = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="text-yellow-400 border-yellow-400 hover:bg-yellow-400/10 hover:scale-105 transition-all duration-300"
+                className="w-full sm:w-auto min-h-[48px] text-yellow-400 border-yellow-400 hover:bg-yellow-400/10 hover:scale-105 transition-all duration-300 text-base font-semibold"
               >
                 Get in Touch
               </Button>
             </div>
           </div>
-          <div className="relative">
+          <div className="relative mt-8 lg:mt-0">
             <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-transparent rounded-full blur-3xl animate-pulse-slow"></div>
-            <div ref={containerRef} className="relative flex justify-center items-center glass-effect p-8 rounded-2xl md:h-[300px] h-[200px]" />
+            <div ref={containerRef} className="relative flex justify-center items-center glass-effect p-4 sm:p-6 md:p-8 rounded-2xl h-[180px] sm:h-[220px] md:h-[300px]" />
           </div>
         </div>
       </div>
