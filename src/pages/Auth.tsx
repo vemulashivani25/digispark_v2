@@ -415,7 +415,7 @@ const Auth = () => {
                     </TabsTrigger>
                   </TabsList>
                   
-                  <TabsContent value="login" className="p-1">
+                  <TabsContent value="login" className="pt-2">
                     <Form {...loginForm}>
                       <form onSubmit={loginForm.handleSubmit(onLoginSubmit)} className="space-y-6">
                         <FormField
@@ -508,7 +508,7 @@ const Auth = () => {
                         <Button
                           type="button"
                           variant="outline"
-                          className="w-full border-gray-700 hover:bg-gray-800 text-white"
+                          className="w-full border-gray-700 bg-white hover:bg-gray-100 text-black font-medium"
                           onClick={() => signInWithGoogle()}
                           disabled={loading}
                         >
@@ -524,7 +524,7 @@ const Auth = () => {
                     </Form>
                   </TabsContent>
                   
-                  <TabsContent value="register" className="p-1">
+                  <TabsContent value="register" className="pt-2">
                     <Form {...registerForm}>
                       <form onSubmit={registerForm.handleSubmit(onRegisterSubmit)} className="space-y-6">
                         <FormField
@@ -572,30 +572,63 @@ const Auth = () => {
                         <FormField
                           control={registerForm.control}
                           name="password"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-gray-300">Password</FormLabel>
-                              <FormControl>
-                                <div className="relative group">
-                                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 group-focus-within:text-yellow-400 transition-colors duration-300" size={18} />
-                                  <Input 
-                                    type={showRegisterPassword ? "text" : "password"} 
-                                    placeholder="••••••••" 
-                                    className="bg-gray-800/50 border-gray-700 pl-10 pr-10 text-white transition-all duration-300 focus:border-yellow-400 focus:ring-yellow-400/20" 
-                                    {...field} 
-                                  />
-                                  <button
-                                    type="button"
-                                    onClick={() => setShowRegisterPassword(!showRegisterPassword)}
-                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-yellow-400 transition-colors duration-300"
-                                  >
-                                    {showRegisterPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                                  </button>
-                                </div>
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
+                          render={({ field }) => {
+                            const password = field.value || '';
+                            const getStrength = () => {
+                              let strength = 0;
+                              if (password.length >= 8) strength++;
+                              if (/[A-Z]/.test(password)) strength++;
+                              if (/[a-z]/.test(password)) strength++;
+                              if (/[0-9]/.test(password)) strength++;
+                              if (/[^A-Za-z0-9]/.test(password)) strength++;
+                              return strength;
+                            };
+                            const strength = getStrength();
+                            const strengthLabel = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'][strength - 1] || '';
+                            const strengthColor = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-lime-500', 'bg-green-500'][strength - 1] || 'bg-gray-600';
+                            
+                            return (
+                              <FormItem>
+                                <FormLabel className="text-gray-300">Password</FormLabel>
+                                <FormControl>
+                                  <div className="relative group">
+                                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 group-focus-within:text-yellow-400 transition-colors duration-300" size={18} />
+                                    <Input 
+                                      type={showRegisterPassword ? "text" : "password"} 
+                                      placeholder="••••••••" 
+                                      className="bg-gray-800/50 border-gray-700 pl-10 pr-10 text-white transition-all duration-300 focus:border-yellow-400 focus:ring-yellow-400/20" 
+                                      {...field} 
+                                    />
+                                    <button
+                                      type="button"
+                                      onClick={() => setShowRegisterPassword(!showRegisterPassword)}
+                                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-yellow-400 transition-colors duration-300"
+                                    >
+                                      {showRegisterPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                    </button>
+                                  </div>
+                                </FormControl>
+                                {password.length > 0 && (
+                                  <div className="mt-2 space-y-1">
+                                    <div className="flex gap-1">
+                                      {[1, 2, 3, 4, 5].map((level) => (
+                                        <div
+                                          key={level}
+                                          className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
+                                            level <= strength ? strengthColor : 'bg-gray-700'
+                                          }`}
+                                        />
+                                      ))}
+                                    </div>
+                                    <p className={`text-xs ${strength <= 2 ? 'text-red-400' : strength <= 3 ? 'text-yellow-400' : 'text-green-400'}`}>
+                                      {strengthLabel}
+                                    </p>
+                                  </div>
+                                )}
+                                <FormMessage />
+                              </FormItem>
+                            );
+                          }}
                         />
                         
                         <FormField
