@@ -276,7 +276,7 @@ const TestimonialsPage = () => {
         </div>
 
         {/* Hero Section */}
-        <section className="container mx-auto px-4 pt-32 pb-16 relative z-10">
+        <section className="container mx-auto px-4 pt-20 sm:pt-32 pb-8 sm:pb-16 relative z-10">
           <motion.div
             className="text-center max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 30 }}
@@ -284,29 +284,29 @@ const TestimonialsPage = () => {
             transition={{ duration: 0.8 }}
           >
             <motion.div 
-              className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-400/10 rounded-full border border-yellow-400/20 mb-6"
+              className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-yellow-400/10 rounded-full border border-yellow-400/20 mb-4 sm:mb-6"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <Sparkles className="w-4 h-4 text-yellow-400" />
-              <span className="text-yellow-400 text-sm font-medium">Real Stories, Real Results</span>
+              <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400" />
+              <span className="text-yellow-400 text-xs sm:text-sm font-medium">Real Stories, Real Results</span>
             </motion.div>
             
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+            <h1 className="text-2xl sm:text-4xl md:text-6xl font-bold mb-3 sm:mb-6">
               <span className="text-white">What Our </span>
               <span className="bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 bg-clip-text text-transparent">
                 Clients Say
               </span>
             </h1>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              Join over 150+ satisfied clients who have transformed their digital presence with DigiSpark. Here's what they have to say.
+            <p className="text-sm sm:text-lg text-gray-400 max-w-2xl mx-auto">
+              Join over 150+ satisfied clients who have transformed their digital presence with DigiSpark.
             </p>
           </motion.div>
 
           {/* Stats Section */}
           <motion.div 
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 max-w-4xl mx-auto"
+            className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 mt-6 sm:mt-12 max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
@@ -314,24 +314,24 @@ const TestimonialsPage = () => {
             {stats.map((stat, index) => (
               <motion.div
                 key={stat.label}
-                className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-xl p-5 text-center hover:border-yellow-400/30 transition-colors"
+                className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-lg sm:rounded-xl p-3 sm:p-5 text-center hover:border-yellow-400/30 transition-colors"
                 whileHover={{ scale: 1.05, y: -5 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 + index * 0.1 }}
               >
-                <stat.icon className="w-6 h-6 text-yellow-400 mx-auto mb-2" />
-                <p className="text-2xl md:text-3xl font-bold text-white">{stat.value}</p>
-                <p className="text-gray-400 text-sm">{stat.label}</p>
+                <stat.icon className="w-4 h-4 sm:w-6 sm:h-6 text-yellow-400 mx-auto mb-1 sm:mb-2" />
+                <p className="text-lg sm:text-2xl md:text-3xl font-bold text-white">{stat.value}</p>
+                <p className="text-gray-400 text-xs sm:text-sm">{stat.label}</p>
               </motion.div>
             ))}
           </motion.div>
         </section>
 
         {/* Filter Section */}
-        <section className="container mx-auto px-4 pb-8 relative z-10">
+        <section className="container mx-auto px-4 pb-4 sm:pb-8 relative z-10">
           <motion.div 
-            className="flex flex-wrap justify-center gap-2"
+            className="flex flex-wrap justify-center gap-1.5 sm:gap-2"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
@@ -343,7 +343,7 @@ const TestimonialsPage = () => {
                   setActiveFilter(industry);
                   setVisibleCount(6);
                 }}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                className={`px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all ${
                   activeFilter === industry
                     ? "bg-yellow-400 text-black"
                     : "bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 border border-gray-700/50"
@@ -356,9 +356,9 @@ const TestimonialsPage = () => {
         </section>
 
         {/* Testimonials Grid */}
-        <section className="container mx-auto px-4 pb-16 relative z-10">
+        <section className="container mx-auto px-4 pb-8 sm:pb-16 relative z-10">
           <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"
             layout
           >
             <AnimatePresence mode="popLayout">
@@ -370,28 +370,28 @@ const TestimonialsPage = () => {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.4, delay: index * 0.05 }}
-                  className="group relative bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 cursor-pointer hover:border-yellow-400/40 transition-all"
+                  className="group relative bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 cursor-pointer hover:border-yellow-400/40 transition-all"
                   onClick={() => setSelectedTestimonial(testimonial)}
                   whileHover={{ y: -8, boxShadow: "0 20px 40px -20px rgba(250, 204, 21, 0.2)" }}
                 >
                   {/* Quote Icon */}
-                  <Quote className="absolute top-4 right-4 w-8 h-8 text-yellow-400/10 group-hover:text-yellow-400/20 transition-colors" />
+                  <Quote className="absolute top-3 sm:top-4 right-3 sm:right-4 w-6 h-6 sm:w-8 sm:h-8 text-yellow-400/10 group-hover:text-yellow-400/20 transition-colors" />
                   
                   {/* Result Badge */}
                   <motion.span 
-                    className="inline-block px-3 py-1 bg-yellow-400/10 text-yellow-400 rounded-full text-xs font-medium mb-4 border border-yellow-400/20"
+                    className="inline-block px-2 sm:px-3 py-0.5 sm:py-1 bg-yellow-400/10 text-yellow-400 rounded-full text-[10px] sm:text-xs font-medium mb-2 sm:mb-4 border border-yellow-400/20"
                     whileHover={{ scale: 1.05 }}
                   >
                     {testimonial.result}
                   </motion.span>
                   
                   {/* Rating */}
-                  <div className="flex gap-0.5 mb-3">
+                  <div className="flex gap-0.5 mb-2 sm:mb-3">
                     {renderStars(testimonial.rating)}
                   </div>
                   
                   {/* Quote */}
-                  <p className="text-gray-300 text-sm leading-relaxed mb-6 line-clamp-4 group-hover:text-white transition-colors">
+                  <p className="text-gray-300 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 line-clamp-3 sm:line-clamp-4 group-hover:text-white transition-colors">
                     "{testimonial.quote}"
                   </p>
                   
