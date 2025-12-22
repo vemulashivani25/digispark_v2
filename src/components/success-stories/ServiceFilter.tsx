@@ -35,7 +35,7 @@ const ServiceFilter = ({ services, activeFilter, onFilterChange }: ServiceFilter
           className={
             activeFilter === service
               ? "bg-yellow-400 text-black hover:bg-yellow-500"
-              : "text-black-300 border-gray-700 hover:bg-gray-800"
+              : "text-gray-300 border-gray-700 hover:bg-yellow-800"
           }
         >
           {service}
