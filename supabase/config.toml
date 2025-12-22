@@ -1,0 +1,7 @@
+project_id = "jtoabocyojjmivziamtv"
+
+[functions.notify-admin]
+verify_jwt = false
+
+[functions.send-quote-email]
+verify_jwt = false
