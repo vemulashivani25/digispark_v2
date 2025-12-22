@@ -24,7 +24,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
-import { LogOut, User } from "lucide-react";
+import { LogOut, User, ChevronDown } from "lucide-react";
 import NavDropdownLink from "@/components/NavDropdownLink";
 
 interface NavLinkProps {
@@ -51,6 +51,8 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
+  const [mobileWorkOpen, setMobileWorkOpen] = useState(false);
+  const [mobileCompanyOpen, setMobileCompanyOpen] = useState(false);
   const accountMenuRef = useRef(null);
   const location = useLocation();
   const { pathname } = location;
@@ -219,47 +221,107 @@ const Navbar = () => {
             </div>
           </button>
 
-          {/* Mobile menu - compact slide-down */}
+          {/* Mobile menu - compact slide-down with dropdowns */}
           <AnimatePresence>
             {isMenuOpen && (
               <motion.div
-                className="absolute top-full left-0 right-0 bg-black/95 backdrop-blur-lg border-b border-white/10 md:hidden"
+                className="absolute top-full left-0 right-0 bg-black/95 backdrop-blur-lg border-b border-white/10 md:hidden z-40"
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.2, ease: "easeInOut" }}
               >
-                <nav className="container mx-auto px-4 py-3">
-                  <div className="grid grid-cols-2 gap-2">
-                    <Link to="/" className={`text-sm font-medium py-2.5 px-3 rounded-lg ${pathname === "/" ? "text-yellow-400 bg-white/5" : "text-white/90"}`} onClick={closeMenu}>
+                <nav className="container mx-auto px-4 py-3 max-h-[75vh] overflow-y-auto">
+                  {/* Main Links */}
+                  <div className="space-y-1">
+                    <Link to="/" className={`block text-sm font-medium py-2.5 px-3 rounded-lg ${pathname === "/" ? "text-yellow-400 bg-white/5" : "text-white/90"}`} onClick={closeMenu}>
                       Home
                     </Link>
-                    <Link to="/services" className={`text-sm font-medium py-2.5 px-3 rounded-lg ${pathname === "/services" ? "text-yellow-400 bg-white/5" : "text-white/90"}`} onClick={closeMenu}>
+                    <Link to="/services" className={`block text-sm font-medium py-2.5 px-3 rounded-lg ${pathname === "/services" ? "text-yellow-400 bg-white/5" : "text-white/90"}`} onClick={closeMenu}>
                       Services
                     </Link>
-                    <Link to="/portfolio" className={`text-sm font-medium py-2.5 px-3 rounded-lg ${pathname === "/portfolio" ? "text-yellow-400 bg-white/5" : "text-white/90"}`} onClick={closeMenu}>
-                      Portfolio
-                    </Link>
-                    <Link to="/success-stories" className={`text-sm font-medium py-2.5 px-3 rounded-lg ${pathname === "/success-stories" ? "text-yellow-400 bg-white/5" : "text-white/90"}`} onClick={closeMenu}>
-                      Success Stories
-                    </Link>
-                    <Link to="/blog" className={`text-sm font-medium py-2.5 px-3 rounded-lg ${pathname === "/blog" || pathname.startsWith("/blog/") ? "text-yellow-400 bg-white/5" : "text-white/90"}`} onClick={closeMenu}>
+
+                    {/* Work Dropdown */}
+                    <div>
+                      <button
+                        onClick={() => setMobileWorkOpen(!mobileWorkOpen)}
+                        className="w-full flex items-center justify-between text-sm font-medium py-2.5 px-3 rounded-lg text-white/90"
+                      >
+                        <span>Work</span>
+                        <ChevronDown size={16} className={`transition-transform ${mobileWorkOpen ? "rotate-180" : ""}`} />
+                      </button>
+                      <AnimatePresence>
+                        {mobileWorkOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="pl-4 space-y-1 overflow-hidden"
+                          >
+                            <Link to="/portfolio" className={`block text-sm py-2 px-3 rounded-lg ${pathname === "/portfolio" ? "text-yellow-400 bg-white/5" : "text-white/70"}`} onClick={closeMenu}>
+                              Portfolio
+                            </Link>
+                            <Link to="/project-details" className={`block text-sm py-2 px-3 rounded-lg ${pathname === "/project-details" ? "text-yellow-400 bg-white/5" : "text-white/70"}`} onClick={closeMenu}>
+                              Project Details
+                            </Link>
+                            <Link to="/success-stories" className={`block text-sm py-2 px-3 rounded-lg ${pathname === "/success-stories" ? "text-yellow-400 bg-white/5" : "text-white/70"}`} onClick={closeMenu}>
+                              Success Stories
+                            </Link>
+                            <Link to="/testimonials" className={`block text-sm py-2 px-3 rounded-lg ${pathname === "/testimonials" ? "text-yellow-400 bg-white/5" : "text-white/70"}`} onClick={closeMenu}>
+                              Testimonials
+                            </Link>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+
+                    <Link to="/blog" className={`block text-sm font-medium py-2.5 px-3 rounded-lg ${pathname === "/blog" || pathname.startsWith("/blog/") ? "text-yellow-400 bg-white/5" : "text-white/90"}`} onClick={closeMenu}>
                       Blog
                     </Link>
-                    <Link to="/about" className={`text-sm font-medium py-2.5 px-3 rounded-lg ${pathname === "/about" ? "text-yellow-400 bg-white/5" : "text-white/90"}`} onClick={closeMenu}>
-                      About
-                    </Link>
-                    <Link to="/faq" className={`text-sm font-medium py-2.5 px-3 rounded-lg ${pathname === "/faq" ? "text-yellow-400 bg-white/5" : "text-white/90"}`} onClick={closeMenu}>
-                      FAQ
-                    </Link>
-                    <Link to="/contact" className={`text-sm font-medium py-2.5 px-3 rounded-lg ${pathname === "/contact" ? "text-yellow-400 bg-white/5" : "text-white/90"}`} onClick={closeMenu}>
-                      Contact
-                    </Link>
+
+                    {/* Company Dropdown */}
+                    <div>
+                      <button
+                        onClick={() => setMobileCompanyOpen(!mobileCompanyOpen)}
+                        className="w-full flex items-center justify-between text-sm font-medium py-2.5 px-3 rounded-lg text-white/90"
+                      >
+                        <span>Company</span>
+                        <ChevronDown size={16} className={`transition-transform ${mobileCompanyOpen ? "rotate-180" : ""}`} />
+                      </button>
+                      <AnimatePresence>
+                        {mobileCompanyOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="pl-4 space-y-1 overflow-hidden"
+                          >
+                            <Link to="/about" className={`block text-sm py-2 px-3 rounded-lg ${pathname === "/about" ? "text-yellow-400 bg-white/5" : "text-white/70"}`} onClick={closeMenu}>
+                              About Us
+                            </Link>
+                            <Link to="/contact" className={`block text-sm py-2 px-3 rounded-lg ${pathname === "/contact" ? "text-yellow-400 bg-white/5" : "text-white/70"}`} onClick={closeMenu}>
+                              Contact Us
+                            </Link>
+                            <Link to="/faq" className={`block text-sm py-2 px-3 rounded-lg ${pathname === "/faq" ? "text-yellow-400 bg-white/5" : "text-white/70"}`} onClick={closeMenu}>
+                              FAQ
+                            </Link>
+                            <Link to="/project-quote" className={`block text-sm py-2 px-3 rounded-lg ${pathname === "/project-quote" ? "text-yellow-400 bg-white/5" : "text-white/70"}`} onClick={closeMenu}>
+                              Project Quote
+                            </Link>
+                            <Link to="/tools" className={`block text-sm py-2 px-3 rounded-lg ${pathname === "/tools" ? "text-yellow-400 bg-white/5" : "text-white/70"}`} onClick={closeMenu}>
+                              Tools
+                            </Link>
+                            <Link to="/resources" className={`block text-sm py-2 px-3 rounded-lg ${pathname === "/resources" ? "text-yellow-400 bg-white/5" : "text-white/70"}`} onClick={closeMenu}>
+                              Resources
+                            </Link>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
                   </div>
-                  <div className="mt-3 pt-3 border-t border-white/10 flex gap-2">
-                    <Link to="/project-quote" className="flex-1 text-center text-sm font-medium py-2.5 px-3 rounded-lg bg-white/5 text-white/90" onClick={closeMenu}>
-                      Get Quote
-                    </Link>
+
+                  {/* CTA Buttons */}
+                  <div className="mt-4 pt-3 border-t border-white/10 flex gap-2">
                     {!user ? (
                       <Link to="/auth" className="flex-1 text-center bg-yellow-400 text-black text-sm font-medium py-2.5 px-4 rounded-lg" onClick={closeMenu}>
                         Sign In
