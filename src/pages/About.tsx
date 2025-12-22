@@ -47,17 +47,17 @@ const About = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-16 relative overflow-hidden">
+      <section className="pt-20 sm:pt-24 md:pt-32 pb-10 sm:pb-12 md:pb-16 relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-white/[0.02] bg-[length:20px_20px]" />
         <div className="absolute w-full h-full">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-yellow-400/5 rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-400/5 rounded-full blur-[120px]" />
+          <div className="absolute top-0 right-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-yellow-400/5 rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 left-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-blue-400/5 rounded-full blur-[120px]" />
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <motion.h1
-              className="text-4xl md:text-6xl font-bold text-white mb-6"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-3 sm:mb-4 md:mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
@@ -65,42 +65,37 @@ const About = () => {
               About <span className="text-yellow-400">Our Agency</span>
             </motion.h1>
             <motion.p
-              className="text-xl text-gray-300 mb-10"
+              className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 mb-6 sm:mb-8 md:mb-10"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
             >
-              We're a team of creative professionals passionate about transforming businesses through innovative digital
-              solutions.
+              We're a team of creative professionals passionate about transforming businesses through innovative digital solutions.
             </motion.p>
           </div>
         </div>
       </section>
 
       {/* Company Story */}
-      <section className="py-20 relative bg-black">
+      <section className="py-10 sm:py-14 md:py-20 relative bg-black">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
             >
-              <h2 className="text-3xl font-bold text-white mb-6">Our Story</h2>
-              <div className="h-1 w-20 bg-yellow-400 mb-8" />
-              <p className="text-gray-300 mb-6">
-                Founded in 2015, our agency began as a small team of digital enthusiasts with a vision to bridge the gap
-                between technical expertise and creative design.
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-3 sm:mb-4 md:mb-6">Our Story</h2>
+              <div className="h-1 w-16 sm:w-20 bg-yellow-400 mb-4 sm:mb-6 md:mb-8" />
+              <p className="text-gray-300 mb-3 sm:mb-4 md:mb-6 text-sm sm:text-base">
+                Founded in 2015, our agency began as a small team of digital enthusiasts with a vision to bridge the gap between technical expertise and creative design.
               </p>
-              <p className="text-gray-300 mb-6">
-                Over the years, we've grown into a full-service digital agency, partnering with startups, Fortune 500
-                companies, and everything in between. We've helped hundreds of clients transform their digital presence
-                and achieve remarkable growth.
+              <p className="text-gray-300 mb-3 sm:mb-4 md:mb-6 text-sm sm:text-base">
+                Over the years, we've grown into a full-service digital agency, partnering with startups, Fortune 500 companies, and everything in between.
               </p>
-              <p className="text-gray-300">
-                Our approach combines cutting-edge technology with strategic thinking and creative execution to deliver
-                exceptional results that drive business success.
+              <p className="text-gray-300 text-sm sm:text-base">
+                Our approach combines cutting-edge technology with strategic thinking and creative execution to deliver exceptional results.
               </p>
             </motion.div>
 
@@ -112,10 +107,9 @@ const About = () => {
               transition={{ duration: 0.7 }}
             >
               <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 via-purple-400/5 to-transparent rounded-xl transform rotate-3" />
-              <div className="absolute inset-0 bg-gradient-to-tr from-blue-400/10 via-purple-400/5 to-transparent rounded-xl transform -rotate-3" />
               <img
                 src="https://images.unsplash.com/photo-1531973576160-7125cd663d86?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-                alt="DigiSpark team collaborating in a modern office meeting room discussing digital strategy"
+                alt="DigiSpark team collaborating in a modern office"
                 className="relative rounded-xl shadow-2xl z-10"
                 loading="lazy"
               />
@@ -125,11 +119,11 @@ const About = () => {
       </section>
 
       {/* Our Values */}
-      <section className="py-20 bg-gray-950">
+      <section className="py-10 sm:py-14 md:py-20 bg-gray-950">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+          <div className="text-center mb-8 sm:mb-12 md:mb-16">
             <motion.h2
-              className="text-3xl font-bold text-white mb-6"
+              className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-3 sm:mb-4 md:mb-6"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -138,7 +132,7 @@ const About = () => {
               Our <span className="text-yellow-400">Values</span>
             </motion.h2>
             <motion.p
-              className="text-gray-300 max-w-2xl mx-auto"
+              className="text-gray-300 max-w-2xl mx-auto text-sm sm:text-base"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -148,7 +142,7 @@ const About = () => {
             </motion.p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
             {[
               {
                 title: "Excellence",
@@ -195,26 +189,12 @@ const About = () => {
                 className="group relative"
               >
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-yellow-400/10 via-yellow-400/20 to-yellow-400/10 rounded-xl blur opacity-0 group-hover:opacity-100 transition duration-700"></div>
-                <div className="bg-gray-900 rounded-xl p-8 border border-gray-800 group-hover:border-yellow-500/30 transition-colors relative z-10">
-                  <motion.div
-                    className="text-4xl mb-4 transform transition-all duration-300 group-hover:scale-110"
-                    animate={{
-                      y: [0, -5, 0],
-                      rotate: [0, 5, 0, -5, 0],
-                    }}
-                    transition={{
-                      duration: 3,
-                      ease: "easeInOut",
-                      repeat: Infinity,
-                      repeatDelay: Math.random() * 2,
-                    }}
-                  >
-                    {value.icon}
-                  </motion.div>
-                  <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-yellow-400 transition-colors">
+                <div className="bg-gray-900 rounded-xl p-4 sm:p-6 md:p-8 border border-gray-800 group-hover:border-yellow-500/30 transition-colors relative z-10">
+                  <div className="text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3 md:mb-4">{value.icon}</div>
+                  <h3 className="text-base sm:text-lg md:text-xl font-semibold text-white mb-2 sm:mb-3 group-hover:text-yellow-400 transition-colors">
                     {value.title}
                   </h3>
-                  <p className="text-gray-400 group-hover:text-gray-300 transition-colors">{value.description}</p>
+                  <p className="text-gray-400 group-hover:text-gray-300 transition-colors text-xs sm:text-sm md:text-base">{value.description}</p>
                 </div>
               </motion.div>
             ))}
