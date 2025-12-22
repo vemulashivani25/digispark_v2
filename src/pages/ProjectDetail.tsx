@@ -889,7 +889,7 @@ const FunFactCard = ({ fact, index, color }: { fact: { icon: string; value: stri
   );
 };
 
-// Project card component with bento grid layout
+// Project card component with unified bento grid layout
 const ProjectCard = ({ project, index }: { 
   project: typeof projectsData[0]; 
   index: number;
@@ -906,237 +906,236 @@ const ProjectCard = ({ project, index }: {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Bento Grid Container */}
-      <div className="grid grid-cols-12 gap-3 md:gap-4">
-        
-        {/* Hero Image - Large */}
+      {/* Unified Card Container */}
+      <motion.div 
+        className={`relative rounded-3xl overflow-hidden border border-border/50 bg-secondary/60 backdrop-blur-sm`}
+        animate={{ borderColor: isHovered ? 'hsl(var(--primary) / 0.4)' : 'hsl(var(--border) / 0.5)' }}
+      >
+        {/* Gradient glow effect */}
         <motion.div 
-          className="col-span-12 lg:col-span-5 row-span-2 relative rounded-2xl overflow-hidden group h-[300px] lg:h-auto lg:min-h-[400px]"
-          whileHover={{ scale: 1.01 }}
-        >
-          <motion.div 
-            className={`absolute -inset-0.5 bg-gradient-to-r ${project.color} rounded-2xl blur-sm opacity-40`}
-            animate={{ opacity: isHovered ? 0.6 : 0.3 }}
-          />
-          <div className="relative h-full rounded-2xl overflow-hidden">
+          className={`absolute -inset-1 bg-gradient-to-r ${project.color} rounded-3xl blur-xl -z-10`}
+          animate={{ opacity: isHovered ? 0.3 : 0.1 }}
+        />
+
+        {/* Inner Grid */}
+        <div className="grid grid-cols-12 gap-px bg-border/20">
+          
+          {/* Hero Image */}
+          <div className="col-span-12 lg:col-span-5 relative h-[280px] lg:h-[380px] bg-secondary">
             <motion.img
               src={project.coverImage}
               alt={project.images[0].alt}
               className="w-full h-full object-cover"
-              animate={{ scale: isHovered ? 1.05 : 1 }}
+              animate={{ scale: isHovered ? 1.03 : 1 }}
               transition={{ duration: 0.5 }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/40 to-transparent" />
             
             {/* Project number badge */}
-            <div className={`absolute top-4 left-4 w-10 h-10 rounded-full bg-gradient-to-br ${project.color} flex items-center justify-center text-white font-bold font-mono text-sm shadow-lg`}>
+            <div className={`absolute top-5 left-5 w-12 h-12 rounded-full bg-gradient-to-br ${project.color} flex items-center justify-center text-white font-bold font-mono text-base shadow-lg`}>
               {String(index + 1).padStart(2, '0')}
             </div>
 
             {/* Category badge */}
-            <span className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r ${project.color} text-white shadow-lg`}>
+            <span className={`absolute top-5 right-5 px-4 py-1.5 rounded-full text-sm font-semibold bg-gradient-to-r ${project.color} text-white shadow-lg`}>
               {project.category}
             </span>
 
             {/* Title overlay */}
-            <div className="absolute bottom-0 left-0 right-0 p-5">
-              <h2 className="text-xl md:text-2xl font-bold text-foreground mb-1">{project.title}</h2>
-              <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {project.clientName}</span>
-                <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {project.duration}</span>
+            <div className="absolute bottom-0 left-0 right-0 p-6">
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2 leading-tight">{project.title}</h2>
+              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                <span className="flex items-center gap-1.5"><Users className="w-4 h-4" /> {project.clientName}</span>
+                <span className="flex items-center gap-1.5"><Clock className="w-4 h-4" /> {project.duration}</span>
+                <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" /> {project.completionDate}</span>
               </div>
             </div>
           </div>
-        </motion.div>
 
-        {/* Results Grid - 4 metrics in 2x2 */}
-        <div className="col-span-12 lg:col-span-7 grid grid-cols-4 gap-2 md:gap-3">
-          {project.results.map((result, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.05 }}
-              whileHover={{ scale: 1.05, y: -3 }}
-              className={`text-center p-3 md:p-4 rounded-xl border border-border/50 ${
-                i === 0 ? `bg-gradient-to-br ${project.color} bg-opacity-20` : 'bg-secondary/50'
-              }`}
-            >
-              <div className={`text-lg md:text-2xl font-bold font-mono ${
-                i === 0 ? 'text-white' : `bg-gradient-to-r ${project.color} bg-clip-text text-transparent`
-              }`}>
-                {result.metric}
-              </div>
-              <div className={`text-[10px] md:text-xs mt-1 ${i === 0 ? 'text-white/80' : 'text-muted-foreground'}`}>
-                {result.label}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+          {/* Right Content Area */}
+          <div className="col-span-12 lg:col-span-7 grid grid-cols-1 gap-px bg-border/20">
+            
+            {/* Results Row */}
+            <div className="grid grid-cols-4 gap-px bg-border/20">
+              {project.results.map((result, i) => (
+                <motion.div
+                  key={i}
+                  whileHover={{ backgroundColor: 'hsl(var(--primary) / 0.1)' }}
+                  className={`p-4 md:p-5 text-center bg-secondary ${i === 0 ? `bg-gradient-to-br ${project.color}` : ''}`}
+                >
+                  <div className={`text-xl md:text-3xl font-bold font-mono ${
+                    i === 0 ? 'text-white' : `bg-gradient-to-r ${project.color} bg-clip-text text-transparent`
+                  }`}>
+                    {result.metric}
+                  </div>
+                  <div className={`text-xs md:text-sm mt-1 ${i === 0 ? 'text-white/80' : 'text-muted-foreground'}`}>
+                    {result.label}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
 
-        {/* Description + Keywords */}
-        <div className="col-span-12 lg:col-span-7 bg-secondary/40 rounded-xl p-4 border border-border/30">
-          <p className="text-sm text-muted-foreground leading-relaxed mb-3 line-clamp-2">
-            {project.description}
-          </p>
-          <div className="flex flex-wrap gap-1.5">
-            {project.keywords.slice(0, 4).map((keyword, i) => (
-              <span key={i} className="text-[10px] text-muted-foreground bg-secondary px-2 py-0.5 rounded">
-                #{keyword.replace(/\s+/g, '')}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Animated Metrics - Compact row */}
-        <div className="col-span-12 grid grid-cols-4 gap-2 md:gap-3">
-          {project.animatedMetrics.map((metric, i) => {
-            const { count, ref } = useAnimatedCounter(metric.value);
-            return (
-              <motion.div
-                key={i}
-                ref={ref}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                whileHover={{ scale: 1.03 }}
-                className="bg-secondary/50 rounded-xl p-3 text-center border border-border/30"
-              >
-                <div className={`inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br ${metric.color} text-white mb-2`}>
-                  {getMetricIconSmall(metric.icon)}
-                </div>
-                <div className={`text-sm md:text-lg font-bold font-mono bg-gradient-to-r ${metric.color} bg-clip-text text-transparent`}>
-                  {count.toLocaleString()}{metric.suffix}
-                </div>
-                <div className="text-[10px] text-muted-foreground truncate">{metric.label}</div>
-              </motion.div>
-            );
-          })}
-        </div>
-
-        {/* Tech Stack + Services Side by Side */}
-        <div className="col-span-6 bg-secondary/30 rounded-xl p-4 border border-border/30">
-          <h4 className="text-xs font-semibold text-foreground mb-2 flex items-center gap-1.5">
-            <Terminal className="w-3 h-3 text-primary" /> Tech Stack
-          </h4>
-          <div className="flex flex-wrap gap-1.5">
-            {project.technologies.slice(0, 4).map((tech, i) => (
-              <span key={i} className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-mono">
-                {tech}
-              </span>
-            ))}
-            {project.technologies.length > 4 && (
-              <span className="text-[10px] bg-secondary text-muted-foreground px-2 py-0.5 rounded-full">
-                +{project.technologies.length - 4}
-              </span>
-            )}
-          </div>
-        </div>
-
-        <div className="col-span-6 bg-secondary/30 rounded-xl p-4 border border-border/30">
-          <h4 className="text-xs font-semibold text-foreground mb-2 flex items-center gap-1.5">
-            <Layers className="w-3 h-3 text-primary" /> Services
-          </h4>
-          <div className="flex flex-wrap gap-1.5">
-            {project.services.slice(0, 3).map((service, i) => (
-              <span key={i} className="text-[10px] bg-secondary text-muted-foreground px-2 py-0.5 rounded-full">
-                {service}
-              </span>
-            ))}
-            {project.services.length > 3 && (
-              <span className="text-[10px] bg-secondary text-muted-foreground px-2 py-0.5 rounded-full">
-                +{project.services.length - 3}
-              </span>
-            )}
-          </div>
-        </div>
-
-        {/* Challenges & Solutions - Side by Side */}
-        <div className="col-span-6 bg-destructive/10 rounded-xl p-4 border border-destructive/20">
-          <h4 className="text-xs font-semibold text-foreground mb-2 flex items-center gap-1.5">
-            <Target className="w-3 h-3 text-destructive" /> Challenges
-          </h4>
-          <ul className="space-y-1">
-            {project.challenges.slice(0, 3).map((challenge, i) => (
-              <li key={i} className="flex items-start gap-1.5 text-[11px] text-muted-foreground">
-                <span className="w-1 h-1 rounded-full bg-destructive mt-1.5 shrink-0" />
-                <span className="line-clamp-1">{challenge}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="col-span-6 bg-emerald-500/10 rounded-xl p-4 border border-emerald-500/20">
-          <h4 className="text-xs font-semibold text-foreground mb-2 flex items-center gap-1.5">
-            <CheckCircle2 className="w-3 h-3 text-emerald-500" /> Solutions
-          </h4>
-          <ul className="space-y-1">
-            {project.solutions.slice(0, 3).map((solution, i) => (
-              <li key={i} className="flex items-start gap-1.5 text-[11px] text-muted-foreground">
-                <span className="w-1 h-1 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
-                <span className="line-clamp-1">{solution}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Client Testimonial - Full Width Compact */}
-        <div className="col-span-12 lg:col-span-8 bg-gradient-to-r from-secondary/50 via-secondary/30 to-transparent rounded-xl p-4 border-l-4 border-primary">
-          <div className="flex items-start gap-3">
-            <img 
-              src={project.clientFeedback.avatar} 
-              alt={project.clientFeedback.clientName}
-              className="w-10 h-10 rounded-full object-cover border-2 border-primary/30"
-            />
-            <div className="flex-1 min-w-0">
-              <p className="text-xs text-muted-foreground italic line-clamp-2 mb-2">
-                "{project.clientFeedback.text}"
+            {/* Description */}
+            <div className="p-5 md:p-6 bg-secondary">
+              <p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-3">
+                {project.description}
               </p>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-medium text-foreground">{project.clientFeedback.clientName}</span>
-                <span className="text-[10px] text-muted-foreground">• {project.clientFeedback.clientRole}</span>
-                <div className="flex gap-0.5 ml-auto">
-                  {[...Array(project.clientFeedback.rating)].map((_, i) => (
-                    <Star key={i} className="w-3 h-3 fill-primary text-primary" />
+              <div className="flex flex-wrap gap-2">
+                {project.keywords.map((keyword, i) => (
+                  <span key={i} className="text-xs text-muted-foreground bg-background/50 px-2.5 py-1 rounded">
+                    #{keyword.replace(/\s+/g, '')}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Animated Metrics Row */}
+            <div className="grid grid-cols-4 gap-px bg-border/20">
+              {project.animatedMetrics.map((metric, i) => {
+                const { count, ref } = useAnimatedCounter(metric.value);
+                return (
+                  <div
+                    key={i}
+                    ref={ref}
+                    className="p-4 md:p-5 text-center bg-secondary"
+                  >
+                    <div className={`inline-flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br ${metric.color} text-white mb-2`}>
+                      {getMetricIconSmall(metric.icon)}
+                    </div>
+                    <div className={`text-base md:text-xl font-bold font-mono bg-gradient-to-r ${metric.color} bg-clip-text text-transparent`}>
+                      {count.toLocaleString()}{metric.suffix}
+                    </div>
+                    <div className="text-xs md:text-sm text-muted-foreground mt-1">{metric.label}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Bottom Section - Full Width */}
+          <div className="col-span-12 grid grid-cols-12 gap-px bg-border/20">
+            
+            {/* Tech Stack */}
+            <div className="col-span-6 md:col-span-3 p-5 bg-secondary">
+              <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                <Terminal className="w-4 h-4 text-primary" /> Tech Stack
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {project.technologies.slice(0, 5).map((tech, i) => (
+                  <span key={i} className="text-xs bg-primary/10 text-primary px-2.5 py-1 rounded-full font-mono">
+                    {tech}
+                  </span>
+                ))}
+                {project.technologies.length > 5 && (
+                  <span className="text-xs bg-background/50 text-muted-foreground px-2.5 py-1 rounded-full">
+                    +{project.technologies.length - 5}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Services */}
+            <div className="col-span-6 md:col-span-3 p-5 bg-secondary">
+              <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                <Layers className="w-4 h-4 text-primary" /> Services
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {project.services.slice(0, 4).map((service, i) => (
+                  <span key={i} className="text-xs bg-background/50 text-muted-foreground px-2.5 py-1 rounded-full">
+                    {service}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Challenges */}
+            <div className="col-span-6 md:col-span-3 p-5 bg-destructive/5">
+              <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                <Target className="w-4 h-4 text-destructive" /> Challenges
+              </h4>
+              <ul className="space-y-1.5">
+                {project.challenges.slice(0, 3).map((challenge, i) => (
+                  <li key={i} className="flex items-start gap-2 text-xs md:text-sm text-muted-foreground">
+                    <span className="w-1.5 h-1.5 rounded-full bg-destructive mt-1.5 shrink-0" />
+                    <span className="line-clamp-1">{challenge}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Solutions */}
+            <div className="col-span-6 md:col-span-3 p-5 bg-emerald-500/5">
+              <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Solutions
+              </h4>
+              <ul className="space-y-1.5">
+                {project.solutions.slice(0, 3).map((solution, i) => (
+                  <li key={i} className="flex items-start gap-2 text-xs md:text-sm text-muted-foreground">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
+                    <span className="line-clamp-1">{solution}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Footer Section */}
+          <div className="col-span-12 grid grid-cols-12 gap-px bg-border/20">
+            
+            {/* Client Testimonial */}
+            <div className="col-span-12 lg:col-span-8 p-5 md:p-6 bg-gradient-to-r from-primary/5 to-secondary">
+              <div className="flex items-start gap-4">
+                <img 
+                  src={project.clientFeedback.avatar} 
+                  alt={project.clientFeedback.clientName}
+                  className="w-12 h-12 rounded-full object-cover border-2 border-primary/30 shrink-0"
+                />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm md:text-base text-muted-foreground italic mb-2 line-clamp-2">
+                    "{project.clientFeedback.text}"
+                  </p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-sm font-medium text-foreground">{project.clientFeedback.clientName}</span>
+                    <span className="text-xs text-muted-foreground">• {project.clientFeedback.clientRole}</span>
+                    <div className="flex gap-0.5 ml-auto">
+                      {[...Array(project.clientFeedback.rating)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-primary text-primary" />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* CTA + Awards */}
+            <div className="col-span-12 lg:col-span-4 p-5 md:p-6 bg-secondary flex flex-col justify-center items-center gap-3">
+              {project.awards.length > 0 && (
+                <div className="flex flex-wrap justify-center gap-2 mb-2">
+                  {project.awards.map((award, i) => (
+                    <span key={i} className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">
+                      <Award className="w-3 h-3" /> {award}
+                    </span>
                   ))}
                 </div>
+              )}
+              <div className="flex items-center gap-3">
+                {project.siteUrl && (
+                  <Button size="sm" variant="outline" asChild className="text-sm">
+                    <a href={project.siteUrl} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="w-4 h-4 mr-2" /> Visit
+                    </a>
+                  </Button>
+                )}
+                <Button size="sm" asChild className={`text-sm bg-gradient-to-r ${project.color} border-0 text-white`}>
+                  <Link to="/project-quote">
+                    Start Project <ArrowRight className="w-4 h-4 ml-2" />
+                  </Link>
+                </Button>
               </div>
             </div>
           </div>
         </div>
-
-        {/* CTA Buttons */}
-        <div className="col-span-12 lg:col-span-4 flex items-center justify-end gap-2">
-          {project.siteUrl && (
-            <Button size="sm" variant="outline" asChild className="text-xs h-8">
-              <a href={project.siteUrl} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="w-3 h-3 mr-1.5" /> Visit
-              </a>
-            </Button>
-          )}
-          <Button size="sm" asChild className={`text-xs h-8 bg-gradient-to-r ${project.color} border-0 text-white`}>
-            <Link to="/project-quote">
-              Start Project <ArrowRight className="w-3 h-3 ml-1.5" />
-            </Link>
-          </Button>
-        </div>
-
-        {/* Awards (if any) */}
-        {project.awards.length > 0 && (
-          <div className="col-span-12 flex justify-center gap-2">
-            {project.awards.map((award, i) => (
-              <span key={i} className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary/10 text-primary rounded-full text-[10px] font-medium">
-                <Award className="w-3 h-3" /> {award}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Divider */}
-      <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mt-10" />
+      </motion.div>
     </motion.article>
   );
 };
