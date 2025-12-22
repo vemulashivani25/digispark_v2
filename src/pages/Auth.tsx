@@ -495,7 +495,7 @@ const Auth = () => {
               ) : (
                 // Login/Register Tabs
                 <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as 'login' | 'register')}>
-                  <TabsList className="grid w-full grid-cols-2 mb-8 bg-gray-800/70 p-2 rounded-xl border border-gray-700/50">
+                  <TabsList className="grid w-full grid-cols-2 mb-8 bg-gray-800/70 p-1 rounded-xl border border-gray-700/50">
                     <TabsTrigger 
                       value="login" 
                       className="flex-1 data-[state=active]:bg-yellow-400 data-[state=active]:text-black data-[state=active]:shadow-lg data-[state=inactive]:bg-transparent data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 rounded-lg py-3.5 text-sm font-semibold transition-all duration-300 text-center whitespace-nowrap"
