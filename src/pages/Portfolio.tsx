@@ -15,9 +15,9 @@ import { Badge } from "@/components/ui/badge";
 import ScrollToTop from "@/components/ScrollToTop";
 import { 
   ArrowRight, Code, Globe, Database, BarChart3, 
-  MessageCircle, Lightbulb, CheckSquare, Rocket, 
-  Star, Network, Clock, Award, X
+  MessageCircle, Rocket, Star
 } from "lucide-react";
+import ProjectDetailsModal, { ProjectDetails } from "@/components/portfolio/ProjectDetailsModal";
 import WhatsAppChat from "@/components/WhatsAppChat";
 
 interface Project {
@@ -286,6 +286,24 @@ const Portfolio = () => {
     ? projects 
     : projects.filter(project => project.tags.includes(selectedTag));
 
+  // Convert Project to ProjectDetails for the modal
+  const convertToProjectDetails = (project: Project): ProjectDetails => ({
+    id: project.id,
+    title: project.title,
+    description: project.description,
+    category: project.industry,
+    client: project.client,
+    date: "2024",
+    technologies: project.technologies,
+    features: project.stats.map(s => `${s.value} ${s.label}`),
+    challenge: project.challenge,
+    solution: project.solution,
+    results: project.results,
+    imageUrl: project.image,
+    galleryImages: [project.image],
+    testimonial: project.testimonial
+  });
+
   const viewProject = (project: Project) => {
     setSelectedProject(project);
     setIsDetailOpen(true);
@@ -395,14 +413,11 @@ const Portfolio = () => {
         </div>
       </section>
       
-      <AnimatePresence>
-        {isDetailOpen && selectedProject && (
-          <ProjectDetail 
-            project={selectedProject} 
-            onClose={closeProjectDetail} 
-          />
-        )}
-      </AnimatePresence>
+      <ProjectDetailsModal
+        project={selectedProject ? convertToProjectDetails(selectedProject) : null}
+        isOpen={isDetailOpen}
+        onClose={closeProjectDetail}
+      />
 
       <NewsletterSection />
       <FooterSection />
@@ -485,162 +500,6 @@ const ProjectCard = ({ project, index, onClick }: ProjectCardProps) => {
           </div>
         </CardContent>
       </Card>
-    </motion.div>
-  );
-};
-
-interface ProjectDetailProps {
-  project: Project;
-  onClose: () => void;
-}
-
-const ProjectDetail = ({ project, onClose }: ProjectDetailProps) => {
-  const ProjectIcon = project.icon;
-  
-  return (
-    <motion.div 
-      className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      onClick={onClose}
-    >
-      <motion.div 
-        className="bg-gradient-to-br from-gray-900 to-black border border-yellow-400/20 rounded-xl w-full max-w-5xl max-h-[90vh] overflow-y-auto"
-        initial={{ opacity: 0, scale: 0.9, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.9, y: 20 }}
-        transition={{ type: "spring", damping: 25 }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="relative">
-          <div className="relative h-80">
-            <img 
-              src={project.image} 
-              alt={project.title}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent" />
-            <div className="absolute top-4 right-4 z-20">
-              <Button 
-                size="icon" 
-                variant="ghost"
-                className="bg-black/50 text-white hover:bg-black/80 rounded-full h-10 w-10"
-                onClick={onClose}
-              >
-                <X className="h-5 w-5" />
-              </Button>
-            </div>
-          </div>
-          
-          <div className="relative -mt-20 px-8">
-            <div className="flex items-center mb-6">
-              <div className="bg-yellow-400 p-4 rounded-xl shadow-lg">
-                <ProjectIcon className="h-8 w-8 text-black" />
-              </div>
-              <div className="ml-4">
-                <h2 className="text-3xl font-bold text-white">{project.title}</h2>
-                <div className="flex items-center mt-1">
-                  <span className="text-gray-400">{project.client}</span>
-                  <span className="mx-2 text-gray-600">•</span>
-                  <span className="text-gray-400">{project.industry}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div className="p-8 pt-0">
-          <div className="flex flex-wrap gap-2 mb-8">
-            {project.tags.map(tag => (
-              <Badge key={tag} className="bg-yellow-400/20 text-yellow-400 hover:bg-yellow-400/30">
-                {tag}
-              </Badge>
-            ))}
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            <div>
-              <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
-                <Clock className="h-5 w-5 text-yellow-400 mr-2" />
-                Challenge
-              </h3>
-              <p className="text-gray-400">{project.challenge}</p>
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
-                <Lightbulb className="h-5 w-5 text-yellow-400 mr-2" />
-                Solution
-              </h3>
-              <p className="text-gray-400">{project.solution}</p>
-            </div>
-          </div>
-          
-          <div className="mb-8">
-            <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
-              <Award className="h-5 w-5 text-yellow-400 mr-2" />
-              Results
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {project.stats.map((stat, index) => (
-                <motion.div 
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 + 0.2 }}
-                  className="bg-black/40 border border-gray-800/50 p-4 rounded-lg text-center"
-                >
-                  <p className="text-2xl font-bold text-yellow-400">{stat.value}</p>
-                  <p className="text-sm text-gray-400">{stat.label}</p>
-                </motion.div>
-              ))}
-            </div>
-            
-            <div className="mt-6">
-              <ul className="space-y-2">
-                {project.results.map((result, index) => (
-                  <motion.li 
-                    key={index} 
-                    className="flex items-start"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 + 0.5 }}
-                  >
-                    <CheckSquare className="h-5 w-5 text-yellow-400 mr-2 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-300">{result}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          
-          <div className="mb-8">
-            <h3 className="text-xl font-semibold text-white mb-4">Technologies Used</h3>
-            <div className="flex flex-wrap gap-2">
-              {project.technologies.map(tech => (
-                <Badge key={tech} variant="outline" className="border-gray-700 text-gray-300">
-                  {tech}
-                </Badge>
-              ))}
-            </div>
-          </div>
-          
-          {project.testimonial && (
-            <div className="mb-8 bg-gradient-to-r from-yellow-500/10 to-yellow-600/5 p-6 rounded-xl border-l-4 border-yellow-400">
-              <p className="text-gray-300 italic mb-4">"{project.testimonial.quote}"</p>
-              <p className="text-white font-medium">{project.testimonial.author}</p>
-              <p className="text-gray-400 text-sm">{project.testimonial.position}</p>
-            </div>
-          )}
-          
-          <div className="flex justify-center mt-8">
-            <Button className="bg-yellow-400 hover:bg-yellow-500 text-black">
-              Request a Similar Project
-              <ArrowRight className="ml-2 w-4 h-4" />
-            </Button>
-          </div>
-        </div>
-      </motion.div>
     </motion.div>
   );
 };

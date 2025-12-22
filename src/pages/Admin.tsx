@@ -15,6 +15,16 @@ import { Tables } from "@/integrations/supabase/types";
 import { Plus, Trash, Edit, Eye, RefreshCcw, Check, X, Calendar, ShieldAlert, FileText } from "lucide-react";
 import BlogPostEditor from "@/components/admin/BlogPostEditor";
 import ResourceManager from "@/components/admin/ResourceManager";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface Resource {
   id: string;
@@ -42,6 +52,11 @@ const Admin = () => {
   const [editingPost, setEditingPost] = useState<Tables<"blog_posts"> | null>(null);
   const [showResourceManager, setShowResourceManager] = useState(false);
   const [editingResource, setEditingResource] = useState<Resource | null>(null);
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{
+    type: 'contact' | 'blog' | 'resource';
+    id: string;
+    title?: string;
+  } | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -356,7 +371,7 @@ const Admin = () => {
                                   variant="ghost" 
                                   size="sm"
                                   className="text-red-400 hover:text-red-300 hover:bg-red-900/20"
-                                  onClick={() => deleteContact(contact.id)}
+                                  onClick={() => setDeleteConfirmation({ type: 'contact', id: contact.id, title: contact.name })}
                                 >
                                   <Trash size={16} />
                                 </Button>
@@ -517,7 +532,7 @@ const Admin = () => {
                                       variant="ghost" 
                                       size="sm" 
                                       className="text-red-400 hover:text-red-300 hover:bg-red-900/20"
-                                      onClick={() => deleteBlogPost(post.id)}
+                                      onClick={() => setDeleteConfirmation({ type: 'blog', id: post.id, title: post.title })}
                                     >
                                       <Trash size={16} />
                                     </Button>
@@ -622,7 +637,7 @@ const Admin = () => {
                                       variant="ghost" 
                                       size="sm"
                                       className="text-red-400 hover:text-red-300 hover:bg-red-900/20"
-                                      onClick={() => deleteResource(resource.id)}
+                                      onClick={() => setDeleteConfirmation({ type: 'resource', id: resource.id, title: resource.title })}
                                     >
                                       <Trash size={16} />
                                     </Button>
@@ -643,6 +658,42 @@ const Admin = () => {
       </div>
 
       <FooterSection />
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={!!deleteConfirmation} onOpenChange={(open) => !open && setDeleteConfirmation(null)}>
+        <AlertDialogContent className="bg-gray-900 border-gray-800">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-white">Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-400">
+              {deleteConfirmation?.type === 'contact' && 
+                `Are you sure you want to delete the contact submission from "${deleteConfirmation.title}"? This action cannot be undone.`}
+              {deleteConfirmation?.type === 'blog' && 
+                `Are you sure you want to delete the blog post "${deleteConfirmation.title}"? This action cannot be undone.`}
+              {deleteConfirmation?.type === 'resource' && 
+                `Are you sure you want to delete the resource "${deleteConfirmation.title}"? This action cannot be undone.`}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="bg-gray-800 text-white border-gray-700 hover:bg-gray-700">Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-red-600 hover:bg-red-700 text-white"
+              onClick={() => {
+                if (!deleteConfirmation) return;
+                if (deleteConfirmation.type === 'contact') {
+                  deleteContact(deleteConfirmation.id);
+                } else if (deleteConfirmation.type === 'blog') {
+                  deleteBlogPost(deleteConfirmation.id);
+                } else if (deleteConfirmation.type === 'resource') {
+                  deleteResource(deleteConfirmation.id);
+                }
+                setDeleteConfirmation(null);
+              }}
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
