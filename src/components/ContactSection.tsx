@@ -287,37 +287,6 @@ const ContactSection = () => {
                     ></textarea>
                   </div>
                   
-                  <div className="space-y-2">
-                    <label htmlFor="service" className="block text-sm font-medium text-gray-300">
-                      Service Interested In
-                    </label>
-                    <input
-                      id="service"
-                      name="service"
-                      type="text"
-                      value={formState.service}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg focus:ring focus:ring-yellow-500/20 focus:border-yellow-500 transition duration-200 text-white"
-                      placeholder="Web Development, SEO, etc."
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-300">
-                      Message
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      value={formState.message}
-                      onChange={handleChange}
-                      rows={5}
-                      required
-                      className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg focus:ring focus:ring-yellow-500/20 focus:border-yellow-500 transition duration-200 text-white"
-                      placeholder="Tell us about your project or inquiry..."
-                    ></textarea>
-                  </div>
 
                   {/* Honeypot - hidden from users */}
                   <div className="absolute opacity-0 pointer-events-none" aria-hidden="true" tabIndex={-1}>
