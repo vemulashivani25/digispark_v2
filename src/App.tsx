@@ -49,6 +49,7 @@ import Admin from "./pages/Admin";
 import Faq from "./pages/Faq";
 import Tools from "./pages/Tools";
 import ProjectDetail from "./pages/ProjectDetail";
+import Documentation from "./pages/Documentation";
 
 // ============================================================================
 // MAIN APP COMPONENT
@@ -113,6 +114,7 @@ const App = () => {
                 {/* Resources & Tools */}
                 <Route path="/resources" element={<Resources />} />
                 <Route path="/tools" element={<Tools />} />
+                <Route path="/docs" element={<Documentation />} />
                 <Route path="/project-quote" element={<ProjectQuote />} />
                 <Route path="/newsletter-preview" element={<NewsletterPreview />} />
 
