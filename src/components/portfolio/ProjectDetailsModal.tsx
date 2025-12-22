@@ -92,288 +92,307 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-black/80 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md"
           onClick={onClose}
         >
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.3 }}
-            className="bg-gray-900 max-w-6xl w-full max-h-[90vh] overflow-y-auto rounded-xl shadow-2xl"
+            className="bg-gradient-to-br from-gray-900 via-gray-900 to-gray-800 w-full h-full overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="sticky top-0 z-10 bg-gray-900 flex justify-between items-center p-5 border-b border-gray-800">
-              <h2 className="text-2xl font-bold text-white">{project.title}</h2>
-              <button
-                onClick={onClose}
-                className="text-gray-400 hover:text-white p-1 rounded-full transition-colors"
-                aria-label="Close modal"
-              >
-                <X className="w-6 h-6" />
-              </button>
+            {/* Fixed Header */}
+            <div className="absolute top-0 left-0 right-0 z-20 bg-gray-900/80 backdrop-blur-md border-b border-gray-800/50">
+              <div className="flex justify-between items-center px-6 py-4 max-w-[1920px] mx-auto">
+                <div className="flex items-center gap-4">
+                  <span className="text-xs font-medium px-3 py-1 rounded-full bg-primary/20 text-primary">
+                    {project.category}
+                  </span>
+                  <h2 className="text-xl md:text-2xl font-bold text-foreground">{project.title}</h2>
+                </div>
+                <button
+                  onClick={onClose}
+                  className="text-muted-foreground hover:text-foreground p-2 rounded-full hover:bg-white/10 transition-colors"
+                  aria-label="Close modal"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
             </div>
             
-            <div className="p-5 md:p-8">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* Image gallery / Live Demo */}
-                <div className="col-span-1">
-                  {/* Toggle between gallery and live demo */}
-                  {project.demoUrl && (
-                    <div className="flex gap-2 mb-4">
-                      <button
-                        onClick={() => setShowLiveDemo(false)}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                          !showLiveDemo 
-                            ? 'bg-yellow-400 text-black' 
-                            : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                        }`}
-                      >
-                        Gallery
-                      </button>
-                      <button
-                        onClick={() => setShowLiveDemo(true)}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${
-                          showLiveDemo 
-                            ? 'bg-yellow-400 text-black' 
-                            : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                        }`}
-                      >
-                        <Globe className="w-4 h-4" />
-                        Live Demo
-                      </button>
+            {/* Bento Grid Layout */}
+            <div className="h-full pt-16 pb-4 px-4 md:px-6 overflow-y-auto">
+              <div className="max-w-[1920px] mx-auto h-full">
+                <div className="grid grid-cols-12 grid-rows-[auto] gap-3 md:gap-4 min-h-[calc(100vh-5rem)]">
+                  
+                  {/* Hero Image - Large */}
+                  <div className="col-span-12 lg:col-span-7 xl:col-span-8 row-span-2 relative rounded-2xl overflow-hidden group">
+                    {project.demoUrl && (
+                      <div className="absolute top-4 left-4 z-10 flex gap-2">
+                        <button
+                          onClick={() => setShowLiveDemo(false)}
+                          className={`px-4 py-2 rounded-full text-sm font-medium backdrop-blur-md transition-all ${
+                            !showLiveDemo 
+                              ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/25' 
+                              : 'bg-black/40 text-white hover:bg-black/60'
+                          }`}
+                        >
+                          Gallery
+                        </button>
+                        <button
+                          onClick={() => setShowLiveDemo(true)}
+                          className={`px-4 py-2 rounded-full text-sm font-medium backdrop-blur-md transition-all flex items-center gap-2 ${
+                            showLiveDemo 
+                              ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/25' 
+                              : 'bg-black/40 text-white hover:bg-black/60'
+                          }`}
+                        >
+                          <Globe className="w-4 h-4" />
+                          Live Demo
+                        </button>
+                      </div>
+                    )}
+
+                    {showLiveDemo && project.demoUrl ? (
+                      <div className="w-full h-full min-h-[300px] md:min-h-[400px] bg-gray-800">
+                        <iframe
+                          src={project.demoUrl}
+                          title={`${project.title} - Live Demo`}
+                          className="w-full h-full"
+                          sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                          loading="lazy"
+                        />
+                        <div className="absolute top-4 right-4 bg-green-500/90 text-white text-xs px-3 py-1.5 rounded-full flex items-center gap-2 backdrop-blur-md">
+                          <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                          Live Preview
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="relative w-full h-full min-h-[300px] md:min-h-[400px]">
+                        {project.galleryImages.map((image, idx) => (
+                          <motion.div
+                            key={idx}
+                            initial={{ opacity: 0 }}
+                            animate={{ 
+                              opacity: currentImageIndex === idx ? 1 : 0,
+                              scale: currentImageIndex === idx ? 1 : 1.05
+                            }}
+                            transition={{ duration: 0.5 }}
+                            className="absolute inset-0"
+                            style={{ display: currentImageIndex === idx ? 'block' : 'none' }}
+                          >
+                            <img
+                              src={image}
+                              alt={`${project.title} - Image ${idx + 1}`}
+                              className="w-full h-full object-cover"
+                              onLoad={() => handleImageLoad(idx)}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-transparent to-transparent" />
+                          </motion.div>
+                        ))}
+                        
+                        {project.galleryImages.length > 1 && (
+                          <>
+                            <button
+                              onClick={prevImage}
+                              className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-3 rounded-full backdrop-blur-md transition-all hover:scale-110"
+                            >
+                              <ChevronLeft className="w-5 h-5" />
+                            </button>
+                            <button
+                              onClick={nextImage}
+                              className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-3 rounded-full backdrop-blur-md transition-all hover:scale-110"
+                            >
+                              <ChevronRight className="w-5 h-5" />
+                            </button>
+                            
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-black/30 backdrop-blur-md px-3 py-2 rounded-full">
+                              {project.galleryImages.map((_, idx) => (
+                                <button
+                                  key={idx}
+                                  onClick={() => setCurrentImageIndex(idx)}
+                                  className={`transition-all rounded-full ${
+                                    currentImageIndex === idx 
+                                      ? "bg-primary w-6 h-2" 
+                                      : "bg-white/40 hover:bg-white/60 w-2 h-2"
+                                  }`}
+                                />
+                              ))}
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Quick Stats - Right Column */}
+                  <div className="col-span-6 lg:col-span-5 xl:col-span-4 grid grid-cols-2 gap-3">
+                    <motion.div 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 }}
+                      className="bg-gradient-to-br from-primary/20 to-primary/5 p-4 rounded-2xl border border-primary/20"
+                    >
+                      <Calendar className="text-primary w-5 h-5 mb-2" />
+                      <p className="text-muted-foreground text-xs">Completed</p>
+                      <p className="text-foreground font-semibold text-sm">{project.date}</p>
+                    </motion.div>
+                    
+                    <motion.div 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.15 }}
+                      className="bg-gradient-to-br from-blue-500/20 to-blue-500/5 p-4 rounded-2xl border border-blue-500/20"
+                    >
+                      <Users className="text-blue-400 w-5 h-5 mb-2" />
+                      <p className="text-muted-foreground text-xs">Client</p>
+                      <p className="text-foreground font-semibold text-sm truncate">{project.client}</p>
+                    </motion.div>
+                  </div>
+
+                  {/* Technologies */}
+                  <div className="col-span-6 lg:col-span-5 xl:col-span-4">
+                    <motion.div 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                      className="bg-gray-800/50 p-4 rounded-2xl border border-gray-700/50 h-full"
+                    >
+                      <h3 className="text-sm font-semibold text-foreground mb-3">Tech Stack</h3>
+                      <div className="flex flex-wrap gap-1.5">
+                        {project.technologies.slice(0, 6).map((tech, idx) => (
+                          <span
+                            key={idx}
+                            className="px-2.5 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                        {project.technologies.length > 6 && (
+                          <span className="px-2.5 py-1 bg-gray-700/50 text-muted-foreground rounded-full text-xs">
+                            +{project.technologies.length - 6}
+                          </span>
+                        )}
+                      </div>
+                    </motion.div>
+                  </div>
+
+                  {/* Overview */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.25 }}
+                    className="col-span-12 lg:col-span-4 bg-gray-800/30 p-5 rounded-2xl border border-gray-700/30"
+                  >
+                    <h3 className="text-sm font-semibold text-primary mb-2">Overview</h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed line-clamp-4">{project.description}</p>
+                  </motion.div>
+
+                  {/* Challenge & Solution - Side by Side */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="col-span-12 lg:col-span-4 bg-gradient-to-br from-orange-500/10 to-red-500/5 p-5 rounded-2xl border border-orange-500/20"
+                  >
+                    <h3 className="text-sm font-semibold text-orange-400 mb-2">Challenge</h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed line-clamp-4">{project.challenge}</p>
+                  </motion.div>
+
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.35 }}
+                    className="col-span-12 lg:col-span-4 bg-gradient-to-br from-green-500/10 to-emerald-500/5 p-5 rounded-2xl border border-green-500/20"
+                  >
+                    <h3 className="text-sm font-semibold text-green-400 mb-2">Solution</h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed line-clamp-4">{project.solution}</p>
+                  </motion.div>
+
+                  {/* Features */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="col-span-12 md:col-span-6 bg-gray-800/30 p-5 rounded-2xl border border-gray-700/30"
+                  >
+                    <h3 className="text-sm font-semibold text-foreground mb-3">Key Features</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {project.features.slice(0, 6).map((feature, idx) => (
+                        <div key={idx} className="flex items-start gap-2">
+                          <CheckCircle className="text-primary w-4 h-4 flex-shrink-0 mt-0.5" />
+                          <span className="text-muted-foreground text-xs">{feature}</span>
+                        </div>
+                      ))}
                     </div>
+                  </motion.div>
+
+                  {/* Results */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.45 }}
+                    className="col-span-12 md:col-span-6 bg-gradient-to-br from-primary/10 to-primary/5 p-5 rounded-2xl border border-primary/20"
+                  >
+                    <h3 className="text-sm font-semibold text-foreground mb-3">Results & Impact</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {project.results.slice(0, 4).map((result, idx) => (
+                        <div key={idx} className="flex items-start gap-2">
+                          <CheckCircle className="text-green-400 w-4 h-4 flex-shrink-0 mt-0.5" />
+                          <span className="text-muted-foreground text-xs">{result}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {/* Testimonial */}
+                  {project.testimonial && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5 }}
+                      className="col-span-12 lg:col-span-8 bg-gradient-to-r from-primary/5 via-gray-800/50 to-gray-800/30 p-5 rounded-2xl border-l-4 border-primary"
+                    >
+                      <p className="text-muted-foreground italic text-sm mb-3">"{project.testimonial.quote}"</p>
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                          <span className="text-primary font-bold text-sm">
+                            {project.testimonial.author.charAt(0)}
+                          </span>
+                        </div>
+                        <div>
+                          <p className="text-foreground font-medium text-sm">{project.testimonial.author}</p>
+                          <p className="text-muted-foreground text-xs">{project.testimonial.position}</p>
+                        </div>
+                      </div>
+                    </motion.div>
                   )}
 
-                  {/* Live Demo iFrame */}
-                  {showLiveDemo && project.demoUrl ? (
-                    <div className="relative aspect-video bg-gray-800 rounded-lg overflow-hidden border border-gray-700">
-                      <iframe
-                        src={project.demoUrl}
-                        title={`${project.title} - Live Demo`}
-                        className="w-full h-full"
-                        sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-                        loading="lazy"
-                      />
-                      <div className="absolute top-2 right-2 bg-green-500/90 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
-                        <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
-                        Live
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="relative aspect-video bg-gray-800 rounded-lg overflow-hidden">
-                      {project.galleryImages.map((image, idx) => (
-                        <motion.div
-                          key={idx}
-                          initial={{ opacity: 0 }}
-                          animate={{ 
-                            opacity: currentImageIndex === idx ? 1 : 0,
-                            scale: currentImageIndex === idx ? 1 : 1.1
-                          }}
-                          transition={{ duration: 0.3 }}
-                          className="absolute inset-0"
-                          style={{ display: currentImageIndex === idx ? 'block' : 'none' }}
-                        >
-                          <img
-                            src={image}
-                            alt={`${project.title} - Image ${idx + 1}`}
-                            className="w-full h-full object-cover"
-                            onLoad={() => handleImageLoad(idx)}
-                          />
-                          
-                          {!loadedImages[idx] && (
-                            <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
-                              <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-yellow-400"></div>
-                            </div>
-                          )}
-                        </motion.div>
-                      ))}
-                      
-                      {/* Navigation buttons */}
-                      {project.galleryImages.length > 1 && (
-                        <>
-                          <button
-                            onClick={prevImage}
-                            className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full transition-colors"
-                            aria-label="Previous image"
-                          >
-                            <ChevronLeft className="w-5 h-5" />
-                          </button>
-                          <button
-                            onClick={nextImage}
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full transition-colors"
-                            aria-label="Next image"
-                          >
-                            <ChevronRight className="w-5 h-5" />
-                          </button>
-                          
-                          {/* Image indicators */}
-                          <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-2">
-                            {project.galleryImages.map((_, idx) => (
-                              <button
-                                key={idx}
-                                onClick={() => setCurrentImageIndex(idx)}
-                                className={`w-2 h-2 rounded-full transition-all ${
-                                  currentImageIndex === idx 
-                                    ? "bg-yellow-400 w-4" 
-                                    : "bg-gray-400/50 hover:bg-gray-300/70"
-                                }`}
-                                aria-label={`Go to image ${idx + 1}`}
-                              />
-                            ))}
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  )}
-                  
-                  {/* Project metadata */}
-                  <div className="mt-6 grid grid-cols-2 gap-4">
-                    <div className="bg-gray-800/50 p-4 rounded-lg flex items-center gap-3">
-                      <Calendar className="text-yellow-400 w-5 h-5" />
-                      <div>
-                        <p className="text-gray-400 text-sm">Completed</p>
-                        <p className="text-white font-medium">{project.date}</p>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-gray-800/50 p-4 rounded-lg flex items-center gap-3">
-                      <Globe className="text-yellow-400 w-5 h-5" />
-                      <div>
-                        <p className="text-gray-400 text-sm">Category</p>
-                        <p className="text-white font-medium">{project.category}</p>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-gray-800/50 p-4 rounded-lg flex items-center gap-3">
-                      <Users className="text-yellow-400 w-5 h-5" />
-                      <div>
-                        <p className="text-gray-400 text-sm">Client</p>
-                        <p className="text-white font-medium">{project.client}</p>
-                      </div>
-                    </div>
-                    
+                  {/* CTA */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.55 }}
+                    className={`${project.testimonial ? 'col-span-12 lg:col-span-4' : 'col-span-12'} flex items-center justify-end gap-3 p-4`}
+                  >
                     {project.link && (
-                      <div className="bg-gray-800/50 p-4 rounded-lg flex items-center gap-3">
-                        <Link className="text-yellow-400 w-5 h-5" />
-                        <div>
-                          <p className="text-gray-400 text-sm">Website</p>
-                          <a 
-                            href={project.link} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="text-yellow-400 font-medium hover:underline"
-                          >
-                            Visit Site
-                          </a>
-                        </div>
-                      </div>
+                      <Button variant="outline" size="sm" asChild className="rounded-full">
+                        <a href={project.link} target="_blank" rel="noopener noreferrer">
+                          <Globe className="w-4 h-4 mr-2" />
+                          Visit Site
+                        </a>
+                      </Button>
                     )}
-                  </div>
-                  
-                  {/* Technologies */}
-                  <div className="mt-6">
-                    <h3 className="text-lg font-bold text-white mb-3">Technologies Used</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {project.technologies.map((tech, idx) => (
-                        <motion.span
-                          key={idx}
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: idx * 0.05, duration: 0.3 }}
-                          className="px-3 py-1 bg-yellow-400/10 text-yellow-400 rounded-full text-sm"
-                        >
-                          {tech}
-                        </motion.span>
-                      ))}
-                    </div>
-                  </div>
+                    <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full" asChild>
+                      <a href="/project-quote">
+                        Start Similar Project
+                        <ExternalLink className="ml-2 h-4 w-4" />
+                      </a>
+                    </Button>
+                  </motion.div>
                 </div>
-                
-                {/* Project details */}
-                <div className="col-span-1">
-                  <div className="space-y-6">
-                    <div>
-                      <h3 className="text-lg font-bold text-white mb-3">Project Overview</h3>
-                      <p className="text-gray-300">{project.description}</p>
-                    </div>
-                    
-                    <div>
-                      <h3 className="text-lg font-bold text-white mb-3">The Challenge</h3>
-                      <p className="text-gray-300">{project.challenge}</p>
-                    </div>
-                    
-                    <div>
-                      <h3 className="text-lg font-bold text-white mb-3">Our Solution</h3>
-                      <p className="text-gray-300">{project.solution}</p>
-                    </div>
-                    
-                    <div>
-                      <h3 className="text-lg font-bold text-white mb-3">Key Features</h3>
-                      <ul className="space-y-2">
-                        {project.features.map((feature, idx) => (
-                          <motion.li
-                            key={idx}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: idx * 0.05, duration: 0.3 }}
-                            className="flex items-start gap-2 text-gray-300"
-                          >
-                            <CheckCircle className="text-yellow-400 w-5 h-5 flex-shrink-0 mt-0.5" />
-                            <span>{feature}</span>
-                          </motion.li>
-                        ))}
-                      </ul>
-                    </div>
-                    
-                    <div>
-                      <h3 className="text-lg font-bold text-white mb-3">Results & Impact</h3>
-                      <ul className="space-y-2">
-                        {project.results.map((result, idx) => (
-                          <motion.li
-                            key={idx}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: idx * 0.05, duration: 0.3 }}
-                            className="flex items-start gap-2 text-gray-300"
-                          >
-                            <CheckCircle className="text-green-400 w-5 h-5 flex-shrink-0 mt-0.5" />
-                            <span>{result}</span>
-                          </motion.li>
-                        ))}
-                      </ul>
-                    </div>
-                    
-                    {project.testimonial && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.4, duration: 0.5 }}
-                        className="bg-gray-800/50 p-6 rounded-lg border-l-4 border-yellow-400 mt-8"
-                      >
-                        <p className="text-gray-300 italic mb-4">"{project.testimonial.quote}"</p>
-                        <div>
-                          <p className="text-white font-medium">{project.testimonial.author}</p>
-                          <p className="text-gray-400 text-sm">{project.testimonial.position}</p>
-                        </div>
-                      </motion.div>
-                    )}
-                  </div>
-                </div>
-              </div>
-              
-              {/* Call to action */}
-              <div className="mt-10 flex flex-col md:flex-row justify-center md:justify-end gap-4 border-t border-gray-800 pt-6">
-                <Button variant="outline" onClick={onClose}>
-                  Back to Portfolio
-                </Button>
-                
-                <Button className="bg-yellow-400 hover:bg-yellow-300 text-black" asChild>
-                  <a href="/project-quote">
-                    Start a Similar Project
-                    <ExternalLink className="ml-2 h-4 w-4" />
-                  </a>
-                </Button>
               </div>
             </div>
           </motion.div>
