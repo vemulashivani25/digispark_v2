@@ -17,12 +17,15 @@
 
 import { Facebook, Instagram, Linkedin, Twitter, Mail, Phone, MapPin, ArrowRight, MessageCircle, Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
-import { useState } from "react";
+import { useState, Suspense, lazy } from "react";
 import { motion } from "framer-motion";
 import { toast } from "./ui/use-toast";
 import { mediumTap, successFeedback } from "@/utils/hapticFeedback";
 import { triggerSuccessConfetti } from "@/utils/confetti";
 import { supabase } from "@/integrations/supabase/client";
+
+// Lazy load 3D model for performance
+const Newsletter3DModel = lazy(() => import("./newsletter/Newsletter3DModel"));
 
 const FooterSection = () => {
   const [emailValue, setEmailValue] = useState("");
@@ -146,14 +149,32 @@ const FooterSection = () => {
       {/* Newsletter Section */}
       <div className="border-b border-gray-800">
         <div className="container mx-auto px-4 sm:px-6 py-10 sm:py-16 relative">
-          <div className="max-w-5xl mx-auto bg-gradient-to-r from-gray-900/80 to-gray-800/80 rounded-2xl backdrop-blur-sm p-6 sm:p-8 md:p-12 border border-gray-700/50 shadow-lg">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center">
+          <div className="max-w-6xl mx-auto bg-gradient-to-r from-gray-900/80 to-gray-800/80 rounded-2xl backdrop-blur-sm p-6 sm:p-8 md:p-10 border border-gray-700/50 shadow-lg overflow-hidden">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-center">
+              {/* 3D Model - Left Side */}
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="hidden lg:block"
+              >
+                <Suspense fallback={
+                  <div className="w-full h-64 flex items-center justify-center">
+                    <div className="w-16 h-16 border-4 border-yellow-400/30 border-t-yellow-400 rounded-full animate-spin" />
+                  </div>
+                }>
+                  <Newsletter3DModel />
+                </Suspense>
+              </motion.div>
+
+              {/* Text Content - Center */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="text-center md:text-left"
+                className="text-center lg:text-left"
               >
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-3 md:mb-4">
                   Subscribe to Our Newsletter
@@ -162,11 +183,13 @@ const FooterSection = () => {
                   Stay updated with our latest insights, trends, and announcements in digital marketing and technology.
                 </p>
               </motion.div>
+
+              {/* Form - Right Side */}
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
               >
                 <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:gap-4">
                   <input 
@@ -181,7 +204,7 @@ const FooterSection = () => {
                   <Button 
                     type="submit" 
                     disabled={isSubmitting}
-                    className="w-full sm:w-auto bg-yellow-400 hover:bg-yellow-300 text-black font-medium px-6 py-3 rounded-lg transition-colors min-h-[48px] disabled:opacity-70"
+                    className="w-full bg-yellow-400 hover:bg-yellow-300 text-black font-medium px-6 py-3 rounded-lg transition-colors min-h-[48px] disabled:opacity-70"
                   >
                     {isSubmitting ? (
                       <>
@@ -193,7 +216,7 @@ const FooterSection = () => {
                     )}
                   </Button>
                 </form>
-                <p className="mt-3 text-gray-400 text-xs sm:text-sm text-center sm:text-left">
+                <p className="mt-3 text-gray-400 text-xs sm:text-sm text-center lg:text-left">
                   We respect your privacy. Unsubscribe at any time.
                 </p>
               </motion.div>
