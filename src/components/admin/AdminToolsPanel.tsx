@@ -382,7 +382,6 @@ const AdminToolsPanel: React.FC = () => {
           </div>
         </CardContent>
       </Card>
-    </div>
 
       {/* Visitor Analytics */}
       <VisitorAnalytics />
