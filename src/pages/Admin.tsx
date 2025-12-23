@@ -12,7 +12,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 import { UserProfile, ContactSubmission, NewsletterSubscription } from "@/types/supabase";
 import { Tables } from "@/integrations/supabase/types";
-import { Plus, Trash, Edit, Eye, RefreshCcw, Check, X, Calendar, ShieldAlert, FileText } from "lucide-react";
+import { Plus, Trash, Edit, Eye, RefreshCcw, Check, X, Calendar, ShieldAlert, FileText, Wrench } from "lucide-react";
+import ContentGuideDownloader from "@/components/ContentGuideDownloader";
 import BlogPostEditor from "@/components/admin/BlogPostEditor";
 import ResourceManager from "@/components/admin/ResourceManager";
 import {
@@ -329,11 +330,14 @@ const Admin = () => {
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={activeTab} onValueChange={handleTabChange}>
-                <TabsList className="grid grid-cols-4 mb-6">
+                <TabsList className="grid grid-cols-5 mb-6">
                   <TabsTrigger value="contacts">Contacts</TabsTrigger>
                   <TabsTrigger value="subscribers">Subscribers</TabsTrigger>
                   <TabsTrigger value="blog">Blog Posts</TabsTrigger>
                   <TabsTrigger value="resources">Resources</TabsTrigger>
+                  <TabsTrigger value="tools" className="flex items-center gap-1">
+                    <Wrench size={14} /> Tools
+                  </TabsTrigger>
                 </TabsList>
                 
                 {/* Contacts Tab */}
@@ -650,6 +654,17 @@ const Admin = () => {
                       )}
                     </>
                   )}
+                </TabsContent>
+
+                {/* Tools Tab */}
+                <TabsContent value="tools">
+                  <div className="py-8">
+                    <div className="mb-6">
+                      <h3 className="text-lg font-semibold text-white mb-2">Developer Tools</h3>
+                      <p className="text-gray-400 text-sm">Download guides and utilities for content management</p>
+                    </div>
+                    <ContentGuideDownloader />
+                  </div>
                 </TabsContent>
               </Tabs>
             </CardContent>
