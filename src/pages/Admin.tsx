@@ -13,7 +13,7 @@ import { toast } from "@/components/ui/use-toast";
 import { UserProfile, ContactSubmission, NewsletterSubscription } from "@/types/supabase";
 import { Tables } from "@/integrations/supabase/types";
 import { Plus, Trash, Edit, Eye, RefreshCcw, Check, X, Calendar, ShieldAlert, FileText, Wrench } from "lucide-react";
-import ContentGuideDownloader from "@/components/ContentGuideDownloader";
+import AdminToolsPanel from "@/components/admin/AdminToolsPanel";
 import BlogPostEditor from "@/components/admin/BlogPostEditor";
 import ResourceManager from "@/components/admin/ResourceManager";
 import {
@@ -658,12 +658,12 @@ const Admin = () => {
 
                 {/* Tools Tab */}
                 <TabsContent value="tools">
-                  <div className="py-8">
+                  <div className="py-6">
                     <div className="mb-6">
                       <h3 className="text-lg font-semibold text-white mb-2">Developer Tools</h3>
-                      <p className="text-gray-400 text-sm">Download guides and utilities for content management</p>
+                      <p className="text-gray-400 text-sm">Export data, manage cache, and download content guides</p>
                     </div>
-                    <ContentGuideDownloader />
+                    <AdminToolsPanel />
                   </div>
                 </TabsContent>
               </Tabs>
