@@ -17,6 +17,7 @@ import { useToast } from '@/hooks/use-toast';
 import { generateContentGuidePDF, generateContentGuideExcel } from '@/utils/generateContentGuide';
 import { supabase } from '@/integrations/supabase/client';
 import * as XLSX from 'xlsx';
+import VisitorAnalytics from './VisitorAnalytics';
 
 type TableName = 'contact_submissions' | 'newsletter_subscriptions' | 'blog_posts' | 'resources' | 'project_quotes' | 'blog_suggestions' | 'profiles' | 'user_roles';
 
@@ -381,6 +382,10 @@ const AdminToolsPanel: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+    </div>
+
+      {/* Visitor Analytics */}
+      <VisitorAnalytics />
     </div>
   );
 };

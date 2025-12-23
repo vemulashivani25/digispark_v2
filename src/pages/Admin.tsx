@@ -12,10 +12,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 import { UserProfile, ContactSubmission, NewsletterSubscription } from "@/types/supabase";
 import { Tables } from "@/integrations/supabase/types";
-import { Plus, Trash, Edit, Eye, RefreshCcw, Check, X, Calendar, ShieldAlert, FileText, Wrench } from "lucide-react";
+import { Plus, Trash, Edit, Eye, RefreshCcw, Check, X, Calendar, ShieldAlert, FileText, Wrench, Users, Mail, Loader2, ChevronDown } from "lucide-react";
 import AdminToolsPanel from "@/components/admin/AdminToolsPanel";
+import UserManagement from "@/components/admin/UserManagement";
+import VisitorAnalytics from "@/components/admin/VisitorAnalytics";
 import BlogPostEditor from "@/components/admin/BlogPostEditor";
 import ResourceManager from "@/components/admin/ResourceManager";
+import { useInactivityLogout } from "@/hooks/useInactivityLogout";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -58,7 +61,12 @@ const Admin = () => {
     id: string;
     title?: string;
   } | null>(null);
+  const [subscribersLimit, setSubscribersLimit] = useState(10);
+  const [sendingEmail, setSendingEmail] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  // Enable inactivity logout for admin users
+  useInactivityLogout(!!user && isAdmin);
 
   useEffect(() => {
     if (loading) return;
@@ -217,6 +225,35 @@ const Admin = () => {
     }
   };
 
+  const sendEmailToSubscriber = async (email: string) => {
+    setSendingEmail(email);
+    try {
+      const { error } = await supabase.functions.invoke('send-quote-email', {
+        body: {
+          to: email,
+          subject: 'Hello from DigiSpark!',
+          message: 'Thank you for subscribing to our newsletter. Stay tuned for updates!'
+        }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Email Sent!",
+        description: `Email sent to ${email}`
+      });
+    } catch (error) {
+      console.error("Error sending email:", error);
+      toast({
+        title: "Error",
+        description: "Failed to send email. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setSendingEmail(null);
+    }
+  };
+
   const deleteBlogPost = async (id: string) => {
     try {
       const { error } = await supabase
@@ -330,10 +367,13 @@ const Admin = () => {
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={activeTab} onValueChange={handleTabChange}>
-                <TabsList className="grid grid-cols-5 mb-6">
+                <TabsList className="grid grid-cols-6 mb-6">
                   <TabsTrigger value="contacts">Contacts</TabsTrigger>
                   <TabsTrigger value="subscribers">Subscribers</TabsTrigger>
-                  <TabsTrigger value="blog">Blog Posts</TabsTrigger>
+                  <TabsTrigger value="users" className="flex items-center gap-1">
+                    <Users size={14} /> Users
+                  </TabsTrigger>
+                  <TabsTrigger value="blog">Blog</TabsTrigger>
                   <TabsTrigger value="resources">Resources</TabsTrigger>
                   <TabsTrigger value="tools" className="flex items-center gap-1">
                     <Wrench size={14} /> Tools
@@ -400,50 +440,78 @@ const Admin = () => {
                       <p className="text-gray-400">No newsletter subscribers found</p>
                     </div>
                   ) : (
-                    <div className="overflow-x-auto">
-                      <table className="w-full">
-                        <thead>
-                          <tr className="border-b border-gray-800">
-                            <th className="text-left py-3 px-4 text-gray-300">Email</th>
-                            <th className="text-left py-3 px-4 text-gray-300">Subscribed On</th>
-                            <th className="text-left py-3 px-4 text-gray-300">Status</th>
-                            <th className="text-right py-3 px-4 text-gray-300">Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {subscribers.map(sub => (
-                            <tr key={sub.id} className="border-b border-gray-800/50 hover:bg-gray-800/20">
-                              <td className="py-4 px-4 text-white">{sub.email}</td>
-                              <td className="py-4 px-4 text-gray-300">{formatDate(sub.subscribed_at)}</td>
-                              <td className="py-4 px-4">
-                                {sub.is_active ? (
-                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                    Active
-                                  </span>
-                                ) : (
-                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                    Inactive
-                                  </span>
-                                )}
-                              </td>
-                              <td className="py-4 px-4 text-right">
-                                <Button 
-                                  variant="ghost" 
-                                  size="sm"
-                                  className={sub.is_active ? 
-                                    "text-orange-400 hover:text-orange-300 hover:bg-orange-900/20" : 
-                                    "text-green-400 hover:text-green-300 hover:bg-green-900/20"}
-                                  onClick={() => toggleSubscriberStatus(sub.id, sub.is_active)}
-                                >
-                                  {sub.is_active ? <X size={16} /> : <Check size={16} />}
-                                </Button>
-                              </td>
+                    <div className="space-y-4">
+                      <div className="overflow-x-auto">
+                        <table className="w-full">
+                          <thead>
+                            <tr className="border-b border-gray-800">
+                              <th className="text-left py-3 px-4 text-gray-300">Email</th>
+                              <th className="text-left py-3 px-4 text-gray-300">Subscribed On</th>
+                              <th className="text-left py-3 px-4 text-gray-300">Status</th>
+                              <th className="text-right py-3 px-4 text-gray-300">Actions</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                          </thead>
+                          <tbody>
+                            {subscribers.slice(0, subscribersLimit).map(sub => (
+                              <tr key={sub.id} className="border-b border-gray-800/50 hover:bg-gray-800/20">
+                                <td className="py-4 px-4 text-white">{sub.email}</td>
+                                <td className="py-4 px-4 text-gray-300">{formatDate(sub.subscribed_at)}</td>
+                                <td className="py-4 px-4">
+                                  {sub.is_active ? (
+                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                      Active
+                                    </span>
+                                  ) : (
+                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                      Inactive
+                                    </span>
+                                  )}
+                                </td>
+                                <td className="py-4 px-4 text-right flex items-center justify-end gap-2">
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm"
+                                    className="text-blue-400 hover:text-blue-300 hover:bg-blue-900/20"
+                                    onClick={() => sendEmailToSubscriber(sub.email)}
+                                    disabled={sendingEmail === sub.email}
+                                  >
+                                    {sendingEmail === sub.email ? <Loader2 size={16} className="animate-spin" /> : <Mail size={16} />}
+                                  </Button>
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm"
+                                    className={sub.is_active ? 
+                                      "text-orange-400 hover:text-orange-300 hover:bg-orange-900/20" : 
+                                      "text-green-400 hover:text-green-300 hover:bg-green-900/20"}
+                                    onClick={() => toggleSubscriberStatus(sub.id, sub.is_active)}
+                                  >
+                                    {sub.is_active ? <X size={16} /> : <Check size={16} />}
+                                  </Button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                      {subscribers.length > subscribersLimit && (
+                        <div className="text-center">
+                          <Button
+                            variant="outline"
+                            onClick={() => setSubscribersLimit(prev => prev + 10)}
+                            className="border-gray-600 hover:bg-gray-700"
+                          >
+                            <ChevronDown size={16} className="mr-2" />
+                            Show More ({subscribers.length - subscribersLimit} remaining)
+                          </Button>
+                        </div>
+                      )}
                     </div>
                   )}
+                </TabsContent>
+
+                {/* Users Tab */}
+                <TabsContent value="users">
+                  <UserManagement />
                 </TabsContent>
                 
                 {/* Blog Posts Tab */}
