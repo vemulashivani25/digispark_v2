@@ -56,26 +56,78 @@ const AdminToolsPanel: React.FC = () => {
   const exportTableToCSV = async (tableName: TableName) => {
     setExportingTable(tableName);
     try {
-      // Use appropriate ordering column based on table
-      const orderColumn = tableName === 'newsletter_subscriptions' ? 'subscribed_at' 
-        : tableName === 'user_roles' ? 'created_at'
-        : 'created_at';
-      
-      const { data, error } = await supabase
-        .from(tableName)
-        .select('*')
-        .order(orderColumn, { ascending: false });
+      let exportData: Record<string, unknown>[] = [];
 
-      if (error) throw error;
+      if (tableName === 'user_roles') {
+        // Fetch user_roles with profile data for clarity
+        const { data: rolesData, error: rolesError } = await supabase
+          .from('user_roles')
+          .select('id, user_id, role, created_at')
+          .order('created_at', { ascending: false });
 
-      if (!data || data.length === 0) {
+        if (rolesError) throw rolesError;
+
+        // Fetch all profiles to join
+        const { data: profilesData } = await supabase
+          .from('profiles')
+          .select('id, full_name, email');
+
+        const profilesMap = new Map(profilesData?.map(p => [p.id, p]) || []);
+
+        exportData = (rolesData || []).map(role => ({
+          id: role.id,
+          user_id: role.user_id,
+          full_name: profilesMap.get(role.user_id)?.full_name || 'N/A',
+          email: profilesMap.get(role.user_id)?.email || 'N/A',
+          role: role.role,
+          created_at: role.created_at
+        }));
+      } else if (tableName === 'profiles') {
+        // Fetch profiles with role information
+        const { data: profilesData, error: profilesError } = await supabase
+          .from('profiles')
+          .select('id, full_name, email, avatar_url, created_at, updated_at')
+          .order('created_at', { ascending: false });
+
+        if (profilesError) throw profilesError;
+
+        // Fetch roles to join
+        const { data: rolesData } = await supabase
+          .from('user_roles')
+          .select('user_id, role');
+
+        const rolesMap = new Map(rolesData?.map(r => [r.user_id, r.role]) || []);
+
+        exportData = (profilesData || []).map(profile => ({
+          id: profile.id,
+          full_name: profile.full_name || 'N/A',
+          email: profile.email || 'N/A',
+          role: rolesMap.get(profile.id) || 'user',
+          avatar_url: profile.avatar_url || '',
+          created_at: profile.created_at,
+          updated_at: profile.updated_at
+        }));
+      } else {
+        // Standard export for other tables
+        const orderColumn = tableName === 'newsletter_subscriptions' ? 'subscribed_at' : 'created_at';
+        
+        const { data, error } = await supabase
+          .from(tableName)
+          .select('*')
+          .order(orderColumn, { ascending: false });
+
+        if (error) throw error;
+        exportData = data || [];
+      }
+
+      if (exportData.length === 0) {
         toast({ title: "No Data", description: `No records found in ${tableName}.`, variant: "destructive" });
         return;
       }
 
       // Create workbook and worksheet
       const wb = XLSX.utils.book_new();
-      const ws = XLSX.utils.json_to_sheet(data);
+      const ws = XLSX.utils.json_to_sheet(exportData);
       XLSX.utils.book_append_sheet(wb, ws, tableName);
       
       // Download
@@ -83,7 +135,7 @@ const AdminToolsPanel: React.FC = () => {
 
       toast({ 
         title: "Export Complete!", 
-        description: `${data.length} records exported from ${tableName}.` 
+        description: `${exportData.length} records exported from ${tableName}.` 
       });
     } catch (error) {
       console.error("Export error:", error);
