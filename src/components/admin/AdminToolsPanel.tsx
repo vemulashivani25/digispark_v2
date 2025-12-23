@@ -56,10 +56,13 @@ const AdminToolsPanel: React.FC = () => {
   const exportTableToCSV = async (tableName: TableName) => {
     setExportingTable(tableName);
     try {
+      // Use appropriate ordering column based on table
+      const orderColumn = tableName === 'newsletter_subscriptions' ? 'subscribed_at' : 'created_at';
+      
       const { data, error } = await supabase
         .from(tableName)
         .select('*')
-        .order('created_at', { ascending: false });
+        .order(orderColumn, { ascending: false });
 
       if (error) throw error;
 
