@@ -12,8 +12,18 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Shield, User, Mail, Pencil, Camera, Search, Users } from "lucide-react";
+import { Loader2, Shield, User, Mail, Pencil, Camera, Search, Users, Plus, Trash2, Eye, EyeOff } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -37,6 +47,17 @@ const UserManagement: React.FC = () => {
     avatar_url: "",
   });
   const [saving, setSaving] = useState(false);
+  const [showAddDialog, setShowAddDialog] = useState(false);
+  const [addForm, setAddForm] = useState({
+    email: "",
+    password: "",
+    full_name: "",
+    role: "user" as "admin" | "moderator" | "user" | "client",
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [adding, setAdding] = useState(false);
+  const [deletingUser, setDeletingUser] = useState<UserWithRole | null>(null);
+  const [deleting, setDeleting] = useState(false);
   const { toast } = useToast();
   const fetchUsers = async () => {
     setLoading(true);
@@ -207,6 +228,119 @@ const UserManagement: React.FC = () => {
       user.role.toLowerCase().includes(query)
     );
   });
+
+  const addUser = async () => {
+    if (!addForm.email || !addForm.password) {
+      toast({
+        title: "Error",
+        description: "Email and password are required",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (addForm.password.length < 6) {
+      toast({
+        title: "Error",
+        description: "Password must be at least 6 characters",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setAdding(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error("Not authenticated");
+
+      const response = await fetch(
+        `https://jtoabocyojjmivziamtv.supabase.co/functions/v1/admin-create-user`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({
+            email: addForm.email,
+            password: addForm.password,
+            full_name: addForm.full_name || undefined,
+            role: addForm.role,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to create user");
+      }
+
+      toast({
+        title: "User Created",
+        description: `Successfully created user ${addForm.email}`,
+      });
+
+      setShowAddDialog(false);
+      setAddForm({ email: "", password: "", full_name: "", role: "user" });
+      fetchUsers();
+    } catch (error: any) {
+      console.error("Error creating user:", error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to create user",
+        variant: "destructive",
+      });
+    } finally {
+      setAdding(false);
+    }
+  };
+
+  const deleteUser = async () => {
+    if (!deletingUser) return;
+
+    setDeleting(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error("Not authenticated");
+
+      const response = await fetch(
+        `https://jtoabocyojjmivziamtv.supabase.co/functions/v1/admin-delete-user`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({ user_id: deletingUser.id }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to delete user");
+      }
+
+      toast({
+        title: "User Deleted",
+        description: `Successfully deleted user ${deletingUser.email}`,
+      });
+
+      setDeletingUser(null);
+      setUsers(users.filter(u => u.id !== deletingUser.id));
+    } catch (error: any) {
+      console.error("Error deleting user:", error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to delete user",
+        variant: "destructive",
+      });
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="py-20 text-center">
@@ -215,11 +349,16 @@ const UserManagement: React.FC = () => {
       </div>
     );
   }
+
   if (users.length === 0) {
     return (
       <div className="py-20 text-center">
         <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-        <p className="text-muted-foreground">No users found</p>
+        <p className="text-muted-foreground mb-4">No users found</p>
+        <Button onClick={() => setShowAddDialog(true)}>
+          <Plus className="h-4 w-4 mr-2" />
+          Add User
+        </Button>
       </div>
     );
   }
@@ -253,15 +392,21 @@ const UserManagement: React.FC = () => {
         </Card>
       </div>
 
-      {/* Search */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="Search by name, email, or role..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-10 bg-white border-border/50"
-        />
+      {/* Search and Add Button */}
+      <div className="flex gap-3">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search by name, email, or role..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10 bg-white border-border/50"
+          />
+        </div>
+        <Button onClick={() => setShowAddDialog(true)}>
+          <Plus className="h-4 w-4 mr-2" />
+          Add User
+        </Button>
       </div>
 
       {/* User Cards Grid */}
@@ -298,9 +443,9 @@ const UserManagement: React.FC = () => {
 
               {/* Actions */}
               <div className="flex items-center gap-2 mt-4 pt-4 border-t border-border/50">
-                <Button variant="outline" size="sm" onClick={() => openEditDialog(user)} className="flex-1 h-8 text-xs">
+                <Button variant="outline" size="sm" onClick={() => openEditDialog(user)} className="h-8 text-xs">
                   <Pencil className="h-3 w-3 mr-1.5" />
-                  Edit Profile
+                  Edit
                 </Button>
 
                 <Select
@@ -308,7 +453,7 @@ const UserManagement: React.FC = () => {
                   onValueChange={(value) => updateUserRole(user.id, value)}
                   disabled={updatingUser === user.id}
                 >
-                  <SelectTrigger className="w-28 h-8 text-xs bg-background/50 border-border/50">
+                  <SelectTrigger className="w-24 h-8 text-xs bg-background/50 border-border/50">
                     {updatingUser === user.id ? <Loader2 className="h-3 w-3 animate-spin" /> : <SelectValue />}
                   </SelectTrigger>
                   <SelectContent className="bg-popover border-border">
@@ -318,6 +463,15 @@ const UserManagement: React.FC = () => {
                     <SelectItem value="admin">Admin</SelectItem>
                   </SelectContent>
                 </Select>
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setDeletingUser(user)}
+                  className="h-8 text-xs text-destructive hover:text-destructive hover:bg-destructive/10 border-destructive/30"
+                >
+                  <Trash2 className="h-3 w-3" />
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -433,6 +587,152 @@ const UserManagement: React.FC = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Add User Dialog */}
+      <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
+        <DialogContent className="bg-card border-border max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Plus className="h-5 w-5 text-primary" />
+              Add New User
+            </DialogTitle>
+            <DialogDescription>Create a new user account</DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-4">
+            {/* Email */}
+            <div className="space-y-2">
+              <Label htmlFor="new_email" className="flex items-center gap-2">
+                <Mail className="h-4 w-4" />
+                Email Address *
+              </Label>
+              <Input
+                id="new_email"
+                type="email"
+                value={addForm.email}
+                onChange={(e) => setAddForm({ ...addForm, email: e.target.value })}
+                placeholder="user@example.com"
+                className="bg-background/50 border-border/50"
+              />
+            </div>
+
+            {/* Password */}
+            <div className="space-y-2">
+              <Label htmlFor="new_password" className="flex items-center gap-2">
+                <Shield className="h-4 w-4" />
+                Password *
+              </Label>
+              <div className="relative">
+                <Input
+                  id="new_password"
+                  type={showPassword ? "text" : "password"}
+                  value={addForm.password}
+                  onChange={(e) => setAddForm({ ...addForm, password: e.target.value })}
+                  placeholder="Minimum 6 characters"
+                  className="bg-background/50 border-border/50 pr-10"
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </Button>
+              </div>
+            </div>
+
+            {/* Full Name */}
+            <div className="space-y-2">
+              <Label htmlFor="new_full_name" className="flex items-center gap-2">
+                <User className="h-4 w-4" />
+                Full Name
+              </Label>
+              <Input
+                id="new_full_name"
+                value={addForm.full_name}
+                onChange={(e) => setAddForm({ ...addForm, full_name: e.target.value })}
+                placeholder="John Doe"
+                className="bg-background/50 border-border/50"
+              />
+            </div>
+
+            {/* Role */}
+            <div className="space-y-2">
+              <Label className="flex items-center gap-2">
+                <Shield className="h-4 w-4" />
+                Role
+              </Label>
+              <Select
+                value={addForm.role}
+                onValueChange={(value: "admin" | "moderator" | "user" | "client") =>
+                  setAddForm({ ...addForm, role: value })
+                }
+              >
+                <SelectTrigger className="bg-background/50 border-border/50">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-popover border-border">
+                  <SelectItem value="user">User</SelectItem>
+                  <SelectItem value="client">Client</SelectItem>
+                  <SelectItem value="moderator">Moderator</SelectItem>
+                  <SelectItem value="admin">Admin</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowAddDialog(false)} disabled={adding}>
+              Cancel
+            </Button>
+            <Button onClick={addUser} disabled={adding}>
+              {adding ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  Creating...
+                </>
+              ) : (
+                "Create User"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete User Confirmation */}
+      <AlertDialog open={!!deletingUser} onOpenChange={(open) => !open && setDeletingUser(null)}>
+        <AlertDialogContent className="bg-card border-border">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <Trash2 className="h-5 w-5 text-destructive" />
+              Delete User
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete <strong>{deletingUser?.full_name || deletingUser?.email}</strong>?
+              This action cannot be undone and will permanently remove the user and all their data.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={deleteUser}
+              disabled={deleting}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {deleting ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  Deleting...
+                </>
+              ) : (
+                "Delete User"
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
