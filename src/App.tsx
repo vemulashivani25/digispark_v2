@@ -27,6 +27,7 @@ import PreloaderNew from "./components/PreloaderNew";
 import WhatsAppChat from "./components/WhatsAppChat";
 import ReadingProgressBar from "./components/ReadingProgressBar";
 import { Toaster } from "@/components/ui/toaster";
+import { useVisitorTracking } from "@/hooks/useVisitorTracking";
 
 // ============================================================================
 // DIRECT PAGE IMPORTS - For seamless page transitions
@@ -62,6 +63,9 @@ import Documentation from "./pages/Documentation";
 const App = () => {
   // Controls the preloader visibility
   const [loading, setLoading] = useState(true);
+
+  // Track visitor analytics
+  useVisitorTracking();
 
   useEffect(() => {
     // Show preloader for 3 seconds on initial load
