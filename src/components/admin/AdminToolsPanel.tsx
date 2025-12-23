@@ -18,7 +18,7 @@ import { generateContentGuidePDF, generateContentGuideExcel } from '@/utils/gene
 import { supabase } from '@/integrations/supabase/client';
 import * as XLSX from 'xlsx';
 
-type TableName = 'contact_submissions' | 'newsletter_subscriptions' | 'blog_posts' | 'resources' | 'project_quotes' | 'blog_suggestions';
+type TableName = 'contact_submissions' | 'newsletter_subscriptions' | 'blog_posts' | 'resources' | 'project_quotes' | 'blog_suggestions' | 'profiles' | 'user_roles';
 
 const AdminToolsPanel: React.FC = () => {
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
@@ -57,7 +57,9 @@ const AdminToolsPanel: React.FC = () => {
     setExportingTable(tableName);
     try {
       // Use appropriate ordering column based on table
-      const orderColumn = tableName === 'newsletter_subscriptions' ? 'subscribed_at' : 'created_at';
+      const orderColumn = tableName === 'newsletter_subscriptions' ? 'subscribed_at' 
+        : tableName === 'user_roles' ? 'created_at'
+        : 'created_at';
       
       const { data, error } = await supabase
         .from(tableName)
@@ -137,6 +139,8 @@ const AdminToolsPanel: React.FC = () => {
   const storageInfo = getStorageInfo();
 
   const tables: { name: TableName; label: string; icon: React.ReactNode }[] = [
+    { name: 'profiles', label: 'Users/Profiles', icon: <FileText size={14} /> },
+    { name: 'user_roles', label: 'User Roles', icon: <FileText size={14} /> },
     { name: 'contact_submissions', label: 'Contacts', icon: <FileText size={14} /> },
     { name: 'newsletter_subscriptions', label: 'Subscribers', icon: <FileText size={14} /> },
     { name: 'blog_posts', label: 'Blog Posts', icon: <FileText size={14} /> },
