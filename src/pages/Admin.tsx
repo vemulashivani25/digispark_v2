@@ -368,19 +368,34 @@ const Admin = () => {
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={activeTab} onValueChange={handleTabChange}>
-                <TabsList className="grid grid-cols-7 mb-6">
-                  <TabsTrigger value="contacts">Contacts</TabsTrigger>
-                  <TabsTrigger value="subscribers">Subscribers</TabsTrigger>
-                  <TabsTrigger value="users" className="flex items-center gap-1">
-                    <Users size={14} /> Users
+                <TabsList className="flex flex-wrap h-auto gap-1 p-1 mb-6 sm:grid sm:grid-cols-4 lg:grid-cols-7">
+                  <TabsTrigger value="contacts" className="flex-1 min-w-fit text-xs sm:text-sm px-2 py-2">
+                    <Mail size={14} className="sm:hidden" />
+                    <span className="hidden sm:inline">Contacts</span>
                   </TabsTrigger>
-                  <TabsTrigger value="activity" className="flex items-center gap-1">
-                    <Activity size={14} /> Activity
+                  <TabsTrigger value="subscribers" className="flex-1 min-w-fit text-xs sm:text-sm px-2 py-2">
+                    <Mail size={14} className="sm:hidden" />
+                    <span className="hidden sm:inline">Subscribers</span>
                   </TabsTrigger>
-                  <TabsTrigger value="blog">Blog</TabsTrigger>
-                  <TabsTrigger value="resources">Resources</TabsTrigger>
-                  <TabsTrigger value="tools" className="flex items-center gap-1">
-                    <Wrench size={14} /> Tools
+                  <TabsTrigger value="users" className="flex items-center gap-1 flex-1 min-w-fit text-xs sm:text-sm px-2 py-2">
+                    <Users size={14} />
+                    <span className="hidden sm:inline">Users</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="activity" className="flex items-center gap-1 flex-1 min-w-fit text-xs sm:text-sm px-2 py-2">
+                    <Activity size={14} />
+                    <span className="hidden sm:inline">Activity</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="blog" className="flex-1 min-w-fit text-xs sm:text-sm px-2 py-2">
+                    <FileText size={14} className="sm:hidden" />
+                    <span className="hidden sm:inline">Blog</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="resources" className="flex-1 min-w-fit text-xs sm:text-sm px-2 py-2">
+                    <FileText size={14} className="sm:hidden" />
+                    <span className="hidden sm:inline">Resources</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="tools" className="flex items-center gap-1 flex-1 min-w-fit text-xs sm:text-sm px-2 py-2">
+                    <Wrench size={14} />
+                    <span className="hidden sm:inline">Tools</span>
                   </TabsTrigger>
                 </TabsList>
                 
