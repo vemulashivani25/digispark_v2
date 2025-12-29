@@ -165,21 +165,6 @@ const HeroSection = () => {
       {/* Base gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-black/95 to-black/90 pointer-events-none"></div>
       
-      {/* Checkered background pattern */}
-      <div 
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
-        style={{
-          backgroundImage: `
-            linear-gradient(45deg, rgba(234,179,8,1) 25%, transparent 25%),
-            linear-gradient(-45deg, rgba(234,179,8,1) 25%, transparent 25%),
-            linear-gradient(45deg, transparent 75%, rgba(234,179,8,1) 75%),
-            linear-gradient(-45deg, transparent 75%, rgba(234,179,8,1) 75%)
-          `,
-          backgroundSize: '40px 40px',
-          backgroundPosition: '0 0, 0 20px, 20px -20px, -20px 0px'
-        }}
-      />
-      
       {/* Elegant grid pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(234,179,8,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(234,179,8,0.03)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none"></div>
       
