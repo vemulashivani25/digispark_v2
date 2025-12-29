@@ -162,8 +162,29 @@ const HeroSection = () => {
 
   return (
     <section id="top" className="relative min-h-[85vh] sm:min-h-screen flex items-center justify-center overflow-hidden bg-black pt-16 sm:pt-20">
+      {/* Animated gradient background */}
+      <div 
+        className="absolute inset-0 opacity-30 animate-gradient-shift pointer-events-none"
+        style={{
+          background: 'linear-gradient(-45deg, hsl(0 0% 0%), hsl(45 100% 30% / 0.3), hsl(270 50% 20% / 0.2), hsl(0 0% 0%))',
+          backgroundSize: '400% 400%',
+        }}
+      />
+      
       {/* Base gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-black/95 to-black/90 pointer-events-none"></div>
+      
+      {/* Tile effect pattern */}
+      <div 
+        className="absolute inset-0 pointer-events-none opacity-[0.04]"
+        style={{
+          backgroundImage: `
+            linear-gradient(90deg, hsl(45 100% 51%) 1px, transparent 1px),
+            linear-gradient(hsl(45 100% 51%) 1px, transparent 1px)
+          `,
+          backgroundSize: '48px 48px',
+        }}
+      />
       
       {/* Elegant grid pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(234,179,8,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(234,179,8,0.03)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none"></div>
