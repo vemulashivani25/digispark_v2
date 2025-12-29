@@ -12,9 +12,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 import { UserProfile, ContactSubmission, NewsletterSubscription } from "@/types/supabase";
 import { Tables } from "@/integrations/supabase/types";
-import { Plus, Trash, Edit, Eye, RefreshCcw, Check, X, Calendar, ShieldAlert, FileText, Wrench, Users, Mail, Loader2, ChevronDown } from "lucide-react";
+import { Plus, Trash, Edit, Eye, RefreshCcw, Check, X, Calendar, ShieldAlert, FileText, Wrench, Users, Mail, Loader2, ChevronDown, Activity } from "lucide-react";
 import AdminToolsPanel from "@/components/admin/AdminToolsPanel";
 import UserManagement from "@/components/admin/UserManagement";
+import UserActivityLogs from "@/components/admin/UserActivityLogs";
 import VisitorAnalytics from "@/components/admin/VisitorAnalytics";
 import BlogPostEditor from "@/components/admin/BlogPostEditor";
 import ResourceManager from "@/components/admin/ResourceManager";
@@ -367,11 +368,14 @@ const Admin = () => {
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={activeTab} onValueChange={handleTabChange}>
-                <TabsList className="grid grid-cols-6 mb-6">
+                <TabsList className="grid grid-cols-7 mb-6">
                   <TabsTrigger value="contacts">Contacts</TabsTrigger>
                   <TabsTrigger value="subscribers">Subscribers</TabsTrigger>
                   <TabsTrigger value="users" className="flex items-center gap-1">
                     <Users size={14} /> Users
+                  </TabsTrigger>
+                  <TabsTrigger value="activity" className="flex items-center gap-1">
+                    <Activity size={14} /> Activity
                   </TabsTrigger>
                   <TabsTrigger value="blog">Blog</TabsTrigger>
                   <TabsTrigger value="resources">Resources</TabsTrigger>
@@ -512,6 +516,11 @@ const Admin = () => {
                 {/* Users Tab */}
                 <TabsContent value="users">
                   <UserManagement />
+                </TabsContent>
+
+                {/* Activity Logs Tab */}
+                <TabsContent value="activity">
+                  <UserActivityLogs />
                 </TabsContent>
                 
                 {/* Blog Posts Tab */}

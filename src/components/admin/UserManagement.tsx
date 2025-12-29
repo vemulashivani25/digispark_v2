@@ -27,6 +27,8 @@ import { Loader2, Shield, User, Mail, Pencil, Camera, Search, Users, Plus, Trash
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useAuth } from "@/contexts/AuthContext";
+import { logActivity } from "@/hooks/useActivityLogger";
 interface UserWithRole {
   id: string;
   email: string | null;
@@ -59,6 +61,7 @@ const UserManagement: React.FC = () => {
   const [deletingUser, setDeletingUser] = useState<UserWithRole | null>(null);
   const [deleting, setDeleting] = useState(false);
   const { toast } = useToast();
+  const { user: currentUser } = useAuth();
   const fetchUsers = async () => {
     setLoading(true);
     try {
@@ -95,6 +98,9 @@ const UserManagement: React.FC = () => {
     setUpdatingUser(userId);
     try {
       const validRole = newRole as "admin" | "moderator" | "user" | "client";
+      const targetUser = users.find(u => u.id === userId);
+      const oldRole = targetUser?.role;
+      
       const { data: existingRole } = await supabase.from("user_roles").select("id").eq("user_id", userId).maybeSingle();
       if (existingRole) {
         const { error } = await supabase
@@ -123,6 +129,16 @@ const UserManagement: React.FC = () => {
             : u,
         ),
       );
+      
+      // Log role change
+      if (currentUser) {
+        logActivity({
+          userId: currentUser.id,
+          action: 'role_change',
+          details: { target_user_id: userId, target_email: targetUser?.email, old_role: oldRole, new_role: newRole }
+        });
+      }
+      
       toast({
         title: "Role Updated",
         description: `User role changed to ${newRole}`,
@@ -171,6 +187,16 @@ const UserManagement: React.FC = () => {
             : u,
         ),
       );
+      
+      // Log profile update
+      if (currentUser) {
+        logActivity({
+          userId: currentUser.id,
+          action: 'profile_update',
+          details: { target_user_id: editingUser.id, target_email: editingUser.email, updated_by: 'admin' }
+        });
+      }
+      
       toast({
         title: "Profile Updated",
         description: "User profile has been updated successfully",
@@ -276,6 +302,15 @@ const UserManagement: React.FC = () => {
         throw new Error(data.error || "Failed to create user");
       }
 
+      // Log user creation
+      if (currentUser) {
+        logActivity({
+          userId: currentUser.id,
+          action: 'user_created',
+          details: { created_email: addForm.email, created_role: addForm.role }
+        });
+      }
+
       toast({
         title: "User Created",
         description: `Successfully created user ${addForm.email}`,
@@ -320,6 +355,15 @@ const UserManagement: React.FC = () => {
 
       if (!response.ok) {
         throw new Error(data.error || "Failed to delete user");
+      }
+
+      // Log user deletion
+      if (currentUser) {
+        logActivity({
+          userId: currentUser.id,
+          action: 'user_deleted',
+          details: { deleted_user_id: deletingUser.id, deleted_email: deletingUser.email }
+        });
       }
 
       toast({

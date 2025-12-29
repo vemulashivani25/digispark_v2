@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
+import { logActivity } from '@/hooks/useActivityLogger';
 
 type AppRole = 'admin' | 'moderator' | 'user' | 'client';
 type UserRole = AppRole | null;
@@ -62,8 +63,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setTimeout(() => {
             fetchUserRole(session.user.id).then(setUserRole);
           }, 0);
+
+          // Log auth events
+          if (event === 'SIGNED_IN') {
+            setTimeout(() => {
+              logActivity({ userId: session.user.id, action: 'login' });
+            }, 0);
+          }
         } else {
           setUserRole(null);
+        }
+
+        // Log sign out
+        if (event === 'SIGNED_OUT' && user) {
+          logActivity({ userId: user.id, action: 'logout' });
         }
 
         console.log('Auth event:', event);
@@ -116,7 +129,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(true);
       const redirectUrl = `${window.location.origin}/`;
       
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -128,6 +141,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (error) throw error;
+
+      // Log signup activity
+      if (data.user) {
+        logActivity({ userId: data.user.id, action: 'signup' });
+      }
 
       toast({
         title: "Account created successfully",
@@ -202,6 +220,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (error) throw error;
 
+      // Log password reset request (we don't have user id here, so just toast)
       toast({
         title: "Password reset email sent",
         description: "Please check your email for the reset link.",
@@ -226,6 +245,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (error) throw error;
+
+      // Log password update
+      if (user) {
+        logActivity({ userId: user.id, action: 'password_update' });
+      }
 
       toast({
         title: "Password updated successfully",
